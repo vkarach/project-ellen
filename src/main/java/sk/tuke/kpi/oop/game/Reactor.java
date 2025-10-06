@@ -6,20 +6,25 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 public class Reactor extends AbstractActor {
     private int temperature;
     private int damage;
-    private final Animation normalAnimation;
+    private boolean isOn;
+
+    private Light connectedLight;
+
+    private final Animation offAnimation;
+    private final Animation workingAnimation;
     private final Animation overheatAnimation;
     private final Animation brokenAnimation;
+
     public Reactor() {
         temperature = 0;
         damage = 0;
-        normalAnimation = new Animation("sprites/reactor_on.png", 80, 80, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
+        isOn = false;
+        offAnimation = new Animation("sprites/reactor.png", 80, 80);
+        workingAnimation = new Animation("sprites/reactor_on.png", 80, 80, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
         overheatAnimation = new Animation("sprites/reactor_hot.png", 80, 80, 0.05f, Animation.PlayMode.LOOP_PINGPONG);
         brokenAnimation = new Animation("sprites/reactor_broken.png", 80, 80, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
-        setAnimation(normalAnimation);
-        increaseTemperature(1);
-        System.out.println("Reactor: temperature: " + temperature+ " damage: " + damage);
+        setAnimation(offAnimation);
     }
-
     public int getTemperature() {
         return temperature;
     }
@@ -37,7 +42,13 @@ public class Reactor extends AbstractActor {
         }
     }
     public void increaseTemperature(int increment) {
+        if (!isOn) {
+            return;
+        }
         if (increment < 0) {
+            return;
+        }
+        if (damage == 100) {
             return;
         }
         float multiplier = 1;
@@ -47,16 +58,26 @@ public class Reactor extends AbstractActor {
         else if (damage > 66) {
             multiplier = 2;
         }
-        temperature += (int)Math.ceil(increment * multiplier);
+        temperature += Math.round(increment * multiplier);
         if (temperature >= 2000) {
-            damage = (int)((temperature - 2000) * 0.025);
-            if (damage > 100) {
-                damage = 100;
+            int new_damage = (int)((temperature - 2000) * 0.025);
+            if (new_damage > 100) {
+                new_damage = 100;
+                isOn = false;
             }
-            updateAnimation();
+            if (new_damage > damage) {
+                damage = new_damage;
+                updateAnimation();
+            }
         }
     }
     public void decreaseTemperature(int decrement) {
+        if (!isOn) {
+            return;
+        }
+        if (decrement < 0) {
+            return;
+        }
         if (damage == 100) {
             return;
         }
@@ -74,9 +95,45 @@ public class Reactor extends AbstractActor {
         else if (temperature > 4000) {
             setAnimation(overheatAnimation);
         }
-        else {
-            setAnimation(normalAnimation);
+        else if (isOn){
+            setAnimation(workingAnimation);
         }
+        else {
+            setAnimation(offAnimation);
+        }
+    }
+    public void repairWith(Hammer hammer) {
+        if ((damage > 0 && damage < 100) && hammer != null) {
+            hammer.use();
+            int new_damage = damage - 50;
+            if (new_damage < 0) {
+                new_damage = 0;
+            }
+            damage = new_damage;
+            //reduce temperature
+//            updateAnimation();
+        }
+    }
+    public void turnOn() {
+        connectedLight.setPower(true);
+        isOn = true;
+        updateAnimation();
+    }
+    public void turnOff() {
+        connectedLight.setPower(false);
+        isOn = false;
+        updateAnimation();
+    }
+    public boolean isRunning() {
+        return isOn;
+    }
+    public void addLight(Light light) {
+        light.setPower(isRunning());
+        connectedLight = light;
+    }
+    public void removeLight(Light light) {
+        light.setPower(false);
+        connectedLight = null;
     }
 }
 

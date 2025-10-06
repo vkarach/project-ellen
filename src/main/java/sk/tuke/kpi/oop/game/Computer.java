@@ -10,7 +10,6 @@ public class Computer extends AbstractActor {
         normalAnimation = new Animation("sprites/computer.png", 80, 48, 0.4f, Animation.PlayMode.LOOP_PINGPONG);
         setAnimation(normalAnimation);
     }
-
     public int add(int a, int b) {
         return a + b;
     }
