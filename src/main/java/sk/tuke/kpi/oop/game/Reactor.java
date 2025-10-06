@@ -93,6 +93,8 @@ public class Reactor extends AbstractActor {
             setAnimation(brokenAnimation);
         }
         else if (temperature > 4000) {
+            float frameDuration = 0.2f - ((temperature - 4000f) / 2000f) * (0.2f - 0.02f);
+            overheatAnimation.setFrameDuration(frameDuration);
             setAnimation(overheatAnimation);
         }
         else if (isOn){
@@ -110,8 +112,7 @@ public class Reactor extends AbstractActor {
                 new_damage = 0;
             }
             damage = new_damage;
-            //reduce temperature
-//            updateAnimation();
+            updateAnimation();
         }
     }
     public void turnOn() {
