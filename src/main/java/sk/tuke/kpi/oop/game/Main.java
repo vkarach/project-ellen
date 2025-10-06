@@ -29,7 +29,7 @@ public class Main extends AbstractActor {
         controller.toggle(reactor);
         light.toggleLight();
 
-        reactor.removeLight(light);
+        reactor.increaseTemperature(5900);
 
     }
     public void print_info(Reactor reactor, Hammer hammer) {

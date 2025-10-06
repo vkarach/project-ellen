@@ -112,6 +112,10 @@ public class Reactor extends AbstractActor {
                 new_damage = 0;
             }
             damage = new_damage;
+            int new_temperature = damage * 40 + 2000;
+            if (new_temperature < temperature) {
+                temperature = new_temperature;
+            }
             updateAnimation();
         }
     }
