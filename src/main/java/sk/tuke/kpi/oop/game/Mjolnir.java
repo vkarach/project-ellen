@@ -13,6 +13,7 @@ public class Mjolnir extends Hammer {
         ActiveAnimation = new Animation("sprites/mjolnir_active.png", 24, 24, 0.15f, Animation.PlayMode.LOOP_PINGPONG);
         SpawnAnimation = new Animation("sprites/mjolnir_spawn.png", 24, 24, 0.1f, Animation.PlayMode.ONCE);
         setAnimation(SpawnAnimation);
+        setAnimation(ActiveAnimation);
         usages = 4;
         active = false;
     }
@@ -22,7 +23,7 @@ public class Mjolnir extends Hammer {
     public void use() {
         if (usages > 0)
             usages--;
-        if (usages == 0)
+        if (usages <= 0)
             getScene().removeActor(this);
     }
     public void toggle_active() {

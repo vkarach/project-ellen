@@ -9,6 +9,7 @@ public class Main extends AbstractActor {
     private Hammer hammer;
     private Controller controller;
     private Light light;
+    private FireExtinguisher extinguisher;
     public Main() {
         setAnimation(new Animation("sprites/ammo.png", 16, 16));
     }
@@ -20,17 +21,21 @@ public class Main extends AbstractActor {
         controller = new Controller();
         hammer = new Hammer();
         light = new Light();
+        extinguisher = new FireExtinguisher();
 
         scene.addActor(reactor, 145, 255);
         scene.addActor(hammer, 100, 170);
         scene.addActor(light, 208, 255); //175, 355
+        scene.addActor(extinguisher, 200, 200);
 
         reactor.addLight(light);
         controller.toggle(reactor);
         light.toggleLight();
 
-        reactor.increaseTemperature(5900);
+        reactor.increaseTemperature(6000);
+        reactor.extinguishWith(extinguisher);
 
+        print_info(reactor, null);
     }
     public void print_info(Reactor reactor, Hammer hammer) {
         System.out.println("----------------------------------------------");

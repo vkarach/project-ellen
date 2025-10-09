@@ -14,7 +14,7 @@ public class Reactor extends AbstractActor {
     private final Animation workingAnimation;
     private final Animation overheatAnimation;
     private final Animation brokenAnimation;
-
+    private final Animation extinguishedAnimation;
     public Reactor() {
         temperature = 0;
         damage = 0;
@@ -23,6 +23,7 @@ public class Reactor extends AbstractActor {
         workingAnimation = new Animation("sprites/reactor_on.png", 80, 80, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
         overheatAnimation = new Animation("sprites/reactor_hot.png", 80, 80, 0.05f, Animation.PlayMode.LOOP_PINGPONG);
         brokenAnimation = new Animation("sprites/reactor_broken.png", 80, 80, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
+        extinguishedAnimation = new Animation("sprites/reactor_extinguished.png", 80, 80);
         setAnimation(offAnimation);
     }
     public int getTemperature() {
@@ -118,6 +119,14 @@ public class Reactor extends AbstractActor {
             }
             updateAnimation();
         }
+    }
+    public void extinguishWith(FireExtinguisher fireExtinguisher) {
+        if (fireExtinguisher == null && damage != 100) {
+            return;
+        }
+        fireExtinguisher.use();
+        temperature = 4000;
+        setAnimation(extinguishedAnimation);
     }
     public void turnOn() {
         connectedLight.setPower(true);
