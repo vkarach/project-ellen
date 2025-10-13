@@ -1,9 +1,11 @@
 package sk.tuke.kpi.oop.game;
 
+import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
 import sk.tuke.kpi.oop.game.tools.Hammer;
+import sk.tuke.kpi.oop.game.actions.PerpetualReactorHeating;
 
 public class Reactor extends AbstractActor {
     private int temperature;
@@ -89,6 +91,9 @@ public class Reactor extends AbstractActor {
             divider = 2;
         }
         temperature -= decrement / divider;
+        if (temperature < 0) {
+            temperature = 0;
+        }
         updateAnimation();
     }
     private void updateAnimation() {
@@ -131,7 +136,9 @@ public class Reactor extends AbstractActor {
         setAnimation(extinguishedAnimation);
     }
     public void turnOn() {
-        connectedLight.setPower(true);
+        if (connectedLight != null) {
+            connectedLight.setPower(true);
+        }
         isOn = true;
         updateAnimation();
     }
@@ -144,12 +151,21 @@ public class Reactor extends AbstractActor {
         return isOn;
     }
     public void addLight(Light light) {
-        light.setPower(isRunning());
         connectedLight = light;
+        connectedLight.setPower(isRunning());
     }
     public void removeLight(Light light) {
         light.setPower(false);
         connectedLight = null;
     }
+
+    @Override
+    public void addedToScene(Scene scene) {
+        super.addedToScene(scene);
+        turnOn();
+        scene.scheduleAction(new PerpetualReactorHeating(1), this);
+//        new PerpetualReactorHeating(1).scheduleFor(this);
+    }
+
 }
 

@@ -6,25 +6,28 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 public class Light extends AbstractActor {
     private final Animation offAnimation;
     private final Animation onAnimation;
-    private boolean isLightOn;
+    private boolean isOn;
     private boolean powerOn;
     public Light() {
-        isLightOn = false;
+        isOn = false;
         powerOn = false;
         offAnimation = new Animation("sprites/light_off.png", 16, 16);
         onAnimation = new Animation("sprites/light_on.png", 16, 16);
         setAnimation(offAnimation);
+    }
+    public boolean isPowerOn() {
+        return powerOn;
     }
     public void setPower(boolean power) {
         powerOn = power;
         updateAnimation();
     }
     public void toggleLight() {
-        isLightOn = !isLightOn;
+        isOn = !isOn;
         updateAnimation();
     }
     private void updateAnimation() {
-        if (isLightOn && powerOn) {
+        if (isOn && powerOn) {
             setAnimation(onAnimation);
         }
         else {
