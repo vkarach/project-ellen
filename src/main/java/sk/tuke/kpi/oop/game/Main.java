@@ -3,6 +3,8 @@ package sk.tuke.kpi.oop.game;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
+import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
+import sk.tuke.kpi.oop.game.tools.Hammer;
 
 public class Main extends AbstractActor {
     private Reactor reactor;
@@ -33,13 +35,13 @@ public class Main extends AbstractActor {
         light.toggleLight();
 
         reactor.increaseTemperature(6000);
-        reactor.extinguishWith(extinguisher);
+//        reactor.extinguishWith(extinguisher);
 
-        print_info(reactor, null);
+        print_info(reactor, hammer);
     }
     public void print_info(Reactor reactor, Hammer hammer) {
         System.out.println("----------------------------------------------");
         if (reactor != null) System.out.println("Reactor:\n\tTemperature:" + reactor.getTemperature() + "\n\tReactor damage: " + reactor.getDamage());
-        if (hammer != null) System.out.println("Hammer:\n\tUsages: " + hammer.getUsages());
+        if (hammer != null) System.out.println("Hummer:\n\tUsages:" + hammer.getRemainingUsages());
     }
 }
