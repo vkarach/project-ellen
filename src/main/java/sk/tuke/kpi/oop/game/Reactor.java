@@ -7,12 +7,17 @@ import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
 import sk.tuke.kpi.oop.game.tools.Hammer;
 import sk.tuke.kpi.oop.game.actions.PerpetualReactorHeating;
 
-public class Reactor extends AbstractActor {
+import java.util.HashSet;
+import java.util.Set;
+
+public class Reactor extends AbstractActor implements Switchable {
     private int temperature;
     private int damage;
     private boolean isOn;
 
-    private Light connectedLight;
+//    private Light connectedLight;
+//    private EnergyConsumer connectedLight;
+    private Set<EnergyConsumer> devices;
 
     private final Animation offAnimation;
     private final Animation workingAnimation;
@@ -29,6 +34,8 @@ public class Reactor extends AbstractActor {
         brokenAnimation = new Animation("sprites/reactor_broken.png", 80, 80, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
         extinguishedAnimation = new Animation("sprites/reactor_extinguished.png", 80, 80);
         setAnimation(offAnimation);
+
+        devices = new HashSet<>();
     }
     public int getTemperature() {
         return temperature;
@@ -66,7 +73,7 @@ public class Reactor extends AbstractActor {
         temperature += Math.round(increment * multiplier);
         if (temperature >= 2000) {
             int new_damage = (int)((temperature - 2000) * 0.025);
-            if (new_damage > 100) {
+            if (new_damage >= 100) {
                 new_damage = 100;
                 isOn = false;
             }
@@ -135,36 +142,39 @@ public class Reactor extends AbstractActor {
         temperature = 4000;
         setAnimation(extinguishedAnimation);
     }
+    @Override
     public void turnOn() {
-        if (connectedLight != null) {
-            connectedLight.setPower(true);
-        }
         isOn = true;
+        for (EnergyConsumer device : devices) {
+            device.setPowered(true);
+        }
         updateAnimation();
     }
+    @Override
     public void turnOff() {
-        connectedLight.setPower(false);
         isOn = false;
+        for (EnergyConsumer device : devices) {
+            device.setPowered(false);
+        }
         updateAnimation();
     }
-    public boolean isRunning() {
+    @Override
+    public boolean isOn() {
         return isOn;
     }
-    public void addLight(Light light) {
-        connectedLight = light;
-        connectedLight.setPower(isRunning());
+    public void addDevice(EnergyConsumer device) {
+        devices.add(device);
+        device.setPowered(isOn());
     }
-    public void removeLight(Light light) {
-        light.setPower(false);
-        connectedLight = null;
+    public void removeDevice(EnergyConsumer device) {
+        device.setPowered(false);
+        devices.remove(device);
     }
 
     @Override
     public void addedToScene(Scene scene) {
         super.addedToScene(scene);
-        turnOn();
         scene.scheduleAction(new PerpetualReactorHeating(1), this);
-//        new PerpetualReactorHeating(1).scheduleFor(this);
     }
 
 }

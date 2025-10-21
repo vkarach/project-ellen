@@ -6,7 +6,7 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 
-public class Cooler extends AbstractActor {
+public class Cooler extends AbstractActor implements Switchable {
     private Reactor reactor;
     private boolean isOn;
     private final Animation coolingAnimation;
@@ -15,15 +15,22 @@ public class Cooler extends AbstractActor {
         isOn = false;
         coolingAnimation = new Animation("sprites/fan.png", 32,32, 0.2f, Animation.PlayMode.LOOP_PINGPONG);
         setAnimation(coolingAnimation);
+        coolingAnimation.pause();
     }
+    protected Reactor getReactor() {
+        return reactor;
+    }
+    @Override
     public void turnOn() {
         isOn = true;
         coolingAnimation.play();
     }
+    @Override
     public void turnOff() {
         isOn = false;
         coolingAnimation.pause();
     }
+    @Override
     public boolean isOn() {
         return isOn;
     }
@@ -36,7 +43,6 @@ public class Cooler extends AbstractActor {
     @Override
     public void addedToScene(Scene scene) {
         super.addedToScene(scene);
-        turnOn();
         new Loop<>(new Invoke<>(this::coolReactor)).scheduleFor(this);
     }
 }
