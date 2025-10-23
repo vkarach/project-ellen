@@ -1,23 +1,20 @@
 package sk.tuke.kpi.oop.game;
 
+import org.jetbrains.annotations.NotNull;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
-import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
-import sk.tuke.kpi.oop.game.tools.Hammer;
 import sk.tuke.kpi.oop.game.actions.PerpetualReactorHeating;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class Reactor extends AbstractActor implements Switchable {
+public class Reactor extends AbstractActor implements Switchable, Repairable {
     private int temperature;
     private int damage;
     private boolean isOn;
 
-//    private Light connectedLight;
-//    private EnergyConsumer connectedLight;
-    private Set<EnergyConsumer> devices;
+    private final Set<EnergyConsumer> devices;
 
     private final Animation offAnimation;
     private final Animation workingAnimation;
@@ -119,9 +116,9 @@ public class Reactor extends AbstractActor implements Switchable {
             setAnimation(offAnimation);
         }
     }
-    public void repairWith(Hammer hammer) {
-        if ((damage > 0 && damage < 100) && hammer != null) {
-            hammer.use();
+    @Override
+    public boolean repair() {
+        if ((damage > 0 && damage < 100)) {
             int new_damage = damage - 50;
             if (new_damage < 0) {
                 new_damage = 0;
@@ -132,15 +129,17 @@ public class Reactor extends AbstractActor implements Switchable {
                 temperature = new_temperature;
             }
             updateAnimation();
+            return true;
         }
+        return false;
     }
-    public void extinguishWith(FireExtinguisher fireExtinguisher) {
-        if (fireExtinguisher == null && damage != 100) {
-            return;
+    public boolean extinguish() {
+        if (damage != 100) {
+            return false;
         }
-        fireExtinguisher.use();
         temperature = 4000;
         setAnimation(extinguishedAnimation);
+        return true;
     }
     @Override
     public void turnOn() {
@@ -172,7 +171,7 @@ public class Reactor extends AbstractActor implements Switchable {
     }
 
     @Override
-    public void addedToScene(Scene scene) {
+    public void addedToScene(@NotNull Scene scene) {
         super.addedToScene(scene);
         scene.scheduleAction(new PerpetualReactorHeating(1), this);
     }

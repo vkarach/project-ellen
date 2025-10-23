@@ -6,7 +6,9 @@ import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.gamelib.actions.When;
 import sk.tuke.kpi.gamelib.framework.Scenario;
+import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
 import sk.tuke.kpi.oop.game.tools.Hammer;
+import sk.tuke.kpi.oop.game.tools.Wrench;
 
 public class Gameplay extends Scenario {
     @Override
@@ -14,6 +16,8 @@ public class Gameplay extends Scenario {
         Reactor reactor = new Reactor();
         Cooler cooler = new Cooler(reactor);
         Hammer hammer = new Hammer();
+        FireExtinguisher fireExtinguisher = new FireExtinguisher();
+        Wrench wrench = new Wrench();
         Light light = new Light();
         DefectiveLight defectLight = new DefectiveLight();
 
@@ -29,6 +33,8 @@ public class Gameplay extends Scenario {
 
         scene.addActor(cooler, 64, 34);
         scene.addActor(hammer, 64, 100);
+        scene.addActor(fireExtinguisher, 128, 100);
+        scene.addActor(wrench, 100, 170);
 
         scene.addActor(reactor_switch, 10, 10);
         scene.addActor(cooler_switch, 20, 10);
@@ -43,22 +49,23 @@ public class Gameplay extends Scenario {
 
         new ActionSequence<>(
             new Wait<>(5),
-            new Invoke<>(cooler_switch::switchOn)
-        ).scheduleFor(cooler);
+            new Invoke<>(cooler_switch::switchOn)).scheduleFor(cooler
+        );
 
-        new Invoke<>(new Runnable() {
-            public void run() {
-                reactor.repairWith(hammer);
-            }
-        });
+        new ActionSequence<>(
+            new Wait<>(5),
+            new Invoke<>(wrench::useWith)).scheduleFor(defectLight
+        );
 
-        new Invoke<>(() -> {
-            reactor.repairWith(hammer);
-        });
 
         new When<>(
             () -> reactor.getTemperature() >= 3000,
-            new Invoke<>(() -> reactor.repairWith(hammer))
+            new Invoke<>(hammer::useWith)
+        ).scheduleFor(reactor);
+
+        new When<>(
+            () -> reactor.getDamage() == 100,
+            new Invoke<>(fireExtinguisher::useWith)
         ).scheduleFor(reactor);
 
     }
