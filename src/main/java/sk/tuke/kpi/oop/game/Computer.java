@@ -15,25 +15,25 @@ public class Computer extends AbstractActor implements EnergyConsumer{
     }
     public int add(int a, int b) {
         if (!isPowerOn) {
-            return -1;
+            return 0;
         }
         return a + b;
     }
     public float add(float a, float b) {
         if (!isPowerOn) {
-            return -1;
+            return 0;
         }
         return a + b;
     }
     public int sub(int a, int b) {
         if (!isPowerOn) {
-            return -1;
+            return 0;
         }
         return a - b;
     }
     public float sub(float a, float b) {
         if (!isPowerOn) {
-            return -1;
+            return 0;
         }
         return a - b;
     }

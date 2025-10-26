@@ -3,7 +3,7 @@ package sk.tuke.kpi.oop.game;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.ActionSequence;
 import sk.tuke.kpi.gamelib.actions.Invoke;
-import sk.tuke.kpi.gamelib.actions.Wait;
+//import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.framework.Player;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
@@ -27,10 +27,10 @@ public class Helicopter extends AbstractActor {
                 getAnimation().setRotation(270);
                 break;
             case "up":
-                getAnimation().setRotation(0);
+                getAnimation().setRotation(180);
                 break;
             case "down":
-                getAnimation().setRotation(180);
+                getAnimation().setRotation(0);
                 break;
             default:
         }
@@ -86,7 +86,7 @@ public class Helicopter extends AbstractActor {
         }
         new Loop<>(
             new ActionSequence<>(
-                new Wait<>(0.0016f),
+//                new Wait<>(0.0016f),
                 new Invoke<>(() -> moveToPlayerAndDamage(player))
             )
         ).scheduleFor(this);

@@ -23,6 +23,12 @@ public class Gameplay extends Scenario {
 
         Helicopter heli = new Helicopter();
 
+        ChainBomb gigabomb = new ChainBomb(3);
+        ChainBomb gigabomb1 = new ChainBomb(30);
+        TimeBomb bomb = new TimeBomb(5);
+        TimeBomb bomb1 = new TimeBomb(2);
+        TimeBomb bomb2 = new TimeBomb(8);
+
         PowerSwitch reactorSwitch  = new PowerSwitch(reactor);
         PowerSwitch coolerSwitch = new PowerSwitch(cooler);
         PowerSwitch lightSwitch = new PowerSwitch(light);
@@ -43,8 +49,19 @@ public class Gameplay extends Scenario {
         scene.addActor(lightSwitch, 30, 10);
 
         scene.addActor(heli, 200, 200);
-        heli.searchAndDestroy();
 
+        scene.addActor(gigabomb, 150, 150);
+        scene.addActor(gigabomb1, 180, 150);
+        scene.addActor(bomb, 200, 150);
+        scene.addActor(bomb1, 170, 300);
+        scene.addActor(bomb2, 50, 150);
+
+        gigabomb.activate();
+
+            new ActionSequence<>(
+            new Wait<>(5),
+            new Invoke<>(heli::searchAndDestroy)).scheduleFor(heli
+        );
 
         reactorSwitch.switchOn();
         lightSwitch.switchOn();

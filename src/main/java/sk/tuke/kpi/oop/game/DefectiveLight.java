@@ -15,15 +15,18 @@ public class DefectiveLight extends Light implements Repairable {
         if (isPowerOn() && !repaired) {
             int randomNum = random.nextInt(201);
             if (randomNum == 1) {
-                toggleLight();
+                toggle();
             }
         }
     }
     @Override
     public boolean repair() {
+        if (repaired) {
+            return false;
+        }
         repaired = true;
         if (!isOn()) {
-            toggleLight();
+            toggle();
         }
         new ActionSequence<>(
             new Wait<>(10),

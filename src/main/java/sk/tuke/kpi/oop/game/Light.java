@@ -37,7 +37,7 @@ public class Light extends AbstractActor implements Switchable, EnergyConsumer {
         powerOn = power;
         updateAnimation();
     }
-    public void toggleLight() {
+    public void toggle() {
         isOn = !isOn;
         updateAnimation();
     }

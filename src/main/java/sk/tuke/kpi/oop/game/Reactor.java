@@ -51,13 +51,7 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
         }
     }
     public void increaseTemperature(int increment) {
-        if (!isOn) {
-            return;
-        }
-        if (increment < 0) {
-            return;
-        }
-        if (damage == 100) {
+        if (!isOn || increment < 0 || damage == 100) {
             return;
         }
         float multiplier = 1;
@@ -72,6 +66,9 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
             int newDamage = (int)((temperature - 2000) * 0.025);
             if (newDamage >= 100) {
                 newDamage = 100;
+                for (EnergyConsumer device : devices) {
+                    device.setPowered(false);
+                }
                 isOn = false;
             }
             if (newDamage > damage) {
@@ -143,7 +140,9 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
     }
     @Override
     public void turnOn() {
-        isOn = true;
+        if (damage < 100) {
+            isOn = true;
+        }
         for (EnergyConsumer device : devices) {
             device.setPowered(true);
         }

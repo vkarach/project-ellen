@@ -5,6 +5,7 @@ import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 
 public class SmartCooler extends Cooler {
+
     public SmartCooler(Reactor reactor) {
         super(reactor);
     }
@@ -12,6 +13,9 @@ public class SmartCooler extends Cooler {
     @Override
     public void coolReactor() {
         Reactor reactor = getReactor();
+        if (reactor == null) {
+            return;
+        }
         // 1500 - 2500
         int temp = reactor.getTemperature();
         if (temp > 2500) {
