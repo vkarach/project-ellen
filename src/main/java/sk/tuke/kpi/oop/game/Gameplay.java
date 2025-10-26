@@ -21,6 +21,8 @@ public class Gameplay extends Scenario {
         Light light = new Light();
         DefectiveLight defectLight = new DefectiveLight();
 
+        Helicopter heli = new Helicopter();
+
         PowerSwitch reactorSwitch  = new PowerSwitch(reactor);
         PowerSwitch coolerSwitch = new PowerSwitch(cooler);
         PowerSwitch lightSwitch = new PowerSwitch(light);
@@ -39,6 +41,10 @@ public class Gameplay extends Scenario {
         scene.addActor(reactorSwitch, 10, 10);
         scene.addActor(coolerSwitch, 20, 10);
         scene.addActor(lightSwitch, 30, 10);
+
+        scene.addActor(heli, 200, 200);
+        heli.searchAndDestroy();
+
 
         reactorSwitch.switchOn();
         lightSwitch.switchOn();
