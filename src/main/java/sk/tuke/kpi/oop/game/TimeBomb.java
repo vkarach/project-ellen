@@ -9,14 +9,13 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 public class TimeBomb extends AbstractActor {
     private boolean active;
     private final float detonationTime;
-    Animation defaultAnimation;
-    Animation bombActivated;
-    Animation bombExplosion;
+    private final Animation bombActivated;
+    private final Animation bombExplosion;
 
     public TimeBomb(float detonationTime) {
         this.detonationTime = detonationTime;
         active = false;
-        defaultAnimation = new Animation("sprites/bomb.png");
+        Animation defaultAnimation = new Animation("sprites/bomb.png");
         bombActivated = new Animation("sprites/bomb_activated.png", 16, 16, detonationTime / 6, Animation.PlayMode.ONCE);
         bombExplosion = new Animation("sprites/small_explosion.png", 16, 16, 0.1f, Animation.PlayMode.ONCE);
         setAnimation(defaultAnimation);
