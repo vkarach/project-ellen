@@ -8,6 +8,7 @@ import sk.tuke.kpi.gamelib.actions.When;
 import sk.tuke.kpi.gamelib.framework.Scenario;
 import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
 import sk.tuke.kpi.oop.game.tools.Hammer;
+import sk.tuke.kpi.oop.game.tools.Mjolnir;
 import sk.tuke.kpi.oop.game.tools.Wrench;
 
 public class Gameplay extends Scenario {
@@ -16,6 +17,7 @@ public class Gameplay extends Scenario {
         Reactor reactor = new Reactor();
         Cooler cooler = new Cooler(reactor);
         Hammer hammer = new Hammer();
+        Mjolnir mjolnir = new Mjolnir();
         FireExtinguisher fireExtinguisher = new FireExtinguisher();
         Wrench wrench = new Wrench();
         Light light = new Light();
@@ -41,6 +43,7 @@ public class Gameplay extends Scenario {
 
         scene.addActor(cooler, 64, 34);
         scene.addActor(hammer, 64, 100);
+        scene.addActor(mjolnir, 164, 100);
         scene.addActor(fireExtinguisher, 128, 100);
         scene.addActor(wrench, 100, 170);
 

@@ -8,9 +8,8 @@ public class Hammer extends BreakableTool<Reactor> {
     public Hammer() {
         this(1);
     }
-
     public Hammer(int remainingUses) {
-        super(1);
+        super(remainingUses);
         Animation defaultAnimation = new Animation("sprites/hammer.png", 16, 16);
         setAnimation(defaultAnimation);
     }
