@@ -46,10 +46,8 @@ public class ChainBomb extends TimeBomb {
 
             Rectangle2D.Float rectangle = new Rectangle2D.Float(bx, by, bw, bh);
 
-            if (explosionArea.intersects(rectangle)) {
-                if (!bomb.isActivated()) {
-                    bomb.activate();
-                }
+            if (explosionArea.intersects(rectangle) && !bomb.isActivated()) {
+                bomb.activate();
             }
         }
     }

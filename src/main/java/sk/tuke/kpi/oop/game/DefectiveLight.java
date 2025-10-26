@@ -13,10 +13,14 @@ public class DefectiveLight extends Light implements Repairable {
     private boolean repaired;
     public void defectLight() {
         if (isPowerOn() && !repaired) {
-            int randomNum = random.nextInt(201);
-            if (randomNum == 1) {
+            if (random.nextInt(25) == 0) {
                 toggle();
+                new ActionSequence<>(
+                    new Wait<>(0.5f),
+                    new Invoke<>(this::toggle)
+                ).scheduleFor(this);
             }
+
         }
     }
     @Override
