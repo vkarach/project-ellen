@@ -8,7 +8,6 @@ import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.framework.Player;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Animation;
-import sk.tuke.kpi.oop.game.actions.PerpetualReactorHeating;
 
 import java.awt.Rectangle;
 
@@ -27,7 +26,7 @@ public class Teleport extends AbstractActor {
         return null;
     }
     public void setDestination(Teleport destinationTeleport) {
-        if  (destinationTeleport == null || destinationTeleport == this) {
+        if  (destinationTeleport == null || destinationTeleport.equals(this)) {
             return;
         }
         this.destinationTeleport = destinationTeleport;
