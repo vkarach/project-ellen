@@ -11,28 +11,10 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 
 
 public class Helicopter extends AbstractActor {
-    private final Animation defaultAnimation;
-    private boolean chase;
-
     public Helicopter() {
-        defaultAnimation = new Animation("sprites/heli.png", 64, 64, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
+        Animation defaultAnimation = new Animation("sprites/heli.png", 64, 64, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
         setAnimation(defaultAnimation);
-        chase = false;
     }
-
-    public void startChase() {
-        chase = true;
-//        new Loop<>(new HelicopterChasePlayer()).scheduleFor(this);
-    }
-
-    public void stopChase() {
-        chase = false;
-    }
-
-    public boolean isChase() {
-        return chase;
-    }
-
     private boolean isOnPlayer(int pX, int pY, int hX, int hY) {
         return pX == hX && pY == hY;
     }
