@@ -21,10 +21,10 @@ public class Gameplay extends Scenario {
         Light light = new Light();
         DefectiveLight defectLight = new DefectiveLight();
 
-        PowerSwitch reactor_switch  = new PowerSwitch(reactor);
-        PowerSwitch cooler_switch = new PowerSwitch(cooler);
-        PowerSwitch light_switch = new PowerSwitch(light);
-        PowerSwitch defectLight_switch = new PowerSwitch(defectLight);
+        PowerSwitch reactorSwitch  = new PowerSwitch(reactor);
+        PowerSwitch coolerSwitch = new PowerSwitch(cooler);
+        PowerSwitch lightSwitch = new PowerSwitch(light);
+        PowerSwitch defectLightSwitch = new PowerSwitch(defectLight);
 
         scene.addActor(reactor, 64, 64);
 
@@ -36,20 +36,20 @@ public class Gameplay extends Scenario {
         scene.addActor(fireExtinguisher, 128, 100);
         scene.addActor(wrench, 100, 170);
 
-        scene.addActor(reactor_switch, 10, 10);
-        scene.addActor(cooler_switch, 20, 10);
-        scene.addActor(light_switch, 30, 10);
+        scene.addActor(reactorSwitch, 10, 10);
+        scene.addActor(coolerSwitch, 20, 10);
+        scene.addActor(lightSwitch, 30, 10);
 
-        reactor_switch.switchOn();
-        light_switch.switchOn();
-        defectLight_switch.switchOn();
+        reactorSwitch.switchOn();
+        lightSwitch.switchOn();
+        defectLightSwitch.switchOn();
 
         reactor.addDevice(light);
         reactor.addDevice(defectLight);
 
         new ActionSequence<>(
             new Wait<>(5),
-            new Invoke<>(cooler_switch::switchOn)).scheduleFor(cooler
+            new Invoke<>(coolerSwitch::switchOn)).scheduleFor(cooler
         );
 
         new ActionSequence<>(

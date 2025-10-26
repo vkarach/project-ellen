@@ -1,12 +1,9 @@
 package sk.tuke.kpi.oop.game;
 
-import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.framework.Player;
-import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Animation;
-import sk.tuke.kpi.oop.game.actions.HelicopterChasePlayer;
 
 
 public class Helicopter extends AbstractActor {

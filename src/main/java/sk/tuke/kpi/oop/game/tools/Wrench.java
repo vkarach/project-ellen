@@ -6,8 +6,8 @@ import sk.tuke.kpi.oop.game.DefectiveLight;
 public class Wrench extends BreakableTool<DefectiveLight>{
     public Wrench() {
         super(1);
-        Animation DefaultAnimation = new Animation("sprites/wrench.png", 16, 16);
-        setAnimation(DefaultAnimation);
+        Animation defaultAnimation = new Animation("sprites/wrench.png", 16, 16);
+        setAnimation(defaultAnimation);
     }
     @Override
     public void useWith(DefectiveLight defectLight) {

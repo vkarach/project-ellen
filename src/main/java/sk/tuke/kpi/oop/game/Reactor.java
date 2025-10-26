@@ -69,13 +69,13 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
         }
         temperature += Math.round(increment * multiplier);
         if (temperature >= 2000) {
-            int new_damage = (int)((temperature - 2000) * 0.025);
-            if (new_damage >= 100) {
-                new_damage = 100;
+            int newDamage = (int)((temperature - 2000) * 0.025);
+            if (newDamage >= 100) {
+                newDamage = 100;
                 isOn = false;
             }
-            if (new_damage > damage) {
-                damage = new_damage;
+            if (newDamage > damage) {
+                damage = newDamage;
                 updateAnimation();
             }
         }
@@ -105,7 +105,7 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
             setAnimation(brokenAnimation);
         }
         else if (temperature > 4000) {
-            float frameDuration = 0.2f - ((temperature - 4000f) / 2000f) * (0.2f - 0.02f);
+            float frameDuration = 0.2f - (temperature - 4000f) / 2000f * (0.2f - 0.02f);
             overheatAnimation.setFrameDuration(frameDuration);
             setAnimation(overheatAnimation);
         }
@@ -118,15 +118,15 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
     }
     @Override
     public boolean repair() {
-        if ((damage > 0 && damage < 100)) {
-            int new_damage = damage - 50;
-            if (new_damage < 0) {
-                new_damage = 0;
+        if (damage > 0 && damage < 100) {
+            int newDamage = damage - 50;
+            if (newDamage < 0) {
+                newDamage = 0;
             }
-            damage = new_damage;
-            int new_temperature = damage * 40 + 2000;
-            if (new_temperature < temperature) {
-                temperature = new_temperature;
+            damage = newDamage;
+            int newTemperature = damage * 40 + 2000;
+            if (newTemperature < temperature) {
+                temperature = newTemperature;
             }
             updateAnimation();
             return true;

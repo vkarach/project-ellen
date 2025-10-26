@@ -14,9 +14,11 @@ public abstract class BreakableTool<A extends Actor> extends AbstractActor imple
     }
     @Override
     public void useWith(A actor) {
-        if (remainingUses > 0)
+        if (remainingUses > 0) {
             remainingUses--;
-        if (remainingUses <= 0 && getScene() != null)
+        }
+        if (remainingUses <= 0 && getScene() != null) {
             getScene().removeActor(this);
+        }
     }
 }

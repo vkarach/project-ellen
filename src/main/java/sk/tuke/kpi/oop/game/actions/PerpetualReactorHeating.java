@@ -4,7 +4,6 @@ import sk.tuke.kpi.gamelib.framework.actions.AbstractAction;
 import sk.tuke.kpi.oop.game.Reactor;
 
 public class PerpetualReactorHeating extends AbstractAction<Reactor> {
-    private Reactor reactor;
     private int increasment;
 
     public PerpetualReactorHeating(int increasment) {
@@ -18,13 +17,4 @@ public class PerpetualReactorHeating extends AbstractAction<Reactor> {
         }
         getActor().increaseTemperature(increasment);
     }
-
-//    @Override
-//    public Reactor getActor() {
-//        return reactor;
-//    }
-//    @Override
-//    public void setActor(Reactor reactor) {
-//        this.reactor = reactor;
-//    }
 }

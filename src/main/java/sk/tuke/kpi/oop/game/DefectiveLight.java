@@ -11,14 +11,12 @@ import java.util.Random;
 public class DefectiveLight extends Light implements Repairable {
     private final Random random = new Random();
     private boolean repaired;
-    public DefectiveLight() {
-        super();
-    }
     public void defectLight() {
         if (isPowerOn() && !repaired) {
             int randomNum = random.nextInt(201);
-            if (randomNum == 1)
+            if (randomNum == 1) {
                 toggleLight();
+            }
         }
     }
     @Override
@@ -29,7 +27,7 @@ public class DefectiveLight extends Light implements Repairable {
         }
         new ActionSequence<>(
             new Wait<>(10),
-            new Invoke<>(() -> repaired = false)
+            new Invoke<>(() -> {repaired = false; })
         ).scheduleFor(this);
         return true;
     }
