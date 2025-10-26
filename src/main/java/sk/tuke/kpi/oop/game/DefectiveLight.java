@@ -12,15 +12,12 @@ public class DefectiveLight extends Light implements Repairable {
     private final Random random = new Random();
     private boolean repaired;
     public void defectLight() {
-        if (isPowerOn() && !repaired) {
-            if (random.nextInt(25) == 0) {
-                toggle();
-                new ActionSequence<>(
-                    new Wait<>(0.5f),
-                    new Invoke<>(this::toggle)
-                ).scheduleFor(this);
-            }
-
+        if (isPowerOn() && !repaired && random.nextInt(25) == 0) {
+            toggle();
+            new ActionSequence<>(
+                new Wait<>(0.5f),
+                new Invoke<>(this::toggle)
+            ).scheduleFor(this);
         }
     }
     @Override

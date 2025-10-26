@@ -26,6 +26,8 @@ public class Gameplay extends Scenario {
         Teleport teleport1 = new Teleport();
         Teleport teleport2 = new Teleport();
 
+        teleport1.setDestination(teleport2);
+        teleport2.setDestination(teleport1);
 
         Helicopter heli = new Helicopter();
 
@@ -58,8 +60,6 @@ public class Gameplay extends Scenario {
         scene.addActor(teleport1, 50, 300);
         scene.addActor(teleport2, 250, 50);
 
-        teleport1.setDestination(teleport2);
-        teleport2.setDestination(teleport1);
 
         scene.addActor(heli, 200, 200);
 
