@@ -23,6 +23,10 @@ public class Gameplay extends Scenario {
         Light light = new Light();
         DefectiveLight defectLight = new DefectiveLight();
 
+        Teleport teleport1 = new Teleport();
+        Teleport teleport2 = new Teleport();
+
+
         Helicopter heli = new Helicopter();
 
         ChainBomb gigabomb = new ChainBomb(3);
@@ -51,6 +55,12 @@ public class Gameplay extends Scenario {
         scene.addActor(coolerSwitch, 20, 10);
         scene.addActor(lightSwitch, 30, 10);
 
+        scene.addActor(teleport1, 50, 300);
+        scene.addActor(teleport2, 250, 50);
+
+        teleport1.setDestination(teleport2);
+        teleport2.setDestination(teleport1);
+
         scene.addActor(heli, 200, 200);
 
         scene.addActor(gigabomb, 150, 150);
@@ -61,10 +71,10 @@ public class Gameplay extends Scenario {
 
         gigabomb.activate();
 
-            new ActionSequence<>(
-            new Wait<>(5),
-            new Invoke<>(heli::searchAndDestroy)).scheduleFor(heli
-        );
+//        new ActionSequence<>(
+//            new Wait<>(5),
+//            new Invoke<>(heli::searchAndDestroy)).scheduleFor(heli
+//        );
 
         reactorSwitch.switchOn();
         lightSwitch.switchOn();
