@@ -50,10 +50,7 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
             this.damage = dmg;
         }
     }
-    public void increaseTemperature(int increment) {
-        if (!isOn || increment < 0 || damage == 100) {
-            return;
-        }
+    private float calculateMultiplier() {
         float multiplier = 1;
         if (damage > 33 && damage < 66) {
             multiplier = 1.5f;
@@ -61,20 +58,30 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
         else if (damage > 66) {
             multiplier = 2;
         }
+        return multiplier;
+    }
+    private void calculateDamage() {
+        int newDamage = (int)((temperature - 2000) * 0.025);
+        if (newDamage >= 100) {
+            newDamage = 100;
+            for (EnergyConsumer device : devices) {
+                device.setPowered(false);
+            }
+            isOn = false;
+        }
+        if (newDamage > damage) {
+            damage = newDamage;
+            updateAnimation();
+        }
+    }
+    public void increaseTemperature(int increment) {
+        if (!isOn || increment < 0 || damage == 100) {
+            return;
+        }
+        float multiplier = calculateMultiplier();
         temperature += Math.round(increment * multiplier);
         if (temperature >= 2000) {
-            int newDamage = (int)((temperature - 2000) * 0.025);
-            if (newDamage >= 100) {
-                newDamage = 100;
-                for (EnergyConsumer device : devices) {
-                    device.setPowered(false);
-                }
-                isOn = false;
-            }
-            if (newDamage > damage) {
-                damage = newDamage;
-                updateAnimation();
-            }
+            calculateDamage();
         }
     }
     public void decreaseTemperature(int decrement) {

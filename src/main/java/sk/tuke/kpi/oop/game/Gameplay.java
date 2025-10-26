@@ -73,10 +73,10 @@ public class Gameplay extends Scenario {
         reactor.addDevice(light);
         reactor.addDevice(defectLight);
 
-        new ActionSequence<>(
-            new Wait<>(5),
-            new Invoke<>(coolerSwitch::switchOn)).scheduleFor(cooler
-        );
+//        new ActionSequence<>(
+//            new Wait<>(5),
+//            new Invoke<>(coolerSwitch::switchOn)).scheduleFor(cooler
+//        );
 
         new ActionSequence<>(
             new Wait<>(5),
