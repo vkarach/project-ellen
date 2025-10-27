@@ -63,7 +63,7 @@ public class Teleport extends AbstractActor {
             return false;
         }
     }
-    void teleportPlayer(Player player) {
+    public void teleportPlayer(Player player) {
         new ActionSequence<>(
         new Loop<>(
         new Invoke<>(() -> {
