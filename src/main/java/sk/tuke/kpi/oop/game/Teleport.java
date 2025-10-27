@@ -63,16 +63,7 @@ public class Teleport extends AbstractActor {
             return false;
         }
     }
-
-    void teleportPlayer() {
-        Scene scene = getScene();
-        if (scene == null) {
-            return;
-        }
-        Player player = scene.getFirstActorByType(Player.class);
-        if (player == null) {
-            return;
-        }
+    void teleportPlayer(Player player) {
         new ActionSequence<>(
         new Loop<>(
         new Invoke<>(() -> {
@@ -85,7 +76,11 @@ public class Teleport extends AbstractActor {
     @Override
     public void addedToScene(@NotNull Scene scene) {
         super.addedToScene(scene);
-        new Invoke<>(this::teleportPlayer).scheduleFor(this);
+        Player player = scene.getFirstActorByType(Player.class);
+        if (player == null) {
+            return;
+        }
+        new Invoke<>(this::teleportPlayer).scheduleFor(player);
     }
 }
 
