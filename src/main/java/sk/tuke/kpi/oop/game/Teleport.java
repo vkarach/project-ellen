@@ -35,19 +35,6 @@ public class Teleport extends AbstractActor {
         }
         this.destinationTeleport = destinationTeleport;
     }
-    private void teleport(Player player) {
-        int dtX = destinationTeleport.getPosX();
-        int dtY = destinationTeleport.getPosY();
-        // 48 x 48
-        int centerX = dtX + 24;
-        int centerY = dtY + 24;
-
-        int x = centerX - player.getWidth() / 2;
-        int y = centerY - player.getHeight() / 2;
-
-        player.setPosition(x, y);
-        destinationTeleport.canTeleport = false;
-    }
     private boolean isPlayerInside(Player player) {
         int pX = player.getPosX();
         int pY = player.getPosY();
@@ -63,24 +50,38 @@ public class Teleport extends AbstractActor {
             return false;
         }
     }
-    public void teleportPlayer(Player player) {
-        new ActionSequence<>(
-        new Loop<>(
-        new Invoke<>(() -> {
-            if (isPlayerInside(player) && canTeleport) {
-                teleport(player);
-            }
-        })
-        )).scheduleFor(this);
+    private void teleportPlayer(Player player) {
+        if (destinationTeleport == null || !destinationTeleport.isPlayerInside(player)) {
+            return;
+        }
+        int dtX = this.getPosX();
+        int dtY = this.getPosY();
+        // 48 x 48
+        int centerX = dtX + 24;
+        int centerY = dtY + 24;
+
+        int x = centerX - player.getWidth() / 2;
+        int y = centerY - player.getHeight() / 2;
+
+        player.setPosition(x, y);
+        canTeleport = false;
     }
     @Override
     public void addedToScene(@NotNull Scene scene) {
         super.addedToScene(scene);
         Player player = scene.getFirstActorByType(Player.class);
-        if (player == null) {
+        if (player == null || destinationTeleport == null) {
             return;
         }
-        new Invoke<>(this::teleportPlayer).scheduleFor(player);
+        new ActionSequence<>(
+            new Loop<>(
+                new Invoke<>(() -> {
+                    if (destinationTeleport.isPlayerInside(player) && destinationTeleport.canTeleport) {
+                        teleportPlayer(player);
+                    }
+                })
+            )
+        ).scheduleFor(this);
     }
 }
 
