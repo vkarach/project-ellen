@@ -29,6 +29,7 @@ public class Gameplay extends Scenario {
         teleport1.setDestination(teleport2);
         teleport2.setDestination(teleport1);
 
+
         Helicopter heli = new Helicopter();
 
         ChainBomb gigabomb = new ChainBomb(3);

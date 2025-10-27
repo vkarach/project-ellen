@@ -12,20 +12,20 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import java.awt.Rectangle;
 
 public class Teleport extends AbstractActor {
-    private Teleport destinationTeleport;
+    private Teleport connectedTeleport;
     private boolean canTeleport;
     public Teleport() {
         this(null);
     }
     public Teleport(Teleport destinationT) {
-        this.destinationTeleport = destinationT;
+        this.connectedTeleport = destinationT;
         Animation defaultAnimation = new Animation("sprites/lift.png", 48, 48);
         setAnimation(defaultAnimation);
         canTeleport = true;
     }
     public Teleport getDestination() {
-        if (destinationTeleport != null) {
-            return destinationTeleport;
+        if (connectedTeleport != null) {
+            return connectedTeleport;
         }
         return null;
     }
@@ -33,16 +33,18 @@ public class Teleport extends AbstractActor {
         if  (destinationTeleport == null || destinationTeleport.equals(this)) {
             return;
         }
-        this.destinationTeleport = destinationTeleport;
+        this.connectedTeleport = destinationTeleport;
     }
     private boolean isPlayerInside(Player player) {
         int pX = player.getPosX();
         int pY = player.getPosY();
 
-        Rectangle teleportHitbox = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
-        Rectangle playerHitbox = new Rectangle(pX, pY, player.getWidth(), player.getHeight());
+        int pCenterX = pX + player.getWidth() / 2;
+        int pCenterY = pY + player.getHeight() / 2;
 
-        if (playerHitbox.intersects(teleportHitbox)) {
+        Rectangle teleportHitbox = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
+
+        if (teleportHitbox.contains(pCenterX, pCenterY)) {
             return true;
         }
         else {
@@ -50,10 +52,7 @@ public class Teleport extends AbstractActor {
             return false;
         }
     }
-    private void teleportPlayer(Player player) {
-        if (destinationTeleport == null || !destinationTeleport.isPlayerInside(player)) {
-            return;
-        }
+    public void teleportPlayer(Player player) {
         int dtX = this.getPosX();
         int dtY = this.getPosY();
         // 48 x 48
@@ -70,14 +69,14 @@ public class Teleport extends AbstractActor {
     public void addedToScene(@NotNull Scene scene) {
         super.addedToScene(scene);
         Player player = scene.getFirstActorByType(Player.class);
-        if (player == null || destinationTeleport == null) {
+        if (player == null) {
             return;
         }
         new ActionSequence<>(
             new Loop<>(
                 new Invoke<>(() -> {
-                    if (destinationTeleport.isPlayerInside(player) && destinationTeleport.canTeleport) {
-                        teleportPlayer(player);
+                    if (connectedTeleport != null && isPlayerInside(player) && canTeleport) {
+                        connectedTeleport.teleportPlayer(player);
                     }
                 })
             )
