@@ -32,19 +32,19 @@ public class ChainBomb extends TimeBomb {
             }
             TimeBomb bomb = (TimeBomb) actor;
 
-            float bw = bomb.getWidth();
-            if (bw <= 0) {
-                bw = 1;
+            float bW = bomb.getWidth();
+            if (bW <= 0) {
+                bW = 1;
             }
-            float bh = bomb.getHeight();
-            if (bh <= 0) {
-                bh = 1;
+            float bH = bomb.getHeight();
+            if (bH <= 0) {
+                bH = 1;
             }
 
-            float bx = bomb.getPosX() - bw / 2f;
-            float by = bomb.getPosY() - bh / 2f;
+            float bx = bomb.getPosX() - bW / 2;
+            float by = bomb.getPosY() - bH / 2;
 
-            Rectangle2D.Float rectangle = new Rectangle2D.Float(bx, by, bw, bh);
+            Rectangle2D.Float rectangle = new Rectangle2D.Float(bx, by, bW, bH);
 
             if (explosionArea.intersects(rectangle) && !bomb.isActivated()) {
                 bomb.activate();

@@ -1,4 +1,4 @@
-package sk.tuke.kpi.oop.game;
+package sk.tuke.kpi.oop.game.scenarios;
 
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.ActionSequence;
@@ -6,12 +6,13 @@ import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.gamelib.actions.When;
 import sk.tuke.kpi.gamelib.framework.Scenario;
+import sk.tuke.kpi.oop.game.*;
 import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
 import sk.tuke.kpi.oop.game.tools.Hammer;
 import sk.tuke.kpi.oop.game.tools.Mjolnir;
 import sk.tuke.kpi.oop.game.tools.Wrench;
 
-public class Gameplay extends Scenario {
+public class TrainingGameplay extends Scenario {
     @Override
     public void setupPlay(Scene scene) {
         Reactor reactor = new Reactor();
@@ -22,13 +23,6 @@ public class Gameplay extends Scenario {
         Wrench wrench = new Wrench();
         Light light = new Light();
         DefectiveLight defectLight = new DefectiveLight();
-
-        Teleport teleport1 = new Teleport();
-        Teleport teleport2 = new Teleport();
-
-        teleport1.setDestination(teleport2);
-        teleport2.setDestination(teleport1);
-
 
         Helicopter heli = new Helicopter();
 
@@ -58,8 +52,18 @@ public class Gameplay extends Scenario {
         scene.addActor(coolerSwitch, 20, 10);
         scene.addActor(lightSwitch, 30, 10);
 
-        scene.addActor(teleport1, 50, 300);
-        scene.addActor(teleport2, 250, 50);
+
+        Teleport teleportA = new Teleport(null);
+        Teleport teleportB = new Teleport(null);
+        Teleport teleportC = new Teleport(null);
+
+        scene.addActor(teleportA, 50, 300);
+        scene.addActor(teleportC, 250, 300);
+        scene.addActor(teleportB, 250, 50);
+
+        teleportA.setDestination(teleportC);
+        teleportC.setDestination(teleportB);
+        teleportB.setDestination(teleportA);
 
 
         scene.addActor(heli, 200, 200);

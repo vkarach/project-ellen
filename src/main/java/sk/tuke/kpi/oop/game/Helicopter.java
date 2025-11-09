@@ -67,14 +67,11 @@ public class Helicopter extends AbstractActor {
                 rotateHeli("up");
             }
         }
-
-
         this.setPosition(heliX, heliY);
         if (isOnPlayer(playerX, playerY, heliX, heliY)) {
             player.setEnergy(player.getEnergy() - 1);
         }
     }
-
     public void searchAndDestroy() {
         Scene scene = getScene();
         if (scene == null) {
