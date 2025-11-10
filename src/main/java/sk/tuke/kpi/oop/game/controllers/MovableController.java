@@ -14,6 +14,7 @@ import java.util.Set;
 public class MovableController implements KeyboardListener {
     private Move<Movable> moveAction;
     private final Set<Input.Key> pressedKeys = new HashSet<>();
+    private final Set<Direction> pressedDirections = new HashSet<>();
     private final Movable actor;
     private Map<Input.Key, Direction> keyDirectionMap = Map.ofEntries(
         Map.entry(Input.Key.UP, Direction.NORTH),
@@ -27,28 +28,35 @@ public class MovableController implements KeyboardListener {
     @Override
     public void keyPressed(@NotNull Input.Key key) {
         if (keyDirectionMap.containsKey(key)) {
-            pressedKeys.add(key);
-            Direction direction = keyDirectionMap.get(key);
+
+            pressedDirections.add(keyDirectionMap.get(key));
+
+            Direction combineDirection = Direction.NONE;
+            for (Direction d : pressedDirections) {
+                combineDirection = combineDirection.combine(d);
+            }
             if (moveAction != null) {
                 moveAction.stop();
             }
-            moveAction = new Move<>(direction, Float.MAX_VALUE);
+            moveAction = new Move<>(combineDirection, Float.MAX_VALUE);
             moveAction.scheduleFor(actor);
         }
     }
     @Override
     public void keyReleased(@NotNull Input.Key key) {
         if (keyDirectionMap.containsKey(key)) {
-            pressedKeys.remove(key);
-            if (!pressedKeys.isEmpty()) {
-                Input.Key last = pressedKeys.iterator().next();
-
+            pressedDirections.remove(keyDirectionMap.get(key));
+            if (!pressedDirections.isEmpty()) {
                 if (moveAction != null) moveAction.stop();
-
-                moveAction = new Move<>(keyDirectionMap.get(last), Float.MAX_VALUE);
+                Direction combineDirection = Direction.NONE;
+                for (Direction d : pressedDirections) {
+                    combineDirection = combineDirection.combine(d);
+                }
+                moveAction = new Move<>(combineDirection, Float.MAX_VALUE);
                 moveAction.scheduleFor(actor);
-            } else {
-                if (moveAction != null) moveAction.stop();
+            }
+            else if (moveAction != null) {
+                moveAction.stop();
             }
         }
     }
