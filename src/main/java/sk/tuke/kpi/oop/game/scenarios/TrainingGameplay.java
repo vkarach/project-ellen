@@ -7,10 +7,10 @@ import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.gamelib.actions.When;
 import sk.tuke.kpi.gamelib.framework.Scenario;
 import sk.tuke.kpi.oop.game.*;
-import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
-import sk.tuke.kpi.oop.game.tools.Hammer;
-import sk.tuke.kpi.oop.game.tools.Mjolnir;
-import sk.tuke.kpi.oop.game.tools.Wrench;
+import sk.tuke.kpi.oop.game.items.FireExtinguisher;
+import sk.tuke.kpi.oop.game.items.Hammer;
+import sk.tuke.kpi.oop.game.items.Mjolnir;
+import sk.tuke.kpi.oop.game.items.Wrench;
 
 public class TrainingGameplay extends Scenario {
     @Override

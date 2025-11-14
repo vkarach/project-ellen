@@ -1,7 +1,7 @@
 package sk.tuke.kpi.oop.game;
 
 public enum Direction {
-    NONE(0, 0, 0), // angle 0 or previous?
+    NONE(0, 0, 0),
 
     NORTH(0, 1, 0),
     EAST(1, 0, 270),

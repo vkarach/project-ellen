@@ -40,19 +40,29 @@ public class Move<A extends Movable> implements Action<A> {
             actor.stoppedMoving();
         }
         elapsedTime = duration;
+        isMoving = false;
     }
     @Override
     public void execute(float deltaTime) {
+        if (actor == null || isDone()) {
+            return;
+        }
         if (!isMoving) {
             actor.startedMoving(direction);
             isMoving = true;
             posX = actor.getPosX();
             posY = actor.getPosY();
         }
+        int dX = direction.getDx();
+        int dY = direction.getDy();
+        float divider = 1;
+        if (dX != 0 && dY != 0) {
+            divider = 1.5f;
+        }
         int speed = actor.getSpeed();
 
-        posX += direction.getDx() * speed * deltaTime;
-        posY += direction.getDy() * speed * deltaTime;
+        posX += dX * speed / divider;
+        posY += dY * speed / divider;
 
         actor.setPosition((int) posX,(int) posY);
 
