@@ -1,7 +1,10 @@
 package sk.tuke.kpi.oop.game.actions;
+import sk.tuke.kpi.gamelib.Actor;
+import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Action;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
+
 
 public class Move<A extends Movable> implements Action<A> {
     private A actor;
@@ -61,10 +64,18 @@ public class Move<A extends Movable> implements Action<A> {
         }
         int speed = actor.getSpeed();
 
+        Scene scene = actor.getScene();
+        int oldX = actor.getPosX();
+        int oldY = actor.getPosY();
         posX += dX * speed / divider;
         posY += dY * speed / divider;
 
         actor.setPosition((int) posX,(int) posY);
+        if (scene.getMap().intersectsWithWall(actor)) {
+            posX = oldX;
+            posY = oldY;
+            actor.setPosition(oldX, oldY);
+        }
 
         elapsedTime += deltaTime;
         if (isDone()) {

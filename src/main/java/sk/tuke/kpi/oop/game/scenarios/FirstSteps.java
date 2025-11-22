@@ -36,33 +36,38 @@ public class FirstSteps implements SceneListener { // extends Scenario
     Font yellowFont = new Font(fontSize, Color.YELLOW, Font.Style.NORMAL);
     Font redFont = new Font(fontSize, Color.RED, Font.Style.NORMAL);
 
-    private void drawInterface(Scene scene) {
-        scene.getGame().pushActorContainer(ripley.getBackpack());
-
-        int windowHeight = scene.getGame().getWindowSetup().getHeight();
-        int yTextPos = windowHeight - GameApplication.STATUS_LINE_OFFSET;
-
-        int windowWidth = scene.getGame().getWindowSetup().getWidth();
-        int xTextPos = windowWidth - 125;
-
-        int ripleyEnergy = ripley.getEnergy();
-        Font font;
-        if (ripleyEnergy == 100) {
-            font = greenFont;
-        }
-        else if (ripleyEnergy >= 20) {
-            font = yellowFont;
-        }
-        else {
-            font = redFont;
-        }
-        scene.getGame().getOverlay().drawText("Energy:", xTextPos, yTextPos, whiteFont);
-        scene.getGame().getOverlay().drawText("        "+ripley.getEnergy(), xTextPos, yTextPos, font);
-
-        scene.getGame().getOverlay().drawText("Ammo:", xTextPos, yTextPos - 20, whiteFont);
-        scene.getGame().getOverlay().drawText("        "+ripley.getAmmo(), xTextPos, yTextPos - 20, whiteFont);
-    }
-
+//    private void drawInterface(Scene scene) {
+//        scene.getGame().pushActorContainer(ripley.getBackpack());
+//
+//        int windowHeight = scene.getGame().getWindowSetup().getHeight();
+//        int yTextPos = windowHeight - GameApplication.STATUS_LINE_OFFSET;
+//
+//        int windowWidth = scene.getGame().getWindowSetup().getWidth();
+//        int xTextPos = windowWidth - 125;
+//
+//        int ripleyEnergy = ripley.getEnergy();
+//        Font font;
+//        if (ripleyEnergy == 100) {
+//            font = greenFont;
+//        }
+//        else if (ripleyEnergy >= 20) {
+//            font = yellowFont;
+//        }
+//        else {
+//            font = redFont;
+//        }
+//        scene.getGame().getOverlay().drawText("Energy:", xTextPos, yTextPos, whiteFont);
+//        scene.getGame().getOverlay().drawText("        "+ripley.getEnergy(), xTextPos, yTextPos, font);
+//
+//        scene.getGame().getOverlay().drawText("Ammo:", xTextPos, yTextPos - 20, whiteFont);
+//        if (ripley.getAmmo() > 0) {
+//            scene.getGame().getOverlay().drawText("        "+ripley.getAmmo(), xTextPos, yTextPos - 20, whiteFont);
+//
+//        }
+//        else {
+//            scene.getGame().getOverlay().drawText("        x", xTextPos, yTextPos - 20, redFont);
+//        }
+//    }
     @Override
     public void sceneInitialized(@NotNull Scene scene) {
         this.ripley = new Ripley();
@@ -89,7 +94,7 @@ public class FirstSteps implements SceneListener { // extends Scenario
         KeeperController keeperController = new KeeperController(ripley);
         scene.getInput().registerListener(keeperController);
 
-        // watches when ripley on energy and ammo use it or take collectible item to backpack.
+        // watches when ripley on energy and ammo use it
         new Loop<>(
             new Invoke<>(() -> {
                 if (ripley.intersects(energy)) {
@@ -100,18 +105,19 @@ public class FirstSteps implements SceneListener { // extends Scenario
                 }
             })
         ).scheduleFor(ripley);
-        // hp display test
+        // hp, ammo display test
         new Loop<>(
             new ActionSequence<>(
-                new Wait<>(0.01f),
+                new Wait<>(0.05f),
                 new Invoke<>(()-> {
                     ripley.setEnergy(ripley.getEnergy() - 1);
+                    ripley.setAmmo(ripley.getAmmo() - 1);
                 })
             )
         ).scheduleFor(ripley);
     }
     @Override
     public void sceneUpdating(@NotNull Scene scene) {
-        drawInterface(scene);
+        ripley.showRipleyState();
     }
 }

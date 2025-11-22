@@ -24,11 +24,11 @@ public class Take<A extends Keeper<Collectible>> extends AbstractAction<A>  {
                         keeper.getBackpack().add(item);
                         item.getScene().removeActor(item);
                     }
-                    catch  (Exception ex) {
+                    catch  (Exception e) {
                         Scene scene = keeper.getScene();
                         Overlay overlay = scene.getOverlay();
                         Font font = new Font(8, Color.ORANGE, Font.Style.NORMAL);
-                        overlay.drawText(ex.getMessage(), item.getPosX(), item.getPosY() + 30, font).showFor(0.78f);
+                        overlay.drawText(e.getMessage(), item.getPosX(), item.getPosY() + 30, font).showFor(1);
                     }
                     break;
                 }
