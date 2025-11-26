@@ -18,7 +18,7 @@ public class Locker extends AbstractActor implements Usable<Ripley> {
         }
         System.out.println("Using locker");
         Hammer hammer = new Hammer();
-        hammer.setPosition(getPosX(), getPosY());
+        hammer.setPosition(getPosX() + 10, getPosY());
         getScene().addActor(hammer);
         used = true;
     }

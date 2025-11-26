@@ -105,16 +105,6 @@ public class FirstSteps implements SceneListener { // extends Scenario
                 }
             })
         ).scheduleFor(ripley);
-        // hp, ammo display test
-        new Loop<>(
-            new ActionSequence<>(
-                new Wait<>(0.05f),
-                new Invoke<>(()-> {
-                    ripley.setEnergy(ripley.getEnergy() - 1);
-                    ripley.setAmmo(ripley.getAmmo() - 1);
-                })
-            )
-        ).scheduleFor(ripley);
     }
     @Override
     public void sceneUpdating(@NotNull Scene scene) {

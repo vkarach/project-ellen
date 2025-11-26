@@ -32,6 +32,15 @@ public enum Direction {
         }
         return NONE;
     }
+    public static Direction fromAngle(float angle) {
+
+        for (Direction direction : values()) {
+            if (direction.angle == angle && !(direction.dx == 0 && direction.dy == 0)) {
+                return direction;
+            }
+        }
+        return NONE;
+    }
     public int getDx() {
         return dx;
     }

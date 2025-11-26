@@ -16,6 +16,7 @@ import sk.tuke.kpi.oop.game.controllers.MovableController;
 import sk.tuke.kpi.oop.game.items.AccessCard;
 import sk.tuke.kpi.oop.game.items.Energy;
 import sk.tuke.kpi.oop.game.openables.Door;
+import sk.tuke.kpi.oop.game.openables.LockedDoor;
 
 import java.util.concurrent.locks.Lock;
 public class MissionImpossible implements SceneListener {
@@ -33,7 +34,7 @@ public class MissionImpossible implements SceneListener {
                 return new Energy();
             }
             if ("door".equals(name)) {
-                return new Door();
+                return new LockedDoor("Door", Door.Orientation.VERTICAL);
             }
             if ("access card".equals(name)) {
                 return new AccessCard();
@@ -64,7 +65,7 @@ public class MissionImpossible implements SceneListener {
         final Action<Ripley> leak = new Loop<>(
             new ActionSequence<>(
                 new Wait<>(0.25f),
-                new Invoke<>(() -> ripley.setEnergy(ripley.getEnergy() - 1))
+                new Invoke<>(() -> ripley.getHealth().drain(1))
             )
         );
         scene.getMessageBus().subscribe(Door.DOOR_OPENED, d ->

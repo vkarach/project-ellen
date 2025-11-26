@@ -14,25 +14,34 @@ import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.items.Backpack;
 import sk.tuke.kpi.oop.game.items.Collectible;
 import sk.tuke.kpi.oop.game.openables.Door;
+import sk.tuke.kpi.oop.game.weapons.Firearm;
+import sk.tuke.kpi.oop.game.weapons.Gun;
 
-public class Ripley extends AbstractActor implements Actor, Movable, Keeper<Collectible> {
+public class Ripley extends AbstractActor implements Actor, Movable, Alive, Armed, Keeper<Collectible> {
     public static final Topic<Ripley> RIPLEY_DIED = Topic.create("ripley died", Ripley.class);
-    private final int speed;
-    private int energy;
-    private int ammo;
+    private final int speed = 2;
     private final Animation moveAnimation;
     private final Animation dieAnimation;
     private final Backpack backpack;
+    private final Health health;
+    private Firearm weapon;
     public Ripley() {
         super("Ellen");
         moveAnimation = new Animation("sprites/player.png", 32, 32, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
         dieAnimation = new Animation("sprites/player_die.png", 32, 32, 0.1f, Animation.PlayMode.ONCE);
         setAnimation(moveAnimation);
         moveAnimation.pause();
-        speed = 2;
-        energy = 100;
-        ammo = 0;
+        health = new Health(100);
         this.backpack = new Backpack("Ripley's backpack", 2);
+        this.weapon = new Gun(0, 500);
+        health.onFatigued(() -> {
+            Scene scene = getScene();
+            if (scene != null) {
+                scene.cancelActions(this);
+                scene.getMessageBus().publish(RIPLEY_DIED, this);
+            }
+            setAnimation(dieAnimation);
+        });
     }
     public Backpack getBackpack() {
         return backpack;
@@ -50,26 +59,25 @@ public class Ripley extends AbstractActor implements Actor, Movable, Keeper<Coll
     public int getSpeed() {
         return speed;
     }
-    public int getEnergy() {
-        return energy;
+//    public int getAmmo() {
+//        return ammo;
+//    }
+//    public void setAmmo(int ammo) {
+//        if (ammo >= 0) {
+//            this.ammo = ammo;
+//            if (weapon != null) {
+//                weapon.reload(ammo);
+//            }
+//        }
+//    }
+    public Health getHealth() {
+        return health;
     }
-    public void setEnergy(int energy) {
-        if (energy < 0 || energy > 100 || getScene() == null) {
-            return;
-        }
-        this.energy = energy;
-        if (energy == 0) {
-            setAnimation(dieAnimation);
-            getScene().getMessageBus().publish(RIPLEY_DIED, this);
-        }
+    public void setFirearm(Firearm weapon) {
+        this.weapon = weapon;
     }
-    public int getAmmo() {
-        return ammo;
-    }
-    public void setAmmo(int ammo) {
-        if (ammo >= 0) {
-            this.ammo = ammo;
-        }
+    public Firearm getFirearm() {
+        return weapon;
     }
     private final int fontSize = 18;
     Font whiteFont = new Font(fontSize, Color.WHITE, Font.Style.NORMAL);
@@ -89,7 +97,7 @@ public class Ripley extends AbstractActor implements Actor, Movable, Keeper<Coll
         int windowWidth = scene.getGame().getWindowSetup().getWidth();
         int xTextPos = windowWidth - 125;
 
-        int ripleyEnergy = getEnergy();
+        int ripleyEnergy = health.getValue();
         Font font;
         if (ripleyEnergy == 100) {
             font = greenFont;
@@ -101,14 +109,13 @@ public class Ripley extends AbstractActor implements Actor, Movable, Keeper<Coll
             font = redFont;
         }
         scene.getGame().getOverlay().drawText("Energy:", xTextPos, yTextPos, whiteFont);
-        scene.getGame().getOverlay().drawText("        "+getEnergy(), xTextPos, yTextPos, font);
+        scene.getGame().getOverlay().drawText("        "+ripleyEnergy, xTextPos, yTextPos, font);
 
         scene.getGame().getOverlay().drawText("Ammo:", xTextPos, yTextPos - 20, whiteFont);
-        if (getAmmo() > 0) {
-            scene.getGame().getOverlay().drawText("        "+getAmmo(), xTextPos, yTextPos - 20, whiteFont);
-
+        if (weapon.getAmmo() > 0) {
+            scene.getGame().getOverlay().drawText("        "+weapon.getAmmo(), xTextPos, yTextPos - 20, whiteFont);
         }
-        else {
+                else {
             scene.getGame().getOverlay().drawText("        x", xTextPos, yTextPos - 20, redFont);
         }
     }

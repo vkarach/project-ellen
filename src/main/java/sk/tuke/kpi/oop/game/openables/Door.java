@@ -1,21 +1,38 @@
 package sk.tuke.kpi.oop.game.openables;
 
 import org.jetbrains.annotations.NotNull;
+import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.gamelib.map.MapTile;
 import sk.tuke.kpi.gamelib.messages.Topic;
+import sk.tuke.kpi.oop.game.Usable;
 
-public class Door extends AbstractActor implements Openable {
+public class Door extends AbstractActor implements Openable, Usable<Actor> {
     public static final Topic<Door> DOOR_OPENED = Topic.create("door opened", Door.class);
     public static final Topic<Door> DOOR_CLOSED = Topic.create("door closed", Door.class);
     private boolean isOpen = false;
     Animation openDoorAnimation;
     Animation closeDoorAnimation;
-    public Door() {
-        openDoorAnimation = new Animation("sprites/vdoor.png", 16, 32, 0.1f, Animation.PlayMode.ONCE);
-        closeDoorAnimation = new Animation("sprites/vdoor.png", 16, 32, 0.1f, Animation.PlayMode.ONCE_REVERSED);
+    public enum Orientation {
+        HORIZONTAL,
+        VERTICAL
+    }
+    private Orientation orientation;
+    private final String name;
+    public Door(String name, Orientation orientation) {
+        super(name);
+        this.orientation = orientation;
+        this.name = name;
+        if (orientation == Orientation.HORIZONTAL) {
+            openDoorAnimation = new Animation("sprites/hdoor.png", 32, 16, 0.1f, Animation.PlayMode.ONCE);
+            closeDoorAnimation = new Animation("sprites/hdoor.png", 32, 16, 0.1f, Animation.PlayMode.ONCE_REVERSED);
+        }
+        else {
+            openDoorAnimation = new Animation("sprites/vdoor.png", 16, 32, 0.1f, Animation.PlayMode.ONCE);
+            closeDoorAnimation = new Animation("sprites/vdoor.png", 16, 32, 0.1f, Animation.PlayMode.ONCE_REVERSED);
+        }
         setAnimation(openDoorAnimation);
         openDoorAnimation.pause();
     }
@@ -43,6 +60,22 @@ public class Door extends AbstractActor implements Openable {
         closeDoorAnimation.resetToFirstFrame();
         closeDoorAnimation.play();
         getScene().getMessageBus().publish(DOOR_CLOSED, this);
+    }
+    @Override
+    public void useWith(Actor actor) {
+        if (actor == null) {
+            return;
+        }
+        if (isOpen) {
+            close();
+        }
+        else {
+            open();
+        }
+    }
+    @Override
+    public Class<Actor> getUsingActorClass() {
+        return Actor.class;
     }
     @Override
     public void addedToScene(@NotNull Scene scene) {

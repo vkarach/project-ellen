@@ -4,8 +4,7 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.Reactor;
 import sk.tuke.kpi.oop.game.Repairable;
 
-public class Hammer extends BreakableTool<Repairable> implements Collectible{
-
+public class Hammer extends BreakableTool<Repairable> implements Collectible {
     public Hammer() {
         this(1);
     }

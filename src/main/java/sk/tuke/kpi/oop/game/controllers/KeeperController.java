@@ -10,6 +10,7 @@ import sk.tuke.kpi.oop.game.Usable;
 import sk.tuke.kpi.oop.game.actions.Drop;
 import sk.tuke.kpi.oop.game.actions.Take;
 import sk.tuke.kpi.oop.game.actions.Use;
+import sk.tuke.kpi.oop.game.items.BreakableTool;
 import sk.tuke.kpi.oop.game.items.Collectible;
 
 public class KeeperController implements KeyboardListener {
@@ -20,23 +21,41 @@ public class KeeperController implements KeyboardListener {
     }
     @Override
     public void keyPressed(@NotNull Input.Key key) {
-        if (key == Input.Key.ENTER) {
-            new Take<>().scheduleFor(keeper);
-        }
-        if (key == Input.Key.BACKSPACE) {
-            new Drop<>().scheduleFor(keeper);
-        }
-        if (key == Input.Key.S) {
-            keeper.getBackpack().shift();
-        }
-        if (key == Input.Key.U) {
-            for (Actor actor : keeper.getScene().getActors()) {
-                if (actor instanceof Usable && keeper.intersects(actor)) {
-                    Usable<?> usable = (Usable<?>) actor;
-                    new Use(usable).scheduleForIntersectingWith(keeper);
+        switch (key) {
+            case ENTER:
+                new Take<>().scheduleFor(keeper);
+                break;
+            case BACKSPACE:
+                new Drop<>().scheduleFor(keeper);
+                break;
+            case S:
+                keeper.getBackpack().shift();
+                break;
+            case U:
+                for (Actor actor : keeper.getScene().getActors()) {
+                    if (actor instanceof Usable && keeper.intersects(actor)) {
+                        Usable<?> usable = (Usable<?>) actor;
+                        new Use<>(usable).scheduleForIntersectingWith(keeper);
+                        break;
+                    }
+                }
+                break;
+            case B:
+                Collectible item = keeper.getBackpack().peek();
+                if (item == null) {
                     break;
                 }
-            }
+                if (item instanceof Usable) {
+                    Usable<?> usable = (Usable<?>) item;
+                    new Use<>(usable).scheduleForIntersectingWith(keeper);
+                    if (usable instanceof BreakableTool) {
+                        BreakableTool breakable = (BreakableTool) usable;
+                        if (breakable.getRemainingUses() == 1) {
+                            keeper.getBackpack().remove(item);
+                        }
+                    }
+                }
+                break;
         }
     }
 }

@@ -50,6 +50,11 @@ public class Move<A extends Movable> implements Action<A> {
         if (actor == null || isDone()) {
             return;
         }
+        Scene scene = actor.getScene();
+        if (scene == null) {
+            stop();
+            return;
+        }
         if (!isMoving) {
             actor.startedMoving(direction);
             isMoving = true;
@@ -64,7 +69,7 @@ public class Move<A extends Movable> implements Action<A> {
         }
         int speed = actor.getSpeed();
 
-        Scene scene = actor.getScene();
+//        Scene scene = actor.getScene();
         int oldX = actor.getPosX();
         int oldY = actor.getPosY();
         posX += dX * speed / divider;
@@ -72,6 +77,11 @@ public class Move<A extends Movable> implements Action<A> {
 
         actor.setPosition((int) posX,(int) posY);
         if (scene.getMap().intersectsWithWall(actor)) {
+            actor.collidedWithWall();
+            if (actor == null) {
+                stop();
+                return;
+            }
             posX = oldX;
             posY = oldY;
             actor.setPosition(oldX, oldY);

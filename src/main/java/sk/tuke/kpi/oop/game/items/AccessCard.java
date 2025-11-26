@@ -5,25 +5,25 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.Reactor;
 import sk.tuke.kpi.oop.game.Usable;
 import sk.tuke.kpi.oop.game.openables.Door;
+import sk.tuke.kpi.oop.game.openables.LockedDoor;
 
-public class AccessCard extends AbstractActor implements Collectible, Usable<Door> {
+public class AccessCard extends AbstractActor implements Collectible, Usable<LockedDoor> {
     public AccessCard() {
         Animation defaultAnimation = new Animation("sprites/key.png");
         setAnimation(defaultAnimation);
     }
     @Override
-    public void useWith(Door door) {
-        System.out.println("Using access card");
-        if (door.isOpen()) {
-            door.close();
+    public void useWith(LockedDoor lockedDoor) {
+        if (lockedDoor.isLocked()) {
+            lockedDoor.unlock();
         }
         else {
-            door.open();
+            lockedDoor.lock();
         }
     }
     @Override
-    public Class<Door> getUsingActorClass() {
-        return Door.class;
+    public Class<LockedDoor> getUsingActorClass() {
+        return LockedDoor.class;
     }
 
 }
