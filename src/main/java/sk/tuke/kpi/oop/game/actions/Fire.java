@@ -3,6 +3,9 @@ package sk.tuke.kpi.oop.game.actions;
 import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Disposable;
 import sk.tuke.kpi.gamelib.Scene;
+import sk.tuke.kpi.gamelib.actions.ActionSequence;
+import sk.tuke.kpi.gamelib.actions.Invoke;
+import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.gamelib.framework.actions.AbstractAction;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.oop.game.Direction;
@@ -24,11 +27,19 @@ public class Fire extends AbstractAction<Armed> {
         Scene scene = armedActor.getScene();
         if (scene == null) return;
 
-        scene.addActor((Actor) bullet, armedActor.getPosX() + armedActor.getWidth() / 2, armedActor.getPosY() + armedActor.getWidth() / 2);
 
+        int offset = 10;
         Direction direction = Direction.fromAngle(armedActor.getAnimation().getRotation());
+        int bulletX = armedActor.getPosX() + ((armedActor.getWidth() / 2) - 10) + direction.getDx() * offset;
+        int bulletY = armedActor.getPosY() + direction.getDy() * offset;
+        scene.addActor((Actor) bullet, bulletX, bulletY);
 
-        new Loop<>(new Move<>(direction, 1)).scheduleFor((Movable) bullet);
+        float moveTime = 0.5f;
+
+        new ActionSequence<>(
+            new Move<>(direction, moveTime),
+            new Invoke<>(()->scene.removeActor((Actor) bullet))
+        ).scheduleFor((Movable) bullet);
 
         setDone(true);
     }

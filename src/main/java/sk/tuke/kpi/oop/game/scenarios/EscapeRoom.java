@@ -13,6 +13,7 @@ import sk.tuke.kpi.gamelib.graphics.Color;
 import sk.tuke.kpi.gamelib.graphics.Font;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Locker;
+import sk.tuke.kpi.oop.game.SpawnPoint;
 import sk.tuke.kpi.oop.game.Ventilator;
 import sk.tuke.kpi.oop.game.actions.Move;
 import sk.tuke.kpi.oop.game.behaviours.Behaviour;
@@ -77,7 +78,6 @@ public class EscapeRoom implements SceneListener {
                 if ("alien mother".equals(name)) {
                     return new MotherAlien(behaviour);
                 }
-
             }
             else if ("ammo".equals(name)) {
                 return new Ammo();
@@ -95,14 +95,16 @@ public class EscapeRoom implements SceneListener {
             return null;
         }
     }
+    private boolean isWin = false;
     @Override
     public void sceneInitialized(@NotNull Scene scene) {
         this.ripley = scene.getFirstActorByType(Ripley.class);
         if (ripley == null) {
             return;
         }
-
-        ripley.setPosition(20, 130);
+        SpawnPoint spawnPoint = new SpawnPoint(10);
+        scene.addActor(spawnPoint, ripley.getPosX(), ripley.getPosY() + 20);
+//        ripley.setPosition(20, 130);
 
         scene.follow(ripley);
 
@@ -124,19 +126,38 @@ public class EscapeRoom implements SceneListener {
                         scene.removeActor(actor);
                     }
                 }
-                Font whiteFont = new Font(25, Color.WHITE, Font.Style.BOLD_ITALIC);
-                Animation thumbUpAnimation = new Animation("sprites/thumb_up.png", 498, 368, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
+                disableControls();
+                Font whiteFont = new Font(25, Color.WHITE, Font.Style.BOLD);
+                Animation thumbUpAnimation = new Animation("sprites/thumb_up.png", 498, 368);
+                new Move<>(Direction.WEST, Float.MAX_VALUE).scheduleFor(ripley);
+                new Loop<>(
+                    new ActionSequence<>(
+                        new Invoke<>(()->{
+                            float cur = ripley.getAnimation().getRotation();
+                            ripley.getAnimation().setRotation(cur - 45);
+                        }),
+                        new Wait<>(0.05f)
+                    )
+                ).scheduleFor(ripley);
                 new Loop<>(
                     new Invoke<>(() -> {
-                        scene.getOverlay().drawText("Good job you escaped!", ripley.getPosX(), ripley.getPosY() + 30, whiteFont);
-                        scene.getOverlay().drawAnimation(thumbUpAnimation, ripley.getPosX() + 330, ripley.getPosY() + 20, 0.1f);
+                        scene.getOverlay().drawText("Good job you escaped!", ripley.getPosX(), ripley.getPosY() + 40, whiteFont);
+                        scene.getOverlay().drawAnimation(thumbUpAnimation, ripley.getPosX() + 330, ripley.getPosY() + 30, 0.1f);
+                        isWin = true;
                     })
                 ).scheduleFor(ripley);
             }
         });
     }
     public void sceneUpdating(@NotNull Scene scene) {
-        ripley.showRipleyState();
+        if (!isWin) {
+            ripley.showRipleyState();
+        }
+        for (Actor actor : scene.getActors()) {
+            if (actor instanceof Alien) {
+                ((Alien) actor).showHealth();
+            }
+        }
     }
     private void disableControls() {
         moveDisposable.dispose();
