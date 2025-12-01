@@ -1,0 +1,31 @@
+{
+  "dialogues": [
+    {
+      "id": "first_meeting",
+      "lines": [
+        { "speaker": "Mark",  "text": "Hi! Im Mark what is your name?", "time":  1},
+        { "speaker": "Ellen", "text": "Hi, i am Ellen what are you doing here?", "time":  2 },
+        { "speaker": "Ellen", "text": "There is very dangerous!" },
+        { "speaker": "Mark",  "text": "You know, the more dangerous the more money ha-ha-ha." },
+        { "speaker": "Mark",  "text": "Okay, can you help me?" },
+        { "speaker": "Ellen", "text": "Could try, what you want?" },
+        { "speaker": "Mark",  "text": "One of the aliens stole my jagermeister!" },
+        { "speaker": "Mark",  "text": "You probably know how rare this drink is nowadays" },
+        { "speaker": "Mark",  "text": "Kill that bastard and bring jagermeister back!" },
+        { "speaker": "Ellen", "text": "And what i receive for that?" },
+        { "speaker": "Mark",  "text": "I can give you an access card." },
+        { "speaker": "Mark",  "text": "With it you can open closed doors" },
+        { "speaker": "Ellen", "text": "Deal" }
+      ]
+    },
+    {
+      "id": "jagermeister_returned",
+      "lines": [
+        { "speaker": "Ellen", "text": "I killed the alien. Here is your jagermeister." },
+        { "speaker": "Mark",  "text": "Finally! Thank you so much." },
+        { "speaker": "Mark",  "text": "Here, take your access card." },
+        { "speaker": "Ellen", "text": "Thanks." }
+      ]
+    }
+  ]
+}

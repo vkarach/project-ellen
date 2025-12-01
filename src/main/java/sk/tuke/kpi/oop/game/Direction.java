@@ -25,15 +25,9 @@ public enum Direction {
     public Direction combine(Direction other) {
         int newDx = other.dx + this.dx;
         int newDy = other.dy + this.dy;
-        for (Direction direction : Direction.values()) {
-            if (direction.dx == newDx && direction.dy == newDy) {
-                return direction;
-            }
-        }
-        return NONE;
+        return fromXY(newDx, newDy);
     }
     public static Direction fromAngle(float angle) {
-
         for (Direction direction : values()) {
             if (direction.angle == angle && !(direction.dx == 0 && direction.dy == 0)) {
                 return direction;
@@ -41,6 +35,13 @@ public enum Direction {
         }
         return NONE;
     }
+    public static Direction fromXY(int dx, int dy) {
+        for (Direction dir : Direction.values()) {
+            if (dir.dx == dx && dir.dy == dy) return dir;
+        }
+        return NONE;
+    }
+
     public int getDx() {
         return dx;
     }

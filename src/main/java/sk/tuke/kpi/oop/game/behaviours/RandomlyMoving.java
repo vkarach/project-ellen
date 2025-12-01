@@ -12,7 +12,7 @@ import sk.tuke.kpi.oop.game.actions.Move;
 import java.util.Arrays;
 import java.util.Random;
 
-public class RandomlyMoving<A extends Movable> implements Behaviour<A>{
+public class RandomlyMoving<A extends Movable> implements Behaviour<A> {
     public void setUp(A actor) {
         new Loop<>(
             new ActionSequence<>(

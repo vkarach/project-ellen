@@ -11,6 +11,7 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.behaviours.RandomlyMoving;
 import sk.tuke.kpi.oop.game.characters.Alien;
 import sk.tuke.kpi.oop.game.characters.Ripley;
+import sk.tuke.kpi.oop.game.utils.MathUtils;
 
 public class SpawnPoint extends AbstractActor {
     private int aliens;
@@ -29,13 +30,7 @@ public class SpawnPoint extends AbstractActor {
         if (ripley == null) {
             return false;
         }
-        float nestCenterX = getPosX() + getWidth() / 2f;
-        float nestCenterY = getPosY() + getHeight() / 2f;
-        float dx = ripley.getPosX() - nestCenterX;
-        float dy = ripley.getPosY() - nestCenterY;
-        float distance = (float)Math.sqrt(dx*dx + dy*dy);
-        System.out.println("Distance: " + distance);
-        return distance <= 50f;
+        return MathUtils.distanceBetween(this, ripley) <= 50f;
     }
     private void spawnAlien() {
         Scene scene = getScene();

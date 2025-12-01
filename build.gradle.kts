@@ -25,7 +25,8 @@ application {
 }
 
 dependencies {
-//    implementation("sk.tuke.kpi.gamelib:gamelib-inspector:${gamelibVersion}")
+    compileOnly("com.badlogicgames.gdx:gdx:1.9.10")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("sk.tuke.kpi.gamelib:gamelib-framework:$gamelibVersion")
     implementation("sk.tuke.kpi.gamelib:gamelib-backend-$backend:$gamelibVersion")
 }

@@ -19,7 +19,7 @@ import sk.tuke.kpi.oop.game.weapons.Gun;
 
 public class Ripley extends AbstractActor implements Actor, Movable, Alive, Armed, Keeper<Collectible> {
     public static final Topic<Ripley> RIPLEY_DIED = Topic.create("ripley died", Ripley.class);
-    private final int speed = 2;
+    private int speed = 2;
     private final Animation moveAnimation;
     private final Animation dieAnimation;
     private final Backpack backpack;
@@ -59,17 +59,9 @@ public class Ripley extends AbstractActor implements Actor, Movable, Alive, Arme
     public int getSpeed() {
         return speed;
     }
-//    public int getAmmo() {
-//        return ammo;
-//    }
-//    public void setAmmo(int ammo) {
-//        if (ammo >= 0) {
-//            this.ammo = ammo;
-//            if (weapon != null) {
-//                weapon.reload(ammo);
-//            }
-//        }
-//    }
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
     public Health getHealth() {
         return health;
     }

@@ -19,9 +19,9 @@ import sk.tuke.kpi.oop.game.behaviours.Behaviour;
 public class Alien extends AbstractActor implements Movable, Alive, Enemy {
     private final Behaviour<? super Alien> behaviour;
     Animation defaultAnimation;
-    private final int speed = 1;
+    private int speed = 1;
     public Health health;
-    public int maxHealth = 30;
+    public int maxHealth = 60;
     public Alien(Behaviour<? super Alien> behaviour) {
         this.behaviour = behaviour;
         defaultAnimation = new Animation("sprites/alien.png", 32, 32, 0.1f, Animation.PlayMode.LOOP);
@@ -44,6 +44,9 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
     public int getSpeed() {
         return speed;
     }
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
     @Override
     public void startedMoving(Direction direction) {
         defaultAnimation.play();
@@ -57,15 +60,12 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
         if (scene == null || health.getValue() == maxHealth) {
             return;
         }
-        scene.getOverlay().drawRectangle(getPosX() + getWidth()/2, getPosY() + getHeight() - 2, health.getValue() / 3, 13, Color.LIME);
 
-        Font whiteFont = new Font(14, Color.WHITE, Font.Style.NORMAL);
-        scene.getOverlay().drawText(
-            ""+health.getValue(),
-            getPosX() + getWidth()/2,
-            getPosY() + getHeight(),
-            whiteFont
-        );
+        scene.getOverlay().drawRectangle(getPosX() + getWidth()/2, getPosY() + getHeight(), maxHealth / 2, 5, Color.BLACK);
+        scene.getOverlay().drawRectangle(getPosX() + getWidth()/2, getPosY() + getHeight(), health.getValue() / 2, 5, Color.LIME);
+
+//        Font whiteFont = new Font(11, Color.WHITE, Font.Style.NORMAL);
+//        scene.getOverlay().drawText(""+health.getValue(), getPosX() + getWidth()/2, getPosY() + getHeight() + 1, whiteFont);
     }
     private boolean canHit = true;
     public void addedToScene(@NotNull Scene scene) {
