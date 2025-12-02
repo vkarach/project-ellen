@@ -1,6 +1,7 @@
 package sk.tuke.kpi.oop.game.actions;
 
 import sk.tuke.kpi.gamelib.Actor;
+import sk.tuke.kpi.gamelib.Input;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Action;
 import sk.tuke.kpi.gamelib.graphics.Color;
@@ -8,21 +9,19 @@ import sk.tuke.kpi.gamelib.graphics.Font;
 import sk.tuke.kpi.oop.game.story.Dialogue;
 
 public class Speak<A extends Actor> implements Action<A> {
-    private float interval = 0;
     private final Dialogue dialogue;
     private int index = 0;
+    private float interval = 0;
+    private int outputCount = 0;
     private float timer = 0;
     private boolean done = false;
-
-
-//    private final float interval;
-
+    private boolean waitingForKey = false;
     private A actor;
-    private final Font font = new Font(8, Color.WHITE, Font.Style.NORMAL);
+    private final Font whiteFont = new Font(7, Color.WHITE, Font.Style.NORMAL);
+    private final Font orangeFont = new Font(6, Color.ORANGE, Font.Style.NORMAL);
 
-    public Speak(Dialogue dialogue) {//, float intervalSeconds) {
+    public Speak(Dialogue dialogue) {
         this.dialogue = dialogue;
-//        this.interval = intervalSeconds;
     }
 
     @Override
@@ -39,12 +38,16 @@ public class Speak<A extends Actor> implements Action<A> {
     public boolean isDone() {
         return done;
     }
-
+    public void setDone(boolean done) {
+        this.done = done;
+    }
     @Override
     public void reset() {
         index = 0;
         timer = 0;
+        outputCount = 0;
         done = false;
+        waitingForKey = false;
     }
 
     @Override
@@ -63,6 +66,7 @@ public class Speak<A extends Actor> implements Action<A> {
 
         if (timer == 0) {
             interval = line.time;
+//            oneKeyInterval = interval / line.text.length();
 //            System.out.println(interval);
         }
 
@@ -70,18 +74,60 @@ public class Speak<A extends Actor> implements Action<A> {
         if (speaker == null) {
             return;
         }
-
-        scene.getOverlay().drawText(line.text, speaker.getPosX() + speaker.getWidth(), speaker.getPosY() + 30, font);
-
-//        System.out.println("speaker: " + line.speaker + "text: " + line.text + "time: " + line.time);
-
+        int len = line.text.length();
         timer += deltaTime;
+
+        int shouldBe;
+        if (len > 0 && interval > 0f) {
+            int count = (int) Math.floor((timer / interval) * len);
+            if (count > len) {count = len;}
+            if (count < 0) {count = 0;}
+            shouldBe = count;
+        }
+        else {
+            shouldBe = len;
+        }
+        if (shouldBe > outputCount) {
+            outputCount = shouldBe;
+        }
+        if (anyKeyPressed(scene)) {
+            outputCount = len;
+            timer = interval;
+        }
+
+        scene.getOverlay().drawText(line.text.substring(0, outputCount), speaker.getPosX() + speaker.getWidth(), speaker.getPosY() + 30, whiteFont);
+
+        if (waitingForKey) {
+            float fraction = timer - (int)timer;
+            if (timer >= 1.5 && fraction < 0.5) {
+                scene.getOverlay().drawText("Press any key...",
+                    speaker.getPosX() + speaker.getWidth(), speaker.getPosY() + 20, orangeFont
+                );
+            }
+            if (anyKeyPressed(scene)) {
+                waitingForKey = false;
+                outputCount = 0;
+                timer = 0f;
+                index++;
+                if (index >= dialogue.lines.size()) {
+                    done = true;
+                }
+                return;
+            }
+            return;
+        }
         if (timer >= interval) {
-            timer = 0;
-            index++;
-            if (index >= dialogue.lines.size()) {
-                done = true;
+            waitingForKey = true;
+            outputCount = len;
+            timer = 0f;
+        }
+    }
+    private boolean anyKeyPressed(Scene scene) {
+        for (Input.Key key : Input.Key.values()) {
+            if (scene.getInput().isKeyPressed(key)) {
+                return true;
             }
         }
+        return false;
     }
 }

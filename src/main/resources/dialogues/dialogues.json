@@ -4,18 +4,18 @@
       "id": "first_meeting",
       "lines": [
         { "speaker": "Mark",  "text": "Hi! Im Mark what is your name?", "time":  1},
-        { "speaker": "Ellen", "text": "Hi, i am Ellen what are you doing here?", "time":  2 },
-        { "speaker": "Ellen", "text": "There is very dangerous!" },
-        { "speaker": "Mark",  "text": "You know, the more dangerous the more money ha-ha-ha." },
-        { "speaker": "Mark",  "text": "Okay, can you help me?" },
-        { "speaker": "Ellen", "text": "Could try, what you want?" },
-        { "speaker": "Mark",  "text": "One of the aliens stole my jagermeister!" },
-        { "speaker": "Mark",  "text": "You probably know how rare this drink is nowadays" },
-        { "speaker": "Mark",  "text": "Kill that bastard and bring jagermeister back!" },
-        { "speaker": "Ellen", "text": "And what i receive for that?" },
-        { "speaker": "Mark",  "text": "I can give you an access card." },
-        { "speaker": "Mark",  "text": "With it you can open closed doors" },
-        { "speaker": "Ellen", "text": "Deal" }
+        { "speaker": "Ellen", "text": "Hi, i am Ellen what are you doing here?", "time":  1 },
+        { "speaker": "Ellen", "text": "There is very dangerous!", "time":  1 },
+        { "speaker": "Mark",  "text": "You know, the more dangerous the more money ha-ha-ha.", "time":  2 },
+        { "speaker": "Mark",  "text": "Okay, can you help me?", "time":  1 },
+        { "speaker": "Ellen", "text": "Could try, what you want?", "time":  1 },
+        { "speaker": "Mark",  "text": "One of the aliens stole my jagermeister!", "time":  1 },
+        { "speaker": "Mark",  "text": "You probably know how rare this drink is nowadays", "time":  1.5 },
+        { "speaker": "Mark",  "text": "Kill that bastard and bring jagermeister back!", "time":  1 },
+        { "speaker": "Ellen", "text": "And what i receive for that?", "time":  0.75 },
+        { "speaker": "Mark",  "text": "I can give you an access card.", "time":  0.75 },
+        { "speaker": "Mark",  "text": "With it you can open closed doors", "time":  0.75 },
+        { "speaker": "Ellen", "text": "Deal", "time":  0.2 }
       ]
     },
     {

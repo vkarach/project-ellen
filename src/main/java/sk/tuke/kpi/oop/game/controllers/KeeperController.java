@@ -49,7 +49,7 @@ public class KeeperController implements KeyboardListener {
                     Usable<?> usable = (Usable<?>) item;
                     new Use<>(usable).scheduleForIntersectingWith(keeper);
                     if (usable instanceof BreakableTool) {
-                        BreakableTool breakable = (BreakableTool) usable;
+                        BreakableTool<?> breakable = (BreakableTool<?>) usable;
                         if (breakable.getRemainingUses() == 1) {
                             keeper.getBackpack().remove(item);
                         }

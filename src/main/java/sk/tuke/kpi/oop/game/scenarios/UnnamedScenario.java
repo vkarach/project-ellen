@@ -6,6 +6,7 @@ import sk.tuke.kpi.gamelib.*;
 import sk.tuke.kpi.gamelib.actions.*;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Color;
+import sk.tuke.kpi.oop.game.Rocket;
 import sk.tuke.kpi.oop.game.utils.Helper;
 import sk.tuke.kpi.oop.game.SpawnPoint;
 import sk.tuke.kpi.oop.game.actions.MoveToPlace;
@@ -36,6 +37,7 @@ public class UnnamedScenario implements SceneListener {
     Disposable shooterDisposable;
     Ripley ripley;
     Mark mark;
+    Rocket rocket;
     Helper helper;
     public static class Factory implements ActorFactory {
         @Nullable
@@ -84,6 +86,9 @@ public class UnnamedScenario implements SceneListener {
                     return new Alien(behaviour);
                 }
             }
+            else if (name.equals("Rocket")) {
+                return new Rocket();
+            }
             else if (name.equals("slow area")) {
                 String[] parts = type.split(" ");
                 int width = Integer.parseInt(parts[0]);
@@ -98,8 +103,9 @@ public class UnnamedScenario implements SceneListener {
         DialogueLoader.loadAll();
         this.scene = scene;
         this.ripley = scene.getFirstActorByType(Ripley.class);
-        this.helper = new Helper();
         this.mark = scene.getFirstActorByType(Mark.class);
+        this.rocket = scene.getFirstActorByType(Rocket.class);
+        this.helper = new Helper();
         if (ripley == null || mark == null) {
             return;
         }
@@ -112,6 +118,8 @@ public class UnnamedScenario implements SceneListener {
 
         Ammo ammo1 = new Ammo();
         scene.addActor(ammo1, ripley.getPosX(), ripley.getPosY());
+
+        rocket.fly(scene);
 
         scene.getMessageBus().subscribe(Door.DOOR_OPENED, door -> {
             if ("first door".equals(door.getName())) {
@@ -147,7 +155,7 @@ public class UnnamedScenario implements SceneListener {
             }
         });
         scene.getMessageBus().subscribe(Mark.MY_JAGERMEISTER, mark -> {
-            Disposable cutscene = cutsceneApply(1f);
+            Disposable cutscene = cutsceneApply(0.5f);
             new ActionSequence<>(
                 new Speak<>(DialogueLoader.get("jagermeister_returned")),
                 new Invoke<>(() -> {
