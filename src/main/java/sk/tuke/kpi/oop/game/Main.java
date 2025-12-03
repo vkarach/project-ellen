@@ -9,6 +9,8 @@ import sk.tuke.kpi.oop.game.scenarios.FirstSteps;
 import sk.tuke.kpi.oop.game.scenarios.MissionImpossible;
 import sk.tuke.kpi.oop.game.scenarios.UnnamedScenario;
 
+import static java.awt.SystemColor.window;
+
 public class Main {
     public static void main(String[] args) {
         WindowSetup windowSetup = new WindowSetup("Project Ellen", 800, 600);

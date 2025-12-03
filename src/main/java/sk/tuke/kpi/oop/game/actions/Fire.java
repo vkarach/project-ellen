@@ -11,22 +11,33 @@ import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.characters.Armed;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 import sk.tuke.kpi.oop.game.weapons.Fireable;
 
 public class Fire extends AbstractAction<Armed> {
+    private final SoundUtil emptyGunShopSound = new SoundUtil("sounds/empty_gun_shop.wav");
+    private boolean isDone = false;
     @Override
     public void execute(float deltaTime) {
+        if (isDone) {
+            return;
+        }
         Armed armedActor = getActor();
         if (armedActor == null) {
+            isDone = true;
             return;
         }
         Fireable bullet = armedActor.getFirearm().fire();
         if (bullet == null) {
+            emptyGunShopSound.play();
+            isDone = true;
             return;
         }
         Scene scene = armedActor.getScene();
-        if (scene == null) return;
-
+        if (scene == null) {
+            isDone = true;
+            return;
+        }
 
         int offset = 10;
         Direction direction = Direction.fromAngle(armedActor.getAnimation().getRotation());

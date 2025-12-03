@@ -8,8 +8,11 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.gamelib.map.MapTile;
 import sk.tuke.kpi.gamelib.messages.Topic;
 import sk.tuke.kpi.oop.game.Usable;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Door extends AbstractActor implements Openable, Usable<Actor> {
+    private final SoundUtil openSound = new SoundUtil("sounds/door_open.wav");
+    private final SoundUtil closeSound = new SoundUtil("sounds/door_close.wav");
     public static final Topic<Door> DOOR_OPENED = Topic.create("door opened", Door.class);
     public static final Topic<Door> DOOR_CLOSED = Topic.create("door closed", Door.class);
     private boolean isOpen = false;
@@ -48,6 +51,7 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         setAnimation(openDoorAnimation);
         openDoorAnimation.resetToFirstFrame();
         openDoorAnimation.play();
+        openSound.play();
         getScene().getMessageBus().publish(DOOR_OPENED, this);
     }
     public void close() {
@@ -59,6 +63,7 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         setAnimation(closeDoorAnimation);
         closeDoorAnimation.resetToFirstFrame();
         closeDoorAnimation.play();
+        closeSound.play();
         getScene().getMessageBus().publish(DOOR_CLOSED, this);
     }
     @Override

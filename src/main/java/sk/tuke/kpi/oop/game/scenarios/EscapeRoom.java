@@ -102,8 +102,8 @@ public class EscapeRoom implements SceneListener {
         if (ripley == null) {
             return;
         }
-        SpawnPoint spawnPoint = new SpawnPoint(10);
-        scene.addActor(spawnPoint, ripley.getPosX(), ripley.getPosY() + 20);
+//        SpawnPoint spawnPoint = new SpawnPoint(10);
+//        scene.addActor(spawnPoint, ripley.getPosX(), ripley.getPosY() + 20);
 //        ripley.setPosition(20, 130);
 
         scene.follow(ripley);

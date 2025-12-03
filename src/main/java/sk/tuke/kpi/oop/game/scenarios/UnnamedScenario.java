@@ -1,5 +1,6 @@
 package sk.tuke.kpi.oop.game.scenarios;
 
+import com.badlogic.gdx.audio.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sk.tuke.kpi.gamelib.*;
@@ -23,10 +24,12 @@ import sk.tuke.kpi.oop.game.openables.Door;
 import sk.tuke.kpi.oop.game.openables.LockedDoor;
 import sk.tuke.kpi.oop.game.story.DialogueLoader;
 import sk.tuke.kpi.oop.game.utils.SlowdownArea;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UnnamedScenario implements SceneListener {
+    private final SoundUtil ambientSound = new SoundUtil("sounds/ambient.wav");
     private boolean showState = true;
     Scene scene;
     MovableController movableController;
@@ -100,6 +103,7 @@ public class UnnamedScenario implements SceneListener {
     }
     @Override
     public void sceneInitialized(@NotNull Scene scene) {
+        ambientSound.loop(0.1f);
         DialogueLoader.loadAll();
         this.scene = scene;
         this.ripley = scene.getFirstActorByType(Ripley.class);
@@ -118,8 +122,6 @@ public class UnnamedScenario implements SceneListener {
 
         Ammo ammo1 = new Ammo();
         scene.addActor(ammo1, ripley.getPosX(), ripley.getPosY());
-
-        rocket.fly(scene);
 
         scene.getMessageBus().subscribe(Door.DOOR_OPENED, door -> {
             if ("first door".equals(door.getName())) {

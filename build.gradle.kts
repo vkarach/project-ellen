@@ -23,9 +23,8 @@ application {
 //    mainClassName = "sk.tuke.kpi.gamelib.framework.Main"
     mainClassName = "sk.tuke.kpi.oop.game.Main"
 }
-
 dependencies {
-    compileOnly("com.badlogicgames.gdx:gdx:1.9.10")
+    compileOnly("com.badlogicgames.gdx:gdx:1.12.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("sk.tuke.kpi.gamelib:gamelib-framework:$gamelibVersion")
     implementation("sk.tuke.kpi.gamelib:gamelib-backend-$backend:$gamelibVersion")
@@ -34,5 +33,6 @@ dependencies {
 tasks {
     withType<JavaCompile> {
         options.compilerArgs.plusAssign("-parameters")
+        options.compilerArgs.addAll(listOf("-Xlint:all", "-Werror"))
     }
 }

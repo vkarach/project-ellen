@@ -2,8 +2,10 @@ package sk.tuke.kpi.oop.game.weapons;
 
 import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.oop.game.items.Ammo;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public abstract class Firearm {
+    private final SoundUtil reloadSound = new SoundUtil("sounds/reload.wav");
     private int curAmmo;
     private final int maxAmmo;
     public Firearm(int startAmmo, int maxAmmo) {
@@ -18,6 +20,7 @@ public abstract class Firearm {
         return curAmmo;
     }
     public void reload(int newAmmo) {
+        reloadSound.play();
         curAmmo += newAmmo;
         if (curAmmo > maxAmmo) {
             curAmmo = maxAmmo;

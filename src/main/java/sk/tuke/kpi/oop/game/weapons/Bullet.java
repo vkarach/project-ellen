@@ -11,9 +11,12 @@ import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.characters.Alive;
 import sk.tuke.kpi.oop.game.characters.Armed;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Bullet extends AbstractActor implements Movable, Fireable {
-    private final int speed = 4;
+    private final SoundUtil shoot = new SoundUtil("sounds/pistol_fire.wav");
+    private final SoundUtil cartridge_drop = new SoundUtil("sounds/cartridge_drop.wav");
+    private final int speed = 5;
     Animation defaultAnimation;
     public Bullet() {
         defaultAnimation = new Animation("sprites/bullet.png");
@@ -34,6 +37,8 @@ public class Bullet extends AbstractActor implements Movable, Fireable {
     }
     @Override
     public void addedToScene(@NotNull Scene scene) {
+        shoot.play();
+        cartridge_drop.play();
         super.addedToScene(scene);
         new Loop<>(
             new Invoke<>(() -> {
