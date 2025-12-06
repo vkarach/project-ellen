@@ -37,7 +37,9 @@ public enum Direction {
     }
     public static Direction fromXY(int dx, int dy) {
         for (Direction dir : Direction.values()) {
-            if (dir.dx == dx && dir.dy == dy) return dir;
+            if (dir.dx == dx && dir.dy == dy) {
+                return dir;
+            }
         }
         return NONE;
     }

@@ -8,8 +8,10 @@ import sk.tuke.kpi.gamelib.graphics.Font;
 import sk.tuke.kpi.gamelib.graphics.Overlay;
 import sk.tuke.kpi.oop.game.Keeper;
 import sk.tuke.kpi.oop.game.items.Collectible;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Take<A extends Keeper<Collectible>> extends AbstractAction<A>  {
+    SoundUtil itemPickup = new SoundUtil("sounds/item_pickup.wav");
     @Override
     public void execute(float deltaTime) {
         A keeper = getActor();
@@ -21,6 +23,7 @@ public class Take<A extends Keeper<Collectible>> extends AbstractAction<A>  {
                 Collectible item = (Collectible) actor;
                 if (keeper.intersects(item)) {
                     try {
+                        itemPickup.play();
                         keeper.getBackpack().add(item);
                         item.getScene().removeActor(item);
                     }

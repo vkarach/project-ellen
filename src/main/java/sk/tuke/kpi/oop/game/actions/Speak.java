@@ -7,6 +7,7 @@ import sk.tuke.kpi.gamelib.actions.Action;
 import sk.tuke.kpi.gamelib.graphics.Color;
 import sk.tuke.kpi.gamelib.graphics.Font;
 import sk.tuke.kpi.oop.game.story.Dialogue;
+import sk.tuke.kpi.oop.game.utils.PauseManager;
 
 public class Speak<A extends Actor> implements Action<A> {
     private final Dialogue dialogue;
@@ -52,18 +53,21 @@ public class Speak<A extends Actor> implements Action<A> {
 
     @Override
     public void execute(float deltaTime) {
-        if (done) return;
-        if (actor == null) return;
-
+        if (done) {
+            return;
+        }
+        if (actor == null) {
+            return;
+        }
         Scene scene = actor.getScene();
-        if (scene == null) return;
-
+        if (scene == null) {
+            return;
+        }
         if (index >= dialogue.lines.size()) {
             done = true;
             return;
         }
         Dialogue.Line line = dialogue.lines.get(index);
-
         if (timer == 0) {
             interval = line.time;
 //            oneKeyInterval = interval / line.text.length();
@@ -74,14 +78,22 @@ public class Speak<A extends Actor> implements Action<A> {
         if (speaker == null) {
             return;
         }
+                if (PauseManager.isPaused()) {
+            scene.getOverlay().drawText(line.text.substring(0, outputCount), speaker.getPosX() + speaker.getWidth(), speaker.getPosY() + 30, whiteFont);
+            return;
+        }
         int len = line.text.length();
         timer += deltaTime;
 
         int shouldBe;
         if (len > 0 && interval > 0f) {
             int count = (int) Math.floor((timer / interval) * len);
-            if (count > len) {count = len;}
-            if (count < 0) {count = 0;}
+            if (count > len) {
+                count = len;
+            }
+            if (count < 0) {
+                count = 0;
+            }
             shouldBe = count;
         }
         else {
@@ -124,7 +136,10 @@ public class Speak<A extends Actor> implements Action<A> {
     }
     private boolean anyKeyPressed(Scene scene) {
         for (Input.Key key : Input.Key.values()) {
-            if (scene.getInput().isKeyPressed(key)) {
+            if (scene.getInput().isKeyPressed(key) && key != Input.Key.P) {
+                if (key == Input.Key.ENTER) {
+                    done = true;
+                }
                 return true;
             }
         }

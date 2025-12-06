@@ -1,15 +1,15 @@
 package sk.tuke.kpi.oop.game.scenarios;
 
-import com.badlogic.gdx.audio.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sk.tuke.kpi.gamelib.*;
 import sk.tuke.kpi.gamelib.actions.*;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Color;
-import sk.tuke.kpi.oop.game.Rocket;
-import sk.tuke.kpi.oop.game.utils.Helper;
-import sk.tuke.kpi.oop.game.SpawnPoint;
+import sk.tuke.kpi.oop.game.*;
+import sk.tuke.kpi.oop.game.controllers.PauseController;
+import sk.tuke.kpi.oop.game.items.Energy;
+import sk.tuke.kpi.oop.game.utils.*;
 import sk.tuke.kpi.oop.game.actions.MoveToPlace;
 import sk.tuke.kpi.oop.game.actions.Speak;
 import sk.tuke.kpi.oop.game.behaviours.Behaviour;
@@ -23,29 +23,37 @@ import sk.tuke.kpi.oop.game.openables.AutoDoor;
 import sk.tuke.kpi.oop.game.openables.Door;
 import sk.tuke.kpi.oop.game.openables.LockedDoor;
 import sk.tuke.kpi.oop.game.story.DialogueLoader;
-import sk.tuke.kpi.oop.game.utils.SlowdownArea;
-import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class UnnamedScenario implements SceneListener {
+public class FinalMission implements SceneListener {
     private final SoundUtil ambientSound = new SoundUtil("sounds/ambient.wav");
+    private final SoundUtil alarmSound = new SoundUtil("sounds/emergency_alarm.wav");
     private boolean showState = true;
+    private boolean firstMeating = false;
     Scene scene;
+
     MovableController movableController;
     KeeperController keeperController;
     ShooterController shooterController;
+    PauseController pauseController;
+
     Disposable moveDisposable;
     Disposable keeperDisposable;
     Disposable shooterDisposable;
+
     Ripley ripley;
     Mark mark;
     Rocket rocket;
     Helper helper;
     public static class Factory implements ActorFactory {
+        private final List<Reactor> reactors = new ArrayList<>();
         @Nullable
         public Actor create(@Nullable String type, @Nullable String name) {
-
+            assert name != null;
+            assert type != null;
             if (name.equals("Ellen")) {
                 return new Ripley();
             }
@@ -98,6 +106,28 @@ public class UnnamedScenario implements SceneListener {
                 int heigh = Integer.parseInt(parts[1]);
                 return new SlowdownArea(width, heigh);
             }
+            else if (name.equals("ammo")) {
+                return new Ammo();
+            }
+            else if (name.equals("med kit")) {
+                return new Energy();
+            }
+            else if (name.contains("reactor")) {
+                Reactor reactor = new Reactor(name);
+                reactor.turnOn();
+                reactors.add(reactor);
+                return reactor;
+            }
+            else if (name.contains("cooler")) {
+                for (Reactor r : reactors) {
+                    if (r.getName().equals(type)) {
+                        if (name.contains("smart")) {
+                            return new SmartCooler(r);
+                        }
+                        return new Cooler(r);
+                    }
+                }
+            }
             return null;
         }
     }
@@ -118,16 +148,35 @@ public class UnnamedScenario implements SceneListener {
         movableController = new MovableController(ripley);
         keeperController = new KeeperController(ripley);
         shooterController = new ShooterController(ripley);
+
+        pauseController = new PauseController(scene);
+        scene.getInput().registerListener(pauseController);
+
         enableControls();
 
         Ammo ammo1 = new Ammo();
         scene.addActor(ammo1, ripley.getPosX(), ripley.getPosY());
 
+        ripley.getHealth().drain(50);
+        Energy energy = new Energy();
+        scene.addActor(energy, ripley.getPosX() + 20, ripley.getPosY() + 20);
+
+//        Explode explosion = new Explode(Explode.Size.BIG);
+//        scene.addActor(explosion, ripley.getPosX(), ripley.getPosY());
+//
+//        Disposable alarm = startAlarm();
+//        new ActionSequence<>(
+//            new Wait<>(1.5f),
+//            new Invoke<>(()->stopAlarm(alarm))
+//        ).scheduleFor(ripley);
+
         scene.getMessageBus().subscribe(Door.DOOR_OPENED, door -> {
-            if ("first door".equals(door.getName())) {
-                Disposable cutscene = cutsceneApply(1f);
-                AtomicBoolean helperDone = new AtomicBoolean(false);
+            if ("first door1".equals(door.getName()) && !firstMeating) {
+                firstMeating = true;
+                scene.cancelActions(ripley);
+                Disposable cutscene = cutsceneApply(0.7f);
                 ripley.setSpeed(1);
+                boolean[] helperDone = {false};
                 new ActionSequence<>(
                     new MoveToPlace<>(door.getPosX() - 32, door.getPosY()),
                     new MoveToPlace<>(mark.getPosX(), mark.getPosY() - 30),
@@ -139,11 +188,11 @@ public class UnnamedScenario implements SceneListener {
                         new ActionSequence<>(
                             new MoveToPlace<>(helper.getPosX() + 150, helper.getPosY(), true),
                             new MoveToPlace<>(helper.getPosX(), helper.getPosY(), true),
-                            new Invoke<>(()-> helperDone.set(true))
+                            new Invoke<>(()-> helperDone[0] = true)
                         ).scheduleFor(helper);
                     }),
                     new When<>(
-                        helperDone::get,
+                        ()->helperDone[0],
                         new Invoke<>(() -> {})
                     ),
                     new Invoke<>(() -> {
@@ -157,11 +206,50 @@ public class UnnamedScenario implements SceneListener {
             }
         });
         scene.getMessageBus().subscribe(Mark.MY_JAGERMEISTER, mark -> {
-            Disposable cutscene = cutsceneApply(0.5f);
+            Disposable cutscene = cutsceneApply(5f);
             new ActionSequence<>(
                 new Speak<>(DialogueLoader.get("jagermeister_returned")),
                 new Invoke<>(() -> {
                     cutsceneDisapply(cutscene, 1f);
+                })
+            ).scheduleFor(ripley);
+        });
+        scene.getMessageBus().subscribe(Door.DOOR_OPENED, door -> {
+            Disposable cutscene = cutsceneApply(0.7f);
+            ripley.setSpeed(2);
+            mark.setSpeed(2);
+//            disableControls();
+            ripley.setPosition(mark.getPosX(), mark.getPosY() - 30);
+            new ActionSequence<>(
+                new Speak<>(DialogueLoader.get("no_time_to_explain")),
+                new Invoke<>(() -> {
+                    new ActionSequence<>(
+                        new MoveToPlace<>(door.getPosX() + 32, door.getPosY()),
+                        new MoveToPlace<>(rocket.getPosX() + 46, rocket.getPosY() - 16)
+                    ).scheduleFor(mark);
+                }),
+                new MoveToPlace<>(door.getPosX() + 32, door.getPosY()),
+                new MoveToPlace<>(rocket.getPosX() + 16, rocket.getPosY() - 16),
+                new Wait<>(0.4f),
+                new Invoke<>(() -> {
+                    ripley.setPosition(0,0);
+//                    scene.removeActor(ripley);
+                    scene.removeActor(mark);
+                    rocket.fly(scene);
+                }),
+                new Invoke<>(() -> {
+                    new Loop<>(
+                        new ActionSequence<>(
+                            new Invoke<>(()->{
+                                Explode explosion = new Explode();
+                                int rx = (int)(Math.random() * scene.getGame().getWindowSetup().getWidth());
+                                int ry = (int)(Math.random() * scene.getGame().getWindowSetup().getHeight());
+
+                                scene.addActor(explosion, rx, ry);
+                            }),
+                            new Wait<>((float) Math.random() * 2)
+                        )
+                    ).scheduleFor(rocket);
                 })
             ).scheduleFor(ripley);
         });
@@ -197,20 +285,18 @@ public class UnnamedScenario implements SceneListener {
     }
     private int fovY = 300;
     private Disposable cutsceneApply(float speed) {
-        int blockSize = 500;
+//        int blockSize = 500;
         showState = false;
         disableControls();
         return new Loop<>(
             new Invoke<>(()-> {
-                scene.getOverlay().drawRectangle(0, ripley.getPosY() + fovY, scene.getGame().getWindowSetup().getWidth(), blockSize, Color.BLACK);
-                scene.getOverlay().drawRectangle(0, ripley.getPosY() - fovY - blockSize, scene.getGame().getWindowSetup().getWidth(), blockSize, Color.BLACK);
-                if (fovY > 150) {
-                    fovY -= (int) (2 * speed);
-                }
                 new ActionSequence<>(
                     new Wait<>(0.5f  / speed),
                     new Invoke<>(()-> {
-                        if (scene.getCamera().zoom > 0.8f) {
+                        if (PauseManager.isPaused()) {
+                            return;
+                        }
+                        if (scene.getCamera().zoom > 0.7f) {
                             scene.getCamera().zoom -= 0.003f * speed;
                         }
                     })
@@ -230,4 +316,46 @@ public class UnnamedScenario implements SceneListener {
         new Invoke<>(() -> scene.getCamera().zoom = 1)
         ).scheduleFor(ripley);
     }
+    private Disposable startAlarm() {
+        boolean[] draw = {true};
+        return new Loop<>(
+            new ActionSequence<>(
+                new Invoke<>(() -> {
+                    draw[0] = !draw[0];
+
+                    if (draw[0]) {
+                        new While<>(
+                            ()->draw[0],
+                            new Invoke<>(() -> {
+                                scene.getGame().getOverlay().drawRectangle(
+                                    0,
+                                    0,
+                                    scene.getGame().getWindowSetup().getWidth(),
+                                    scene.getGame().getWindowSetup().getHeight(),
+                                    new Color(1, 0, 0, 0.4f)
+                                );
+                            })
+                        ).scheduleFor(ripley);
+                        alarmSound.play(1f);
+                    }
+                    else {
+                        alarmSound.stop();
+                    }
+                }),
+                new Wait<>(0.5f)
+            )
+        ).scheduleFor(ripley);
+    }
+    private void stopAlarm(Disposable alarm) {
+        alarm.dispose();
+        alarmSound.stop();
+    }
 }
+//                scene.getOverlay().drawRectangle(0, ripley.getPosY() + fovY, scene.getGame().getWindowSetup().getWidth(), blockSize, Color.BLACK);
+//                scene.getOverlay().drawRectangle(0, ripley.getPosY() - fovY - blockSize, scene.getGame().getWindowSetup().getWidth(), blockSize, Color.BLACK);
+//                if (PauseManager.isPaused()) {
+//                    return;
+//                }
+//                if (fovY > 150) {
+//                    fovY -= (int) (2 * speed);
+//                }

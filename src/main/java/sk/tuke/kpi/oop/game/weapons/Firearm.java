@@ -20,7 +20,7 @@ public abstract class Firearm {
         return curAmmo;
     }
     public void reload(int newAmmo) {
-        reloadSound.play();
+        reloadSound.play(0.5f);
         curAmmo += newAmmo;
         if (curAmmo > maxAmmo) {
             curAmmo = maxAmmo;

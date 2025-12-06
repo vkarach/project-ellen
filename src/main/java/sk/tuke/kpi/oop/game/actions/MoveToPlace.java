@@ -2,8 +2,10 @@ package sk.tuke.kpi.oop.game.actions;
 
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Action;
+import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
+import sk.tuke.kpi.oop.game.utils.PauseManager;
 
 import static sk.tuke.kpi.oop.game.Direction.fromXY;
 
@@ -41,7 +43,6 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
         elapsedTime = 0;
     }
     public void execute(float deltaTime) {
-//        System.out.println("Move" + actor.getPosX() + " " + actor.getPosY());
         if (actor == null || isDone()) {
             return;
         }
@@ -49,25 +50,10 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
         if (scene == null) {
             return;
         }
-//        int ax = actor.getPosX();
-//        int ay = actor.getPosY();
-//
-//        int dx = 0;
-//        if (ax < destX) {
-//            dx = 1;
-//        }
-//        else if (ax > destX) {
-//            dx = -1;
-//        }
-//        int dy = 0;
-//        if (dx == 0) {
-//            if (ay < destY) {
-//                dy = 1;
-//            } else if (ay > destY) {
-//                dy = -1;
-//            }
-//        }
-//        actor.setPosition(ax + dx * actor.getSpeed(), ay + dy * actor.getSpeed());
+        if (PauseManager.isPaused()) {
+            actor.stoppedMoving();
+            return;
+        }
 
         int ax = actor.getPosX();
         int ay = actor.getPosY();
@@ -88,6 +74,7 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
             stepY = (diffY > 0 ? 1 : -1) * Math.min(abs, speed);
         }
         actor.setPosition(ax + stepX, ay + stepY);
+//        System.out.println("Moving to " + ax + stepX + "," + ay + stepY);
 
         if (!ignoreWalls && scene.getMap().intersectsWithWall(actor)) {
             actor.setPosition(ax, ay);

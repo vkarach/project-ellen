@@ -14,8 +14,11 @@ import sk.tuke.kpi.oop.game.characters.Armed;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Bullet extends AbstractActor implements Movable, Fireable {
+    SoundUtil ricochetSound = new SoundUtil("sounds/ricochet.wav");
+    SoundUtil metalImpactSound = new SoundUtil("sounds/metal_Impact.wav");
+    private final SoundUtil AliveImpact = new SoundUtil("sounds/alien_impact.wav");
     private final SoundUtil shoot = new SoundUtil("sounds/pistol_fire.wav");
-    private final SoundUtil cartridge_drop = new SoundUtil("sounds/cartridge_drop.wav");
+    private final SoundUtil cartridgeDrop = new SoundUtil("sounds/cartridge_drop.wav");
     private final int speed = 5;
     Animation defaultAnimation;
     public Bullet() {
@@ -32,13 +35,19 @@ public class Bullet extends AbstractActor implements Movable, Fireable {
     public void collidedWithWall() {
         Scene scene = getScene();
         if (scene != null) {
+            if (Math.random() < 0.3) {
+                ricochetSound.play(0.5f);
+            }
+            else {
+                metalImpactSound.play(0.5f);
+            }
             scene.removeActor(this);
         }
     }
     @Override
     public void addedToScene(@NotNull Scene scene) {
-        shoot.play();
-        cartridge_drop.play();
+        shoot.play(0.5f);
+        cartridgeDrop.play();
         super.addedToScene(scene);
         new Loop<>(
             new Invoke<>(() -> {
@@ -46,6 +55,7 @@ public class Bullet extends AbstractActor implements Movable, Fireable {
                     if (actor instanceof Alive && this.intersects(actor) && !(actor instanceof Armed)) {
                         Alive aliveActor = (Alive) actor;
                         aliveActor.getHealth().drain(15);
+                        AliveImpact.play();
                         scene.removeActor(this);
                         break;
                     }

@@ -14,11 +14,14 @@ public class AutoDoor extends Door {
         super(name, orientation);
     }
     @Override
+    public void useWith(Actor actor) {
+    }
+    @Override
     public void addedToScene(Scene scene) {
         super.addedToScene(scene);
         new Loop<>(
             new Invoke<>(() -> {
-                boolean shouldOpen = false;   // сбрасываем каждый цикл
+                boolean shouldOpen = false;
 
                 for (Actor actor : scene.getActors()) {
                     if (actor instanceof Alive

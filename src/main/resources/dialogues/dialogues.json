@@ -26,6 +26,13 @@
         { "speaker": "Mark",  "text": "Here, take your access card." },
         { "speaker": "Ellen", "text": "Thanks." }
       ]
+    },
+    {
+      "id": "no_time_to_explain",
+      "lines": [
+        { "speaker": "Mark", "text": "What is happening? Why is the siren sounding? What have you done?", "time": 2 },
+        { "speaker": "Ellen", "text": "There is no time to explain, everything is about to blow up! Let's run to the rocket!", "time": 2 }
+      ]
     }
   ]
 }

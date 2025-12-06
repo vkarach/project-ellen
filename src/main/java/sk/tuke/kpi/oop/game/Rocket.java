@@ -8,10 +8,12 @@ import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.utils.Helper;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Rocket extends AbstractActor {
-    Animation defaultAnimation;
-    Animation flyAnimation;
+    private final SoundUtil flySound = new SoundUtil("sounds/rocket_fly.wav");
+    private final Animation defaultAnimation;
+    private final Animation flyAnimation;
     public Rocket() {
         defaultAnimation = new Animation("sprites/rocket.png");
         defaultAnimation.setScale(2); // 96 128
@@ -21,6 +23,7 @@ public class Rocket extends AbstractActor {
         setAnimation(defaultAnimation);
     }
     public void fly(Scene scene) {
+        flySound.play(0.2f);
         setAnimation(flyAnimation);
         int vibration = 2; // 0-5
         Helper helper = new Helper();

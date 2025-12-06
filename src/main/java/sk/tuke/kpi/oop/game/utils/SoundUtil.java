@@ -6,7 +6,9 @@ import java.io.BufferedInputStream;
 
 public class SoundUtil {
     private final Clip clip;
-
+    private static float volumeCoef = 1f;
+    private float localVolume = 1f;
+    private static final java.util.List<SoundUtil> ALLSOUNDS = new java.util.ArrayList<>();
     public SoundUtil(String path) {
         try {
             InputStream raw = SoundUtil.class.getClassLoader().getResourceAsStream(path);
@@ -17,6 +19,8 @@ public class SoundUtil {
 
             clip = AudioSystem.getClip();
             clip.open(in);
+
+            ALLSOUNDS.add(this);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -40,23 +44,52 @@ public class SoundUtil {
         catch (Exception ignored) {
         }
     }
+    public static void setVolumeCoef(float coef) {
+        if (coef < 0f) {
+            coef = 0f;
+        }
+        if (coef > 1f) {
+            coef = 1f;
+        }
+        volumeCoef = coef;
+
+        updateAllVolumes();
+    }
+    public void updateVolume() {
+        setVolume(localVolume * volumeCoef);
+
+        if (clip.isActive()) {
+            int pos = clip.getFramePosition();
+            clip.stop();
+            clip.setFramePosition(pos);
+            clip.start();
+        }
+
+    }
+    public static void updateAllVolumes() {
+        for (SoundUtil sound : ALLSOUNDS) {
+            sound.updateVolume();
+        }
+        System.out.println("updated all volumes at " + System.nanoTime());
+    }
     public void play(float volume) {
-        setVolume(volume);
+        localVolume = volume;
+        setVolume(localVolume * volumeCoef);
         clip.stop();
         clip.setFramePosition(0);
         clip.start();
     }
-
     public void play() {
         play(1f);
     }
     public void loop() {
-        setVolume(1f);
+        setVolume(localVolume  * volumeCoef);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
         clip.start();
     }
     public void loop(float volume) {
-        setVolume(volume);
+        localVolume = volume;
+        setVolume(localVolume * volumeCoef);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
         clip.start();
     }

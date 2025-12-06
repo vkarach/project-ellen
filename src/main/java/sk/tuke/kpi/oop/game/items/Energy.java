@@ -6,9 +6,11 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.Usable;
 import sk.tuke.kpi.oop.game.characters.Alive;
 import sk.tuke.kpi.oop.game.characters.Ripley;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 
-public class Energy extends AbstractActor implements Usable<Alive> { // extends?
+public class Energy extends AbstractActor implements Usable<Alive> {
+    SoundUtil useSound = new SoundUtil("sounds/Interact_UseHealth.wav");
     private boolean isUsed = false;
     public Energy() {
         Animation defaultAnimation = new Animation("sprites/energy.png");
@@ -19,6 +21,7 @@ public class Energy extends AbstractActor implements Usable<Alive> { // extends?
         if (getScene() == null || alive.getHealth().getValue() == 100 || isUsed) {
             return;
         }
+        useSound.play(0.4f);
         alive.getHealth().restore();
 
         getScene().removeActor(this);

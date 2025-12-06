@@ -2,14 +2,9 @@ package sk.tuke.kpi.oop.game;
 
 import sk.tuke.kpi.gamelib.*;
 import sk.tuke.kpi.gamelib.backends.lwjgl.LwjglBackend;
-import sk.tuke.kpi.gamelib.framework.Scenario;
-import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.oop.game.scenarios.EscapeRoom;
-import sk.tuke.kpi.oop.game.scenarios.FirstSteps;
 import sk.tuke.kpi.oop.game.scenarios.MissionImpossible;
-import sk.tuke.kpi.oop.game.scenarios.UnnamedScenario;
-
-import static java.awt.SystemColor.window;
+import sk.tuke.kpi.oop.game.scenarios.FinalMission;
 
 public class Main {
     public static void main(String[] args) {
@@ -30,9 +25,9 @@ public class Main {
             escapeRoom.addListener(scenario);
         }
         else {
-            Scene final_mission = new World("not implemented yet", "maps/final-mission.tmx", new UnnamedScenario.Factory());
+            Scene final_mission = new World("not implemented yet", "maps/final-mission.tmx", new FinalMission.Factory());
             game.addScene(final_mission);
-            UnnamedScenario scenario = new UnnamedScenario();
+            FinalMission scenario = new FinalMission();
             final_mission.addListener(scenario);
         }
         game.getInput().onKeyPressed(Input.Key.ESCAPE, game::stop);

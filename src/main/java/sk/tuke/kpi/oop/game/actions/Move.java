@@ -4,11 +4,13 @@ import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Action;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
+import sk.tuke.kpi.oop.game.utils.PauseManager;
 
 
 public class Move<A extends Movable> implements Action<A> {
     private A actor;
     Direction direction;
+    private boolean done = false;
     private boolean isMoving;
     private final float duration;
     private float elapsedTime;
@@ -47,7 +49,12 @@ public class Move<A extends Movable> implements Action<A> {
     }
     @Override
     public void execute(float deltaTime) {
-        if (actor == null || isDone()) {
+        if (actor == null || isDone() || done) {
+            return;
+        }
+        if (PauseManager.isPaused()) {
+            actor.stoppedMoving();
+            done = true;
             return;
         }
         Scene scene = actor.getScene();

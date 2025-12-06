@@ -5,6 +5,7 @@ import sk.tuke.kpi.gamelib.Input;
 import sk.tuke.kpi.gamelib.KeyboardListener;
 import sk.tuke.kpi.oop.game.actions.Fire;
 import sk.tuke.kpi.oop.game.characters.Armed;
+import sk.tuke.kpi.oop.game.utils.PauseManager;
 
 public class ShooterController implements KeyboardListener {
     Armed armedActor;
@@ -13,6 +14,9 @@ public class ShooterController implements KeyboardListener {
     }
     @Override
     public void keyPressed(@NotNull Input.Key key) {
+        if (PauseManager.isPaused()) {
+            return;
+        }
         if(key.equals(Input.Key.SPACE)) {
             new Fire().scheduleFor(armedActor);
         }

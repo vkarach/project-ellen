@@ -12,6 +12,7 @@ import sk.tuke.kpi.oop.game.actions.Take;
 import sk.tuke.kpi.oop.game.actions.Use;
 import sk.tuke.kpi.oop.game.items.BreakableTool;
 import sk.tuke.kpi.oop.game.items.Collectible;
+import sk.tuke.kpi.oop.game.utils.PauseManager;
 
 public class KeeperController implements KeyboardListener {
     private final Keeper<Collectible> keeper;
@@ -21,6 +22,9 @@ public class KeeperController implements KeyboardListener {
     }
     @Override
     public void keyPressed(@NotNull Input.Key key) {
+        if (PauseManager.isPaused()) {
+            return;
+        }
         switch (key) {
             case ENTER:
                 new Take<>().scheduleFor(keeper);

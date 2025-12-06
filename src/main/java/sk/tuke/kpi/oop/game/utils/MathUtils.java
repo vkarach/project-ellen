@@ -2,6 +2,8 @@ package sk.tuke.kpi.oop.game.utils;
 
 import sk.tuke.kpi.gamelib.Actor;
 
+import java.awt.*;
+
 public class MathUtils {
     public static float distanceBetween(Actor a, Actor b) {
         float ax = a.getPosX() + a.getWidth() / 2f;
@@ -12,5 +14,8 @@ public class MathUtils {
         float dx = ax - bx;
         float dy = ay - by;
         return (float)Math.sqrt(dx*dx + dy*dy);
+    }
+    public static Rectangle rectangleActorHitbox(Actor actor) {
+        return new Rectangle(actor.getPosX(), actor.getPosY(), actor.getWidth(), actor.getHeight());
     }
 }

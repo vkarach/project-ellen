@@ -6,6 +6,7 @@ import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.ActionSequence;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.actions.Wait;
+import sk.tuke.kpi.gamelib.actions.When;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Animation;
@@ -15,24 +16,38 @@ import sk.tuke.kpi.gamelib.map.MapTile;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.behaviours.Behaviour;
+import sk.tuke.kpi.oop.game.utils.MathUtils;
+import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Alien extends AbstractActor implements Movable, Alive, Enemy {
+    private final SoundUtil alienHit = new SoundUtil("sounds/alien_hit.wav");
     private final Behaviour<? super Alien> behaviour;
     Animation defaultAnimation;
+    Animation alienDie;
     private int speed = 1;
     public Health health;
     public int maxHealth = 60;
     public Alien(Behaviour<? super Alien> behaviour) {
         this.behaviour = behaviour;
         defaultAnimation = new Animation("sprites/alien.png", 32, 32, 0.1f, Animation.PlayMode.LOOP);
+        alienDie = new Animation("sprites/alien_die.png", 32, 32, 0.1f, Animation.PlayMode.ONCE);
         setAnimation(defaultAnimation);
         health = new Health(maxHealth);
         health.onFatigued(() -> {
-            Scene scene = getScene();
-            if (scene != null) {
-                scene.cancelActions(this);
-                scene.removeActor(this);
+            if (getScene() != null) {
+                getScene().cancelActions(this);
             }
+            alienDie.setRotation(defaultAnimation.getRotation());
+            setAnimation(alienDie);
+            new When<>(
+                () -> getAnimation().getCurrentFrameIndex() == getAnimation().getFrameCount() - 1,
+                new Invoke<>(() -> {
+                    Scene scene = getScene();
+                    if (scene != null) {
+                        scene.removeActor(this);
+                    }
+                })
+            ).scheduleFor(this);
         });
         defaultAnimation.pause();
     }
@@ -75,9 +90,10 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
                 for (Actor actor : scene.getActors()) {
                     if (!(actor instanceof Enemy) && actor instanceof Alive) {
                         Alive aliveActor = (Alive) actor;
-                        if (this.intersects(actor)) {
+                        if (this.intersects(actor) || MathUtils.distanceBetween(aliveActor, this) < 10) {
                             if (canHit) {
                                 aliveActor.getHealth().drain(25);
+                                alienHit.play();
                                 canHit = false;
                                 new ActionSequence<>(
                                     new Wait<>(1),

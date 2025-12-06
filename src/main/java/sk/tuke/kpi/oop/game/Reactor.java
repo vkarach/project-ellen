@@ -21,7 +21,9 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
     private final Animation overheatAnimation;
     private final Animation brokenAnimation;
     private final Animation extinguishedAnimation;
+    private String name;
     public Reactor() {
+        name = "Reactor";
         temperature = 0;
         damage = 0;
         isOn = false;
@@ -33,6 +35,13 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
         setAnimation(offAnimation);
 
         devices = new HashSet<>();
+    }
+    public Reactor(String name) {
+        this();
+        this.name = name;
+    }
+    public String getName() {
+        return name;
     }
     public int getTemperature() {
         return temperature;
