@@ -17,6 +17,7 @@ public class Explode extends AbstractActor {
         Animation bigExplosion = new Animation("sprites/large_explosion.png", 32, 32, 0.1f, Animation.PlayMode.ONCE);
         if (size == Size.SMALL) {
             explodeAnimation = smallExplosion;
+            explodeAnimation.setScale(4);
         }
         else if (size == Size.BIG) {
             explodeAnimation = bigExplosion;
@@ -25,7 +26,7 @@ public class Explode extends AbstractActor {
         else {
             if (Math.random() < 0.5) {
                 explodeAnimation = smallExplosion;
-                explodeAnimation.setScale(5);
+                explodeAnimation.setScale(4);
             }
             else {
                 explodeAnimation = bigExplosion;
@@ -42,7 +43,7 @@ public class Explode extends AbstractActor {
     public void addedToScene(@NotNull Scene scene) {
         super.addedToScene(scene);
         explodeAnimation.play();
-        explodeSound.play(0.1f);
+        explodeSound.play(0.05f);
         new ActionSequence<>(
             new Wait<>(explodeAnimation.getFrameCount() * explodeAnimation.getFrameDuration()),
             new Invoke<>(()->scene.removeActor(this))

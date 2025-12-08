@@ -8,6 +8,7 @@ import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.utils.Helper;
+import sk.tuke.kpi.oop.game.utils.PauseManager;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Rocket extends AbstractActor {
@@ -23,7 +24,7 @@ public class Rocket extends AbstractActor {
         setAnimation(defaultAnimation);
     }
     public void fly(Scene scene) {
-        flySound.play(0.2f);
+        flySound.play(0.1f);
         setAnimation(flyAnimation);
         int vibration = 2; // 0-5
         Helper helper = new Helper();
@@ -32,10 +33,10 @@ public class Rocket extends AbstractActor {
         new Loop<>(
             new ActionSequence<>(
                 new Invoke<>(()-> {
-                    helper.setPosition(getPosX() + vibration, getPosY());
+                    helper.setPosition(getPosX(), getPosY() + vibration);
                 }),
                 new Invoke<>(()-> {
-                    helper.setPosition(getPosX() - vibration, getPosY());
+                    helper.setPosition(getPosX(), getPosY() - vibration);
                 })
             )
         ).scheduleFor(helper);
@@ -43,6 +44,9 @@ public class Rocket extends AbstractActor {
         new Loop<>(
             new ActionSequence<>(
                 new Invoke<>(()-> {
+                    if (PauseManager.isPaused()) {
+                        return;
+                    }
                     scene.getCamera().zoom = scene.getCamera().zoom + 0.01f;
                     getAnimation().setScale(getAnimation().getScale() + 0.02f);
                     posX[0] -= 0.5f;

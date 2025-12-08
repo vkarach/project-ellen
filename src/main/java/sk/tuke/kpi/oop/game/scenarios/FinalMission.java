@@ -9,6 +9,8 @@ import sk.tuke.kpi.gamelib.graphics.Color;
 import sk.tuke.kpi.oop.game.*;
 import sk.tuke.kpi.oop.game.controllers.PauseController;
 import sk.tuke.kpi.oop.game.items.Energy;
+import sk.tuke.kpi.oop.game.openables.StrongDoor;
+import sk.tuke.kpi.oop.game.story.Dialogue;
 import sk.tuke.kpi.oop.game.utils.*;
 import sk.tuke.kpi.oop.game.actions.MoveToPlace;
 import sk.tuke.kpi.oop.game.actions.Speak;
@@ -24,9 +26,11 @@ import sk.tuke.kpi.oop.game.openables.Door;
 import sk.tuke.kpi.oop.game.openables.LockedDoor;
 import sk.tuke.kpi.oop.game.story.DialogueLoader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+
+import static sk.tuke.kpi.oop.game.utils.MathUtils.randomNumber;
 
 public class FinalMission implements SceneListener {
     private final SoundUtil ambientSound = new SoundUtil("sounds/ambient.wav");
@@ -81,6 +85,9 @@ public class FinalMission implements SceneListener {
                 else if (name.contains("auto")) {
                     return new AutoDoor(name, orientation);
                 }
+                else if (name.contains("strong")) {
+                    return new StrongDoor(name, orientation);
+                }
                 else {
                     return new Door(name, orientation);
                 }
@@ -134,7 +141,12 @@ public class FinalMission implements SceneListener {
     @Override
     public void sceneInitialized(@NotNull Scene scene) {
         ambientSound.loop(0.1f);
-        DialogueLoader.loadAll();
+//        DialogueLoader.loadAll();
+        try {
+            DialogueLoader.load("dialogues/dialogues.json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         this.scene = scene;
         this.ripley = scene.getFirstActorByType(Ripley.class);
         this.mark = scene.getFirstActorByType(Mark.class);
@@ -170,8 +182,13 @@ public class FinalMission implements SceneListener {
 //            new Invoke<>(()->stopAlarm(alarm))
 //        ).scheduleFor(ripley);
 
+//        Reactor reactor = scene.getFirstActorByType(Reactor.class);
+//        ripley.setPosition(reactor.getPosX(), reactor.getPosY());
+
+//        ripley.setSpeed(10);
+
         scene.getMessageBus().subscribe(Door.DOOR_OPENED, door -> {
-            if ("first door1".equals(door.getName()) && !firstMeating) {
+            if ("first door".equals(door.getName()) && !firstMeating) {
                 firstMeating = true;
                 scene.cancelActions(ripley);
                 Disposable cutscene = cutsceneApply(0.7f);
@@ -180,6 +197,7 @@ public class FinalMission implements SceneListener {
                 new ActionSequence<>(
                     new MoveToPlace<>(door.getPosX() - 32, door.getPosY()),
                     new MoveToPlace<>(mark.getPosX(), mark.getPosY() - 30),
+//                    new Speak<>(DialogueLoader.get("first_meeting")),
                     new Speak<>(DialogueLoader.get("first_meeting")),
                     new Invoke<>(()->{
                         scene.addActor(helper, ripley.getPosX(), ripley.getPosY());
@@ -215,10 +233,12 @@ public class FinalMission implements SceneListener {
             ).scheduleFor(ripley);
         });
         scene.getMessageBus().subscribe(Door.DOOR_OPENED, door -> {
+            if (ripley != null) {
+                return;
+            }
             Disposable cutscene = cutsceneApply(0.7f);
             ripley.setSpeed(2);
             mark.setSpeed(2);
-//            disableControls();
             ripley.setPosition(mark.getPosX(), mark.getPosY() - 30);
             new ActionSequence<>(
                 new Speak<>(DialogueLoader.get("no_time_to_explain")),
@@ -242,12 +262,11 @@ public class FinalMission implements SceneListener {
                         new ActionSequence<>(
                             new Invoke<>(()->{
                                 Explode explosion = new Explode();
-                                int rx = (int)(Math.random() * scene.getGame().getWindowSetup().getWidth());
-                                int ry = (int)(Math.random() * scene.getGame().getWindowSetup().getHeight());
-
+                                int rx = randomNumber(rocket.getPosX(), rocket.getPosX() + (int) (800 * scene.getCamera().zoom / 2));
+                                int ry = randomNumber(rocket.getPosY(), rocket.getPosY() - (int) (600 * scene.getCamera().zoom / 2));
                                 scene.addActor(explosion, rx, ry);
                             }),
-                            new Wait<>((float) Math.random() * 2)
+                            new Wait<>(1)
                         )
                     ).scheduleFor(rocket);
                 })

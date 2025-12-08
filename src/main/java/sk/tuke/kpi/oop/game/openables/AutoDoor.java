@@ -1,5 +1,6 @@
 package sk.tuke.kpi.oop.game.openables;
 
+import org.jetbrains.annotations.NotNull;
 import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Invoke;
@@ -17,7 +18,7 @@ public class AutoDoor extends Door {
     public void useWith(Actor actor) {
     }
     @Override
-    public void addedToScene(Scene scene) {
+    public void addedToScene(@NotNull Scene scene) {
         super.addedToScene(scene);
         new Loop<>(
             new Invoke<>(() -> {
