@@ -2,12 +2,16 @@ package sk.tuke.kpi.oop.game.openables;
 
 import org.jetbrains.annotations.NotNull;
 import sk.tuke.kpi.gamelib.Scene;
+import sk.tuke.kpi.gamelib.actions.ActionSequence;
+import sk.tuke.kpi.gamelib.actions.Invoke;
+import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.gamelib.map.MapTile;
 
 public class StrongDoor extends Door {
     private final Animation openDoorAnimation;
     private final Animation closeDoorAnimation;
+    private boolean inMove = false;
     public StrongDoor(String name, Orientation orientation) {
         super(name, orientation);
         if  (orientation == Orientation.HORIZONTAL) {
@@ -44,6 +48,14 @@ public class StrongDoor extends Door {
     }
     @Override
     public void open() {
+        if (inMove) {
+            return;
+        }
+        inMove = true;
+        new ActionSequence<>(
+            new Wait<>(closeDoorAnimation.getFrameCount() * closeDoorAnimation.getFrameDuration()),
+            new Invoke<>(()->inMove = false)
+        ).scheduleFor(this);
         super.open();
         setAnimation(openDoorAnimation);
         openDoorAnimation.resetToFirstFrame();
@@ -51,6 +63,14 @@ public class StrongDoor extends Door {
     }
     @Override
     public void close() {
+        if (inMove) {
+            return;
+        }
+        inMove = true;
+        new ActionSequence<>(
+            new Wait<>(closeDoorAnimation.getFrameCount() * closeDoorAnimation.getFrameDuration()),
+            new Invoke<>(()->inMove = false)
+        ).scheduleFor(this);
         super.close();
         setAnimation(closeDoorAnimation);
         closeDoorAnimation.resetToFirstFrame();
