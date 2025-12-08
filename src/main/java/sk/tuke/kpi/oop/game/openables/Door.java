@@ -20,8 +20,8 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
     public static final Topic<Door> DOOR_CLOSED = Topic.create("door closed", Door.class);
     private boolean isOpen = false;
     private boolean inMove = false;
-    public Animation openDoorAnimation;
-    public Animation closeDoorAnimation;
+    private final Animation openDoorAnimation;
+    private final Animation closeDoorAnimation;
     public enum Orientation {
         HORIZONTAL,
         VERTICAL

@@ -6,6 +6,8 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.gamelib.map.MapTile;
 
 public class StrongDoor extends Door {
+    private final Animation openDoorAnimation;
+    private final Animation closeDoorAnimation;
     public StrongDoor(String name, Orientation orientation) {
         super(name, orientation);
         if  (orientation == Orientation.HORIZONTAL) {
@@ -40,9 +42,18 @@ public class StrongDoor extends Door {
             }
         }
     }
-//    @Override
-//    public void addedToScene(@NotNull Scene scene) {
-//        super.addedToScene(scene);
-//        setTile(MapTile.Type.WALL);
-//    }
+    @Override
+    public void open() {
+        super.open();
+        setAnimation(openDoorAnimation);
+        openDoorAnimation.resetToFirstFrame();
+        openDoorAnimation.play();
+    }
+    @Override
+    public void close() {
+        super.close();
+        setAnimation(closeDoorAnimation);
+        closeDoorAnimation.resetToFirstFrame();
+        closeDoorAnimation.play();
+    }
 }

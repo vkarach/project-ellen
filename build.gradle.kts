@@ -18,7 +18,10 @@ repositories {
 java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
-
+tasks.register<Copy>("copyCompileLibs") {
+    from(configurations.compileClasspath)
+    into("$projectDir/lib")
+}
 application {
 //    mainClassName = "sk.tuke.kpi.gamelib.framework.Main"
     mainClassName = "sk.tuke.kpi.oop.game.Main"
