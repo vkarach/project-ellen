@@ -4,9 +4,6 @@ import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.Usable;
 import sk.tuke.kpi.oop.game.characters.Armed;
-import sk.tuke.kpi.oop.game.characters.Ripley;
-import sk.tuke.kpi.oop.game.utils.SoundUtil;
-import sk.tuke.kpi.oop.game.weapons.Firearm;
 
 public class Ammo extends AbstractActor implements Usable<Armed> {
     private boolean isUsed = false;

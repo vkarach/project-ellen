@@ -1,11 +1,9 @@
 package sk.tuke.kpi.oop.game.items;
 
-import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.Usable;
 import sk.tuke.kpi.oop.game.characters.Alive;
-import sk.tuke.kpi.oop.game.characters.Ripley;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 

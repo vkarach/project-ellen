@@ -2,19 +2,16 @@ package sk.tuke.kpi.oop.game.characters;
 
 import org.jetbrains.annotations.NotNull;
 import sk.tuke.kpi.gamelib.Actor;
-import sk.tuke.kpi.gamelib.Disposable;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.actions.When;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
-import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.gamelib.messages.Topic;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.items.AccessCard;
 import sk.tuke.kpi.oop.game.items.Jagermeister;
-import sk.tuke.kpi.oop.game.openables.Door;
 import sk.tuke.kpi.oop.game.utils.MathUtils;
 
 public class Mark extends AbstractActor implements Actor, Movable {

@@ -6,7 +6,6 @@ import sk.tuke.kpi.gamelib.KeyboardListener;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.actions.While;
-import sk.tuke.kpi.oop.game.actions.Fire;
 import sk.tuke.kpi.oop.game.characters.Ripley;
 import sk.tuke.kpi.oop.game.utils.PauseManager;
 

@@ -1,13 +1,10 @@
 package sk.tuke.kpi.oop.game.actions;
 
 import sk.tuke.kpi.gamelib.Actor;
-import sk.tuke.kpi.gamelib.Disposable;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.ActionSequence;
 import sk.tuke.kpi.gamelib.actions.Invoke;
-import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.gamelib.framework.actions.AbstractAction;
-import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.characters.Armed;
@@ -18,6 +15,9 @@ public class Fire extends AbstractAction<Armed> {
     private final SoundUtil emptyGunShopSound = new SoundUtil("sounds/empty_gun_shop.wav");
     private boolean isDone = false;
     @Override
+    public boolean isDone() {
+        return isDone;
+    }
     public void execute(float deltaTime) {
         if (isDone) {
             return;

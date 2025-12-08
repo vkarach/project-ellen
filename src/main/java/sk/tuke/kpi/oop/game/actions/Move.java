@@ -1,5 +1,4 @@
 package sk.tuke.kpi.oop.game.actions;
-import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Action;
 import sk.tuke.kpi.oop.game.Direction;
@@ -30,6 +29,7 @@ public class Move<A extends Movable> implements Action<A> {
     public A getActor() {
         return actor;
     }
+    @Override
     public boolean isDone() {
         if (duration == 0f) {
             return elapsedTime > 0f;

@@ -13,7 +13,6 @@ import sk.tuke.kpi.oop.game.Keeper;
 import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.items.Backpack;
 import sk.tuke.kpi.oop.game.items.Collectible;
-import sk.tuke.kpi.oop.game.openables.Door;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 import sk.tuke.kpi.oop.game.weapons.Firearm;
 import sk.tuke.kpi.oop.game.weapons.Gun;

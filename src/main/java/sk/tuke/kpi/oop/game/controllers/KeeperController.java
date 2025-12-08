@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Input;
 import sk.tuke.kpi.gamelib.KeyboardListener;
-import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.oop.game.Keeper;
 import sk.tuke.kpi.oop.game.Usable;
 import sk.tuke.kpi.oop.game.actions.Drop;

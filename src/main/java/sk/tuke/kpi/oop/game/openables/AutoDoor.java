@@ -10,7 +10,7 @@ import sk.tuke.kpi.oop.game.characters.Enemy;
 import sk.tuke.kpi.oop.game.utils.MathUtils;
 
 public class AutoDoor extends Door {
-    private boolean isOpen = false;
+//    private boolean isOpen = false;
     public  AutoDoor(String name, Door.Orientation orientation) {
         super(name, orientation);
     }

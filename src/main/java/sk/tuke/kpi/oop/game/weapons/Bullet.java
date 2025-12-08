@@ -19,14 +19,13 @@ public class Bullet extends AbstractActor implements Movable, Fireable {
     private final SoundUtil AliveImpact = new SoundUtil("sounds/alien_impact.wav");
     private final SoundUtil shoot = new SoundUtil("sounds/pistol_fire.wav");
     private final SoundUtil cartridgeDrop = new SoundUtil("sounds/cartridge_drop.wav");
-    private final int speed = 5;
     Animation defaultAnimation;
     public Bullet() {
         defaultAnimation = new Animation("sprites/bullet.png");
         setAnimation(defaultAnimation);
     }
     public int getSpeed() {
-        return speed;
+        return 5;
     }
     public void startedMoving(Direction direction) {
         defaultAnimation.setRotation(direction.getAngle());

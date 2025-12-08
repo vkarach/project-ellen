@@ -2,7 +2,6 @@ package sk.tuke.kpi.oop.game.actions;
 
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Action;
-import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.utils.PauseManager;

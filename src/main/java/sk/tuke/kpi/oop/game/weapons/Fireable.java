@@ -1,4 +1,6 @@
 package sk.tuke.kpi.oop.game.weapons;
 
-public interface Fireable {
+import sk.tuke.kpi.oop.game.Movable;
+
+public interface Fireable extends Movable {
 }

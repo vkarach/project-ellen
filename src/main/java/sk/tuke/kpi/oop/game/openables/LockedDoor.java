@@ -1,6 +1,5 @@
 package sk.tuke.kpi.oop.game.openables;
 
-import com.badlogic.gdx.audio.Sound;
 import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.graphics.Color;

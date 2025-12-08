@@ -2,8 +2,6 @@ package sk.tuke.kpi.oop.game.characters;
 
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.graphics.Animation;
-import sk.tuke.kpi.gamelib.graphics.Color;
-import sk.tuke.kpi.gamelib.graphics.Font;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.behaviours.Behaviour;
 

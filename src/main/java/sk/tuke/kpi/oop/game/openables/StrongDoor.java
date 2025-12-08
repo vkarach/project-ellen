@@ -1,7 +1,5 @@
 package sk.tuke.kpi.oop.game.openables;
 
-import org.jetbrains.annotations.NotNull;
-import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.ActionSequence;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.actions.Wait;
