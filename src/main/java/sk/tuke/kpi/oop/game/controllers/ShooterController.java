@@ -18,7 +18,7 @@ public class ShooterController implements KeyboardListener {
             return;
         }
         if(key.equals(Input.Key.SPACE)) {
-            new Fire().scheduleFor(armedActor);
+            new Fire<>().scheduleFor(armedActor);
         }
     }
 }

@@ -15,7 +15,7 @@ public class Energy extends AbstractActor implements Usable<Alive> {
     }
     @Override
     public void useWith(Alive alive) {
-        if (getScene() == null || alive.getHealth().getValue() == 100 || isUsed) {
+        if (alive == null || getScene() == null || alive.getHealth().getValue() == 100 || isUsed) {
             return;
         }
         useSound.play(0.4f);

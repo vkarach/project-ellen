@@ -12,10 +12,16 @@ import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Take<A extends Keeper> extends AbstractAction<A>  {
     private final SoundUtil itemPickup = new SoundUtil("sounds/item_pickup.wav");
+    private boolean isDone = false;
+    @Override
+    public boolean isDone() {
+        return isDone;
+    }
     @Override
     public void execute(float deltaTime) {
         A keeper = getActor();
-        if (keeper == null || isDone()) {
+        if (keeper == null || isDone) {
+            isDone = true;
             return;
         }
         for (Actor actor : getActor().getScene().getActors()) {
@@ -32,11 +38,12 @@ public class Take<A extends Keeper> extends AbstractAction<A>  {
                         Overlay overlay = scene.getOverlay();
                         Font font = new Font(8, Color.ORANGE, Font.Style.NORMAL);
                         overlay.drawText(e.getMessage(), item.getPosX(), item.getPosY() + 30, font).showFor(1);
+                        isDone = true;
                     }
                     break;
                 }
             }
         }
-        setDone(true);
+        isDone = true;
     }
 }

@@ -9,6 +9,7 @@ import sk.tuke.kpi.gamelib.graphics.Color;
 import sk.tuke.kpi.oop.game.*;
 import sk.tuke.kpi.oop.game.controllers.PauseController;
 import sk.tuke.kpi.oop.game.items.Energy;
+import sk.tuke.kpi.oop.game.items.Hammer;
 import sk.tuke.kpi.oop.game.openables.StrongDoor;
 import sk.tuke.kpi.oop.game.utils.*;
 import sk.tuke.kpi.oop.game.actions.MoveToPlace;
@@ -93,7 +94,7 @@ public class FinalMission implements SceneListener {
             else if (name.contains("Alien")) {
                 Behaviour<? super Alien> behaviour = null;
                 if ("walking".equals(type)) {
-                    behaviour = new RandomlyMoving<>();
+                    behaviour = new RandomlyMoving();
                 }
                 if (name.contains("Theft")) {
                     return new AlienThief(behaviour);
@@ -139,10 +140,10 @@ public class FinalMission implements SceneListener {
     @Override
     public void sceneInitialized(@NotNull Scene scene) {
         ambientSound.loop(0.1f);
-//        DialogueLoader.loadAll();
         try {
             DialogueLoader.load("dialogues/dialogues.json");
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
         this.scene = scene;
@@ -170,6 +171,9 @@ public class FinalMission implements SceneListener {
         ripley.getHealth().drain(50);
         Energy energy = new Energy();
         scene.addActor(energy, ripley.getPosX() + 20, ripley.getPosY() + 20);
+
+        Hammer hammer = new Hammer();
+        scene.addActor(hammer, ripley.getPosX(), ripley.getPosY());
 
 //        Explode explosion = new Explode(Explode.Size.BIG);
 //        scene.addActor(explosion, ripley.getPosX(), ripley.getPosY());

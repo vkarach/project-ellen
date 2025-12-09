@@ -37,7 +37,7 @@ public class SpawnPoint extends AbstractActor {
             return;
         }
         aliens--;
-        Alien alien = new Alien(new RandomlyMoving<>());
+        Alien alien = new Alien(new RandomlyMoving());
         scene.addActor(alien, getPosX(), getPosY());
     }
     private boolean spawnCooldown = false;

@@ -9,9 +9,13 @@ import sk.tuke.kpi.oop.game.characters.Armed;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 import sk.tuke.kpi.oop.game.weapons.Fireable;
 
-public class Fire extends AbstractAction<Armed> {
+public class Fire<A extends Armed> extends AbstractAction<A> {
     private final SoundUtil emptyGunShopSound = new SoundUtil("sounds/empty_gun_shop.wav");
     private boolean isDone = false;
+    @Override
+    public boolean isDone() {
+        return isDone;
+    }
     public void execute(float deltaTime) {
         if (isDone) {
             return;
@@ -46,6 +50,6 @@ public class Fire extends AbstractAction<Armed> {
             new Invoke<>(()->scene.removeActor(bullet))
         ).scheduleFor(bullet);
 
-        setDone(true);
+        isDone = true;
     }
 }

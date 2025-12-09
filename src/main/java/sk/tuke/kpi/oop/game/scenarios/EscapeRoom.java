@@ -46,20 +46,20 @@ public class EscapeRoom implements SceneListener {
                 Behaviour<? super Alien> behaviour;
 
                 if ("running".equals(type)) {
-                    behaviour = new RandomlyMoving<>();
+                    behaviour = new RandomlyMoving();
                 }
                 else if ("waiting1".equals(type)) {
                     behaviour = new Observing<Alien, Door>(
                         Door.DOOR_OPENED,
                         door -> "front door".equals(door.getName()),
-                        new RandomlyMoving<>()
+                        new RandomlyMoving()
                     );
                 }
                 else if ("waiting2".equals(type)) {
                     behaviour = new Observing<Alien, Door>(
                         Door.DOOR_OPENED,
                         door -> "back door".equals(door.getName()),
-                        new RandomlyMoving<>()
+                        new RandomlyMoving()
                     );
                 }
                 else {

@@ -60,7 +60,9 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         ).scheduleFor(this);
         openDoorAnimation.play();
         openSound.play(0.5f);
-        getScene().getMessageBus().publish(DOOR_OPENED, this);
+        if (getScene() != null) {
+            getScene().getMessageBus().publish(DOOR_OPENED, this);
+        }
     }
 //    public boolean canClose() {
 //        for (Actor actor : getScene().getActors()) {
@@ -74,7 +76,7 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
 //        return true;
 //    }
     public void close() {
-        if (!isOpen || getScene() == null || inMove) {// || !canClose()) {
+        if (!isOpen || inMove) {// || !canClose()) {
             return;
         }
         isOpen = false;
@@ -88,7 +90,9 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         closeDoorAnimation.resetToFirstFrame();
         closeDoorAnimation.play();
         closeSound.play(0.5f);
-        getScene().getMessageBus().publish(DOOR_CLOSED, this);
+        if (getScene() != null) {
+            getScene().getMessageBus().publish(DOOR_CLOSED, this);
+        }
     }
     @Override
     public void useWith(Actor actor) {

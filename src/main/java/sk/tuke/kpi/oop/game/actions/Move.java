@@ -47,20 +47,18 @@ public class Move<A extends Movable> implements Action<A> {
         elapsedTime = duration;
         isMoving = false;
     }
-    @Override
-    public void execute(float deltaTime) {
-        if (actor == null || isDone() || done) {
-            return;
+    private boolean canMove() {
+        if (actor == null || isDone()) {
+            return false;
         }
         if (PauseManager.isPaused()) {
             actor.stoppedMoving();
-            done = true;
-            return;
-        }
-        Scene scene = actor.getScene();
-        if (scene == null) {
             stop();
-            return;
+            return false;
+        }
+        if (actor.getScene() == null) {
+            stop();
+            return false;
         }
         if (!isMoving) {
             actor.startedMoving(direction);
@@ -68,6 +66,15 @@ public class Move<A extends Movable> implements Action<A> {
             posX = actor.getPosX();
             posY = actor.getPosY();
         }
+        return true;
+    }
+    @Override
+    public void execute(float deltaTime) {
+        if (!canMove()) {
+            return;
+        }
+        Scene scene = actor.getScene();
+
         int dX = direction.getDx();
         int dY = direction.getDy();
         float divider = 1;
@@ -76,7 +83,6 @@ public class Move<A extends Movable> implements Action<A> {
         }
         int speed = actor.getSpeed();
 
-//        Scene scene = actor.getScene();
         int oldX = actor.getPosX();
         int oldY = actor.getPosY();
         posX += dX * speed / divider;

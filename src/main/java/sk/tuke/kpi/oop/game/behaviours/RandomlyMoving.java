@@ -14,10 +14,10 @@ import sk.tuke.kpi.oop.game.utils.PauseManager;
 import java.util.Arrays;
 import java.util.Random;
 
-public class RandomlyMoving<A extends Movable> implements Behaviour<A> {
+public class RandomlyMoving implements Behaviour<Movable> {
     private boolean move = false;
     private final float moveTime = 0.75f;
-    public void setUp(A actor) {
+    public void setUp(Movable actor) {
         new Loop<>(
             new ActionSequence<>(
                 new When<>(
