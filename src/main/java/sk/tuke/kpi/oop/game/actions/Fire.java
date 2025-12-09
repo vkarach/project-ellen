@@ -1,12 +1,10 @@
 package sk.tuke.kpi.oop.game.actions;
 
-import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.ActionSequence;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.framework.actions.AbstractAction;
 import sk.tuke.kpi.oop.game.Direction;
-import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.characters.Armed;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 import sk.tuke.kpi.oop.game.weapons.Fireable;

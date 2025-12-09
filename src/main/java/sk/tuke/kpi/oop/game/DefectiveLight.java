@@ -32,7 +32,7 @@ public class DefectiveLight extends Light implements Repairable {
         }
         new ActionSequence<>(
             new Wait<>(10),
-            new Invoke<>(() -> {repaired = false; })
+            new Invoke<>(() -> repaired = false)
         ).scheduleFor(this);
         return true;
     }
