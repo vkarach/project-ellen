@@ -14,8 +14,6 @@ import sk.tuke.kpi.oop.game.items.BreakableTool;
 import sk.tuke.kpi.oop.game.items.Collectible;
 import sk.tuke.kpi.oop.game.utils.PauseManager;
 
-import java.util.Objects;
-
 public class KeeperController implements KeyboardListener {
     private final Keeper keeper;
 
