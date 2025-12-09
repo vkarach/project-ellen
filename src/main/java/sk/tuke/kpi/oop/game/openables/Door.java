@@ -19,7 +19,7 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
     public static final Topic<Door> DOOR_OPENED = Topic.create("door opened", Door.class);
     public static final Topic<Door> DOOR_CLOSED = Topic.create("door closed", Door.class);
     private boolean isOpen = false;
-    private boolean inMove = false;
+//    private boolean inMove = false;
     private final Animation openDoorAnimation;
     private final Animation closeDoorAnimation;
     public enum Orientation {
@@ -46,50 +46,43 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         return isOpen;
     }
     public void open() {
-        if (isOpen || getScene() == null || inMove) {
+        if (isOpen || getScene() == null) { // || inMove) {
             return;
         }
         setTile(MapTile.Type.CLEAR);
         isOpen = true;
         setAnimation(openDoorAnimation);
         openDoorAnimation.resetToFirstFrame();
-        inMove = true;
-        new ActionSequence<>(
-            new Wait<>(openDoorAnimation.getFrameCount() * openDoorAnimation.getFrameDuration()),
-            new Invoke<>(()->inMove = false)
-        ).scheduleFor(this);
+
+//        inMove = true;
+//        new ActionSequence<>(
+//            new Wait<>(openDoorAnimation.getFrameCount() * openDoorAnimation.getFrameDuration()),
+//            new Invoke<>(()->inMove = false)
+//        ).scheduleFor(this);
+
         openDoorAnimation.play();
         openSound.play(0.5f);
         if (getScene() != null) {
             getScene().getMessageBus().publish(DOOR_OPENED, this);
         }
     }
-//    public boolean canClose() {
-//        for (Actor actor : getScene().getActors()) {
-//            if (actor == this) {
-//                continue;
-//            }
-//            if (MathUtils.rectangleActorHitbox(this).contains(actor.getPosX() +actor.getWidth() / 2, actor.getPosY() + actor.getHeight() / 2) ) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
     public void close() {
-        if (!isOpen || inMove) {// || !canClose()) {
+        if (!isOpen) { // || inMove) {
             return;
         }
-        isOpen = false;
-        inMove = true;
-        new ActionSequence<>(
-            new Wait<>(closeDoorAnimation.getFrameCount() * closeDoorAnimation.getFrameDuration()),
-            new Invoke<>(()->inMove = false)
-        ).scheduleFor(this);
         setTile(MapTile.Type.WALL);
+        isOpen = false;
         setAnimation(closeDoorAnimation);
         closeDoorAnimation.resetToFirstFrame();
         closeDoorAnimation.play();
         closeSound.play(0.5f);
+
+//        inMove = true;
+//        new ActionSequence<>(
+//            new Wait<>(closeDoorAnimation.getFrameCount() * closeDoorAnimation.getFrameDuration()),
+//            new Invoke<>(()->inMove = false)
+//        ).scheduleFor(this);
+//
         if (getScene() != null) {
             getScene().getMessageBus().publish(DOOR_CLOSED, this);
         }

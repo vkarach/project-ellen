@@ -14,6 +14,8 @@ import sk.tuke.kpi.oop.game.items.BreakableTool;
 import sk.tuke.kpi.oop.game.items.Collectible;
 import sk.tuke.kpi.oop.game.utils.PauseManager;
 
+import java.util.Objects;
+
 public class KeeperController implements KeyboardListener {
     private final Keeper keeper;
 
@@ -25,35 +27,48 @@ public class KeeperController implements KeyboardListener {
         if (PauseManager.isPaused()) {
             return;
         }
-        if (key == Input.Key.ENTER) {
-            new Take<>().scheduleFor(keeper);
+        switch (key) {
+            case ENTER:
+                new Take<>().scheduleFor(keeper);
+                break;
+            case BACKSPACE:
+                new Drop<>().scheduleFor(keeper);
+                break;
+            case S:
+                new Shift<>().scheduleFor(keeper);
+                break;
+            case U:
+                handleUse();
+                break;
+            case B:
+                handleUseFromBackpack();
+                break;
+            default:
+                break;
         }
-        else if (key == Input.Key.BACKSPACE) {
-            new Drop<>().scheduleFor(keeper);
+    }
+    private void handleUse() {
+        if (keeper.getScene() == null) {
+            return;
         }
-        else if (key == Input.Key.S) {
-            new Shift<>().scheduleFor(keeper);
-        }
-        else if (key == Input.Key.U) {
-            for (Actor actor : keeper.getScene().getActors()) {
-                if (actor instanceof Usable && keeper.intersects(actor)) {
-                    Usable<?> usable = (Usable<?>) actor;
-                    new Use<>(usable).scheduleForIntersectingWith(keeper);
-                    break;
-                }
-            }
-        }
-        else if (key == Input.Key.B) {
-            Collectible item = keeper.getBackpack().peek();
-            if (item == null) {
-                return;
-            }
-            if (item instanceof Usable) {
-                Usable<?> usable = (Usable<?>) item;
+        for (Actor actor : keeper.getScene().getActors()) {
+            if (actor instanceof Usable && keeper.intersects(actor)) {
+                Usable<?> usable = (Usable<?>) actor;
                 new Use<>(usable).scheduleForIntersectingWith(keeper);
-                if (usable instanceof BreakableTool && ((BreakableTool<?>) usable).getRemainingUses() == 1) {
-                    keeper.getBackpack().remove(item);
-                }
+                break;
+            }
+        }
+    }
+    private void handleUseFromBackpack() {
+        Collectible item = keeper.getBackpack().peek();
+        if (item == null) {
+            return;
+        }
+        if (item instanceof Usable) {
+            Usable<?> usable = (Usable<?>) item;
+            new Use<>(usable).scheduleForIntersectingWith(keeper);
+            if (usable instanceof BreakableTool && ((BreakableTool<?>) usable).getRemainingUses() == 1) {
+                keeper.getBackpack().remove(item);
             }
         }
     }

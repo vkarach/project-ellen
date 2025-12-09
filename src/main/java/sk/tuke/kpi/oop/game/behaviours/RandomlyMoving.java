@@ -18,6 +18,9 @@ public class RandomlyMoving implements Behaviour<Movable> {
     private boolean move = false;
     private final float moveTime = 0.75f;
     public void setUp(Movable actor) {
+        if (actor == null) {
+            return;
+        }
         new Loop<>(
             new ActionSequence<>(
                 new When<>(

@@ -22,7 +22,7 @@ public class SpawnPoint extends AbstractActor {
     }
     private boolean canSpawnALien() {
         Scene scene = getScene();
-        if (scene == null || aliens < 0) {
+        if (scene == null || aliens <= 0) {
             return false;
         }
         Ripley ripley = scene.getFirstActorByType(Ripley.class);

@@ -18,8 +18,8 @@
  </layer>
  <objectgroup id="2" name="actors">
   <object id="23" name="Body" x="496" y="96" width="64" height="48"/>
-  <object id="17" name="Spawner" type="10" x="448" y="32" width="32" height="32"/>
-  <object id="20" name="Spawner" type="10" x="464" y="192" width="32" height="32"/>
+  <object id="17" name="Spawner" type="2" x="448" y="32" width="32" height="32"/>
+  <object id="20" name="Spawner" type="2" x="464" y="192" width="32" height="32"/>
   <object id="2" name="Ellen" type="player" x="112" y="112" width="32" height="32"/>
   <object id="5" name="first door" type="vertical" x="192" y="128" width="16" height="32"/>
   <object id="12" name="Mark" type="plot character" x="288" y="32" width="32" height="32"/>

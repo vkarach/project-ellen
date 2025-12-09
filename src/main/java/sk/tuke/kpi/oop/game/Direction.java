@@ -23,8 +23,8 @@ public enum Direction {
         this.angle = angle;
     }
     public Direction combine(Direction other) {
-        int newDx = other.dx + this.dx;
-        int newDy = other.dy + this.dy;
+        int newDx = Integer.compare(other.dx + this.dx, 0);
+        int newDy = Integer.compare(other.dy + this.dy, 0);
         return fromXY(newDx, newDy);
     }
     public static Direction fromAngle(float angle) {

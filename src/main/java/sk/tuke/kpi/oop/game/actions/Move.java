@@ -9,7 +9,6 @@ import sk.tuke.kpi.oop.game.utils.PauseManager;
 public class Move<A extends Movable> implements Action<A> {
     private A actor;
     private final Direction direction;
-    private boolean done = false;
     private boolean isMoving;
     private final float duration;
     private float elapsedTime;
