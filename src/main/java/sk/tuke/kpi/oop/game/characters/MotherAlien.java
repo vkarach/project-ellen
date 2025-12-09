@@ -7,10 +7,11 @@ import sk.tuke.kpi.oop.game.behaviours.Behaviour;
 
 public class MotherAlien extends Alien {
     private final Animation defaultAnimation;
+    private final Health health;
     public MotherAlien(Behaviour<? super Alien> behaviour) {
         super(behaviour);
         this.maxHealth = 250;
-        this.health = new Health(maxHealth);
+        health = new Health(maxHealth);
         defaultAnimation = new Animation("sprites/mother.png", 112, 162, 0.1f, Animation.PlayMode.LOOP);
         setAnimation(defaultAnimation);
         this.health.onFatigued(() -> {

@@ -75,10 +75,10 @@ public class Ripley extends AbstractActor implements Actor, Movable, Alive, Arme
         return weapon;
     }
     private final int fontSize = 18;
-    Font whiteFont = new Font(fontSize, Color.WHITE, Font.Style.NORMAL);
-    Font greenFont = new Font(fontSize, Color.GREEN, Font.Style.NORMAL);
-    Font yellowFont = new Font(fontSize, Color.YELLOW, Font.Style.NORMAL);
-    Font redFont = new Font(fontSize, Color.RED, Font.Style.NORMAL);
+    private final Font whiteFont = new Font(fontSize, Color.WHITE, Font.Style.NORMAL);
+    private final Font greenFont = new Font(fontSize, Color.GREEN, Font.Style.NORMAL);
+    private final Font yellowFont = new Font(fontSize, Color.YELLOW, Font.Style.NORMAL);
+    private final Font redFont = new Font(fontSize, Color.RED, Font.Style.NORMAL);
     public void showRipleyState() {
         Scene scene = getScene();
         if (scene == null) {

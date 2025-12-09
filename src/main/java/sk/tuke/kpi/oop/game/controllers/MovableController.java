@@ -16,7 +16,7 @@ public class MovableController implements KeyboardListener {
     private final Set<Input.Key> pressedKeys = new HashSet<>();
     private final Set<Direction> pressedDirections = new HashSet<>();
     private final Movable actor;
-    private Map<Input.Key, Direction> keyDirectionMap = Map.ofEntries(
+    final private Map<Input.Key, Direction> keyDirectionMap = Map.ofEntries(
         Map.entry(Input.Key.UP, Direction.NORTH),
         Map.entry(Input.Key.DOWN, Direction.SOUTH),
         Map.entry(Input.Key.RIGHT, Direction.EAST),

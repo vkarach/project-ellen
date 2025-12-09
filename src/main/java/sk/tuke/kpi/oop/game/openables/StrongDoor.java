@@ -10,8 +10,10 @@ public class StrongDoor extends Door {
     private final Animation openDoorAnimation;
     private final Animation closeDoorAnimation;
     private boolean inMove = false;
+    private final Orientation orientation;
     public StrongDoor(String name, Orientation orientation) {
         super(name, orientation);
+        this.orientation =  orientation;
         if  (orientation == Orientation.HORIZONTAL) {
             openDoorAnimation = new Animation("sprites/hdoor_strong.png", 32, 16, 0.2f, Animation.PlayMode.ONCE);
             closeDoorAnimation = new Animation("sprites/hdoor_strong.png", 32, 16, 0.2f, Animation.PlayMode.ONCE_REVERSED);

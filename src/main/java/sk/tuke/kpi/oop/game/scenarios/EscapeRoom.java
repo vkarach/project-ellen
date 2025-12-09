@@ -3,7 +3,6 @@ package sk.tuke.kpi.oop.game.scenarios;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sk.tuke.kpi.gamelib.*;
-import sk.tuke.kpi.gamelib.actions.Action;
 import sk.tuke.kpi.gamelib.actions.ActionSequence;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.actions.Wait;
@@ -12,9 +11,6 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.gamelib.graphics.Color;
 import sk.tuke.kpi.gamelib.graphics.Font;
 import sk.tuke.kpi.oop.game.Direction;
-import sk.tuke.kpi.oop.game.Locker;
-import sk.tuke.kpi.oop.game.SpawnPoint;
-import sk.tuke.kpi.oop.game.Ventilator;
 import sk.tuke.kpi.oop.game.actions.Move;
 import sk.tuke.kpi.oop.game.behaviours.Behaviour;
 import sk.tuke.kpi.oop.game.behaviours.Observing;
@@ -26,20 +22,17 @@ import sk.tuke.kpi.oop.game.characters.Ripley;
 import sk.tuke.kpi.oop.game.controllers.KeeperController;
 import sk.tuke.kpi.oop.game.controllers.MovableController;
 import sk.tuke.kpi.oop.game.controllers.ShooterController;
-import sk.tuke.kpi.oop.game.items.AccessCard;
 import sk.tuke.kpi.oop.game.items.Ammo;
 import sk.tuke.kpi.oop.game.items.Energy;
 import sk.tuke.kpi.oop.game.openables.Door;
 
-import java.util.Arrays;
-import java.util.Random;
 
 
 public class EscapeRoom implements SceneListener {
-    Disposable moveDisposable;
-    Disposable keeperDisposable;
-    Disposable shooterDisposable;
-    Ripley ripley;
+    private Disposable moveDisposable;
+    private Disposable keeperDisposable;
+    private Disposable shooterDisposable;
+    private Ripley ripley;
     public static class Factory implements ActorFactory {
         @Nullable
         public Actor create(@Nullable String type, @Nullable String name) {

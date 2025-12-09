@@ -63,11 +63,11 @@ public class Speak<A extends Actor> implements Action<A> {
         if (scene == null) {
             return;
         }
-        if (index >= dialogue.lines.size()) {
+        if (index >= dialogue.getLines().size()) {
             done = true;
             return;
         }
-        Dialogue.Line line = dialogue.lines.get(index);
+        Dialogue.Line line = dialogue.getLines().get(index);
         if (timer == 0) {
             interval = line.time;
 //            oneKeyInterval = interval / line.text.length();
@@ -121,7 +121,7 @@ public class Speak<A extends Actor> implements Action<A> {
                 outputCount = 0;
                 timer = 0f;
                 index++;
-                if (index >= dialogue.lines.size()) {
+                if (index >= dialogue.getLines().size()) {
                     done = true;
                 }
                 return;

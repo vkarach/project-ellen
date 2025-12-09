@@ -8,11 +8,9 @@ import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.map.MapTile;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
-import sk.tuke.kpi.oop.game.actions.Move;
 import sk.tuke.kpi.oop.game.actions.MoveToPlace;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Ai {
     static Disposable catchingAction = null;
@@ -50,8 +48,8 @@ public class Ai {
 
         while (!queue.isEmpty()) {
             Cords cur = queue.remove();
-            int x = cur.x;
-            int y = cur.y;
+            int x = cur.getX();
+            int y = cur.getY();
             if (x ==  goalX && y == goalY) {
                 break;
             }
@@ -120,10 +118,16 @@ public class Ai {
     }
 }
 class Cords {
-    int x;
-    int y;
+    private final int x;
+    private final int y;
     public Cords(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
     }
 }

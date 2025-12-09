@@ -7,7 +7,7 @@ import sk.tuke.kpi.oop.game.openables.LockedDoor;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class AccessCard extends AbstractActor implements Collectible, Usable<LockedDoor> {
-    SoundUtil useSound = new SoundUtil("sounds/Interact_KeyCard.wav");
+    private final SoundUtil useSound = new SoundUtil("sounds/Interact_KeyCard.wav");
     public AccessCard() {
         Animation defaultAnimation = new Animation("sprites/key.png");
         setAnimation(defaultAnimation);

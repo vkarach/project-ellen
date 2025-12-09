@@ -10,7 +10,6 @@ import sk.tuke.kpi.oop.game.*;
 import sk.tuke.kpi.oop.game.controllers.PauseController;
 import sk.tuke.kpi.oop.game.items.Energy;
 import sk.tuke.kpi.oop.game.openables.StrongDoor;
-import sk.tuke.kpi.oop.game.story.Dialogue;
 import sk.tuke.kpi.oop.game.utils.*;
 import sk.tuke.kpi.oop.game.actions.MoveToPlace;
 import sk.tuke.kpi.oop.game.actions.Speak;
@@ -36,22 +35,21 @@ public class FinalMission implements SceneListener {
     private final SoundUtil ambientSound = new SoundUtil("sounds/ambient.wav");
     private final SoundUtil alarmSound = new SoundUtil("sounds/emergency_alarm.wav");
     private boolean showState = true;
-    private boolean firstMeating = false;
-    Scene scene;
+    private boolean firstMeeting = false;
+    private Scene scene;
 
-    MovableController movableController;
-    KeeperController keeperController;
-    ShooterController shooterController;
-    PauseController pauseController;
+    private MovableController movableController;
+    private KeeperController keeperController;
+    private ShooterController shooterController;
 
-    Disposable moveDisposable;
-    Disposable keeperDisposable;
-    Disposable shooterDisposable;
+    private Disposable moveDisposable;
+    private Disposable keeperDisposable;
+    private Disposable shooterDisposable;
 
-    Ripley ripley;
-    Mark mark;
-    Rocket rocket;
-    Helper helper;
+    private Ripley ripley;
+    private Mark mark;
+    private Rocket rocket;
+    private Helper helper;
     public static class Factory implements ActorFactory {
         private final List<Reactor> reactors = new ArrayList<>();
         @Nullable
@@ -161,7 +159,7 @@ public class FinalMission implements SceneListener {
         keeperController = new KeeperController(ripley);
         shooterController = new ShooterController(ripley);
 
-        pauseController = new PauseController(scene);
+        PauseController pauseController = new PauseController(scene);
         scene.getInput().registerListener(pauseController);
 
         enableControls();
@@ -188,8 +186,8 @@ public class FinalMission implements SceneListener {
 //        ripley.setSpeed(10);
 
         scene.getMessageBus().subscribe(Door.DOOR_OPENED, door -> {
-            if ("first door".equals(door.getName()) && !firstMeating) {
-                firstMeating = true;
+            if ("first door".equals(door.getName()) && !firstMeeting) {
+                firstMeeting = true;
                 scene.cancelActions(ripley);
                 Disposable cutscene = cutsceneApply(0.7f);
                 ripley.setSpeed(1);
@@ -216,7 +214,7 @@ public class FinalMission implements SceneListener {
                     new Invoke<>(() -> {
                         Ammo ammo = new Ammo();
                         scene.addActor(ammo, mark.getPosX(), mark.getPosY() - 10);
-                        cutsceneDisapply(cutscene, 1f);
+                        cutsceneDisapply(cutscene, 0.8f);
                         scene.follow(ripley);
                         ripley.setSpeed(2);
                     })
@@ -302,7 +300,7 @@ public class FinalMission implements SceneListener {
 
         shooterDisposable = scene.getInput().registerListener(shooterController);
     }
-    private int fovY = 300;
+    final private int fovY = 300;
     private Disposable cutsceneApply(float speed) {
 //        int blockSize = 500;
         showState = false;

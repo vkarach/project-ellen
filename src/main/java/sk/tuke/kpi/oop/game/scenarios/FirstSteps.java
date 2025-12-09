@@ -1,23 +1,10 @@
 package sk.tuke.kpi.oop.game.scenarios;
 
 import org.jetbrains.annotations.NotNull;
-import sk.tuke.kpi.gamelib.Actor;
-import sk.tuke.kpi.gamelib.GameApplication;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.SceneListener;
-import sk.tuke.kpi.gamelib.actions.ActionSequence;
 import sk.tuke.kpi.gamelib.actions.Invoke;
-import sk.tuke.kpi.gamelib.actions.Wait;
-import sk.tuke.kpi.gamelib.actions.When;
-import sk.tuke.kpi.gamelib.framework.Player;
-import sk.tuke.kpi.gamelib.framework.Scenario;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
-import sk.tuke.kpi.gamelib.graphics.Color;
-import sk.tuke.kpi.gamelib.graphics.Font;
-import sk.tuke.kpi.oop.game.Direction;
-import sk.tuke.kpi.oop.game.Movable;
-import sk.tuke.kpi.oop.game.actions.Move;
-import sk.tuke.kpi.oop.game.actions.Take;
 import sk.tuke.kpi.oop.game.actions.Use;
 import sk.tuke.kpi.oop.game.characters.Ripley;
 import sk.tuke.kpi.oop.game.controllers.KeeperController;
@@ -31,10 +18,10 @@ public class FirstSteps implements SceneListener { // extends Scenario
 
 //    Color customColor = new Color(0, 0, 0, 0);
 
-    Font whiteFont = new Font(fontSize, Color.WHITE, Font.Style.NORMAL);
-    Font greenFont = new Font(fontSize, Color.GREEN, Font.Style.NORMAL);
-    Font yellowFont = new Font(fontSize, Color.YELLOW, Font.Style.NORMAL);
-    Font redFont = new Font(fontSize, Color.RED, Font.Style.NORMAL);
+//    private Font whiteFont = new Font(fontSize, Color.WHITE, Font.Style.NORMAL);
+//    private Font greenFont = new Font(fontSize, Color.GREEN, Font.Style.NORMAL);
+//    private Font yellowFont = new Font(fontSize, Color.YELLOW, Font.Style.NORMAL);
+//    private Font redFont = new Font(fontSize, Color.RED, Font.Style.NORMAL);
 
 //    private void drawInterface(Scene scene) {
 //        scene.getGame().pushActorContainer(ripley.getBackpack());

@@ -26,12 +26,11 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         HORIZONTAL,
         VERTICAL
     }
-    public Orientation orientation;
-    private final String name;
+    private final Orientation orientation;
+
     public Door(String name, Orientation orientation) {
         super(name);
         this.orientation = orientation;
-        this.name = name;
         if (orientation == Orientation.HORIZONTAL) {
             openDoorAnimation = new Animation("sprites/hdoor.png", 32, 16, 0.1f, Animation.PlayMode.ONCE);
             closeDoorAnimation = new Animation("sprites/hdoor.png", 32, 16, 0.1f, Animation.PlayMode.ONCE_REVERSED);
@@ -63,19 +62,19 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         openSound.play(0.5f);
         getScene().getMessageBus().publish(DOOR_OPENED, this);
     }
-    public boolean canClose() {
-        for (Actor actor : getScene().getActors()) {
-            if (actor == this) {
-                continue;
-            }
+//    public boolean canClose() {
+//        for (Actor actor : getScene().getActors()) {
+//            if (actor == this) {
+//                continue;
+//            }
 //            if (MathUtils.rectangleActorHitbox(this).contains(actor.getPosX() +actor.getWidth() / 2, actor.getPosY() + actor.getHeight() / 2) ) {
 //                return false;
 //            }
-        }
-        return true;
-    }
+//        }
+//        return true;
+//    }
     public void close() {
-        if (!isOpen || getScene() == null || inMove || !canClose()) {
+        if (!isOpen || getScene() == null || inMove) {// || !canClose()) {
             return;
         }
         isOpen = false;

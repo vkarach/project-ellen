@@ -8,7 +8,7 @@ import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 
 public class Energy extends AbstractActor implements Usable<Alive> {
-    SoundUtil useSound = new SoundUtil("sounds/Interact_UseHealth.wav");
+    private final SoundUtil useSound = new SoundUtil("sounds/Interact_UseHealth.wav");
     private boolean isUsed = false;
     public Energy() {
         Animation defaultAnimation = new Animation("sprites/energy.png");

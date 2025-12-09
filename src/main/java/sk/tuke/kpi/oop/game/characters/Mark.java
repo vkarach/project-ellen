@@ -16,7 +16,7 @@ import sk.tuke.kpi.oop.game.utils.MathUtils;
 
 public class Mark extends AbstractActor implements Actor, Movable {
     public static final Topic<Mark> MY_JAGERMEISTER = Topic.create("Love my Jagermeister!", Mark.class);
-    Animation defaultAnimation = new Animation("sprites/mark.png", 32, 32);
+    private final Animation defaultAnimation = new Animation("sprites/mark.png", 32, 32);
     private int speed = 2;
     public Mark() {
         super("Mark");

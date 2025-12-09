@@ -8,7 +8,7 @@ import sk.tuke.kpi.oop.game.characters.Armed;
 import sk.tuke.kpi.oop.game.utils.PauseManager;
 
 public class ShooterController implements KeyboardListener {
-    Armed armedActor;
+    private final Armed armedActor;
     public ShooterController(Armed armedActor) {
         this.armedActor = armedActor;
     }

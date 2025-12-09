@@ -18,12 +18,11 @@ import sk.tuke.kpi.oop.game.items.Energy;
 import sk.tuke.kpi.oop.game.openables.Door;
 import sk.tuke.kpi.oop.game.openables.LockedDoor;
 
-import java.util.concurrent.locks.Lock;
 public class MissionImpossible implements SceneListener {
-    Disposable moveDisposable;
-    Disposable keeperDisposable;
-    Disposable leakDisposable;
-    Ripley ripley;
+    private Disposable moveDisposable;
+    private Disposable keeperDisposable;
+    private Disposable leakDisposable;
+    private Ripley ripley;
     public static class Factory implements ActorFactory {
         @Nullable
         public Actor create(@Nullable String type, @Nullable String name) {

@@ -6,7 +6,7 @@ import sk.tuke.kpi.gamelib.graphics.Font;
 import sk.tuke.kpi.gamelib.graphics.Overlay;
 
 public class PauseManager {
-    private static enum State {MENU, SETTINGS};
+    private enum State {MENU, SETTINGS}
     private static State state;
     private static Scene scene;
     private static boolean paused = false;

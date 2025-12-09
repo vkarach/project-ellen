@@ -14,12 +14,12 @@ import sk.tuke.kpi.oop.game.characters.Armed;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public class Bullet extends AbstractActor implements Movable, Fireable {
-    SoundUtil ricochetSound = new SoundUtil("sounds/ricochet.wav");
-    SoundUtil metalImpactSound = new SoundUtil("sounds/metal_Impact.wav");
+    private final SoundUtil ricochetSound = new SoundUtil("sounds/ricochet.wav");
+    private final SoundUtil metalImpactSound = new SoundUtil("sounds/metal_Impact.wav");
     private final SoundUtil AliveImpact = new SoundUtil("sounds/alien_impact.wav");
     private final SoundUtil shoot = new SoundUtil("sounds/pistol_fire.wav");
     private final SoundUtil cartridgeDrop = new SoundUtil("sounds/cartridge_drop.wav");
-    Animation defaultAnimation;
+    private final Animation defaultAnimation;
     public Bullet() {
         defaultAnimation = new Animation("sprites/bullet.png");
         setAnimation(defaultAnimation);

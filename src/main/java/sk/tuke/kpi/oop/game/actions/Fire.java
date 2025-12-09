@@ -14,10 +14,6 @@ import sk.tuke.kpi.oop.game.weapons.Fireable;
 public class Fire extends AbstractAction<Armed> {
     private final SoundUtil emptyGunShopSound = new SoundUtil("sounds/empty_gun_shop.wav");
     private boolean isDone = false;
-    @Override
-    public boolean isDone() {
-        return isDone;
-    }
     public void execute(float deltaTime) {
         if (isDone) {
             return;
@@ -43,14 +39,14 @@ public class Fire extends AbstractAction<Armed> {
         Direction direction = Direction.fromAngle(armedActor.getAnimation().getRotation());
         int bulletX = armedActor.getPosX() + ((armedActor.getWidth() / 2) - 10) + direction.getDx() * offset;
         int bulletY = armedActor.getPosY() + direction.getDy() * offset;
-        scene.addActor((Actor) bullet, bulletX, bulletY);
+        scene.addActor(bullet, bulletX, bulletY);
 
         float moveTime = 0.5f;
 
         new ActionSequence<>(
             new Move<>(direction, moveTime),
-            new Invoke<>(()->scene.removeActor((Actor) bullet))
-        ).scheduleFor((Movable) bullet);
+            new Invoke<>(()->scene.removeActor(bullet))
+        ).scheduleFor(bullet);
 
         setDone(true);
     }

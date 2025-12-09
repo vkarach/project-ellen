@@ -1,7 +1,5 @@
 package sk.tuke.kpi.oop.game.weapons;
 
-import sk.tuke.kpi.gamelib.Actor;
-import sk.tuke.kpi.oop.game.items.Ammo;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
 public abstract class Firearm {

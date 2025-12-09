@@ -9,8 +9,6 @@ import sk.tuke.kpi.oop.game.utils.PauseManager;
 import static sk.tuke.kpi.oop.game.Direction.fromXY;
 
 public class MoveToPlace<A extends Movable> implements Action<A> {
-    private float elapsedTime = 0;
-    private boolean isMoving = false;
     private final int destX;
     private final int destY;
     private boolean isDone = false;
@@ -39,7 +37,7 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
         actor.stoppedMoving();
     }
     public void reset() {
-        elapsedTime = 0;
+        float elapsedTime = 0;
     }
     public void execute(float deltaTime) {
         if (actor == null || isDone()) {
@@ -84,7 +82,7 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
             int dirY = Integer.compare(stepY, 0);
             Direction direction = fromXY(dirX, dirY);
             actor.startedMoving(direction);
-            isMoving = true;
+            boolean isMoving = true;
             if (destX == ax && destY == ay) {
                 setDone(true);
             }

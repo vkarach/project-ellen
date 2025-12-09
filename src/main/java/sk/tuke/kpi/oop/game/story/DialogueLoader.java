@@ -2,9 +2,8 @@ package sk.tuke.kpi.oop.game.story;
 
 import sk.tuke.kpi.oop.game.story.Dialogue;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+//import java.io.*;
+// import java.util.ArrayList;
 
 //package sk.tuke.kpi.oop.game.story;
 //
@@ -89,8 +88,8 @@ public final class DialogueLoader {
             if (s.startsWith("\"id\"")) {
                 String id = s.split(":")[1].replace("\"", "").replace(",", "").trim();
                 current = new Dialogue();
-                current.id = id;
-                current.lines = new ArrayList<>();
+                current.setId(id);
+                current.setLines(new ArrayList<>());
                 DATA.put(id, current);
             }
 
@@ -107,7 +106,7 @@ public final class DialogueLoader {
                 line.text = text;
                 line.time = time;
 
-                if (current != null) current.lines.add(line);
+                if (current != null) current.getLines().add(line);
             }
         }
     }

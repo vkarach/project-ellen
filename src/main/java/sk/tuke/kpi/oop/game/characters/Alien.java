@@ -20,10 +20,10 @@ import sk.tuke.kpi.oop.game.utils.SoundUtil;
 public class Alien extends AbstractActor implements Movable, Alive, Enemy {
     private final SoundUtil alienHit = new SoundUtil("sounds/alien_hit.wav");
     private final Behaviour<? super Alien> behaviour;
-    Animation defaultAnimation;
-    Animation alienDie;
+    private final Animation defaultAnimation;
+    private final Animation alienDie;
     private int speed = 1;
-    public Health health;
+    private Health health;
     public int maxHealth = 60;
     public Alien(Behaviour<? super Alien> behaviour) {
         this.behaviour = behaviour;
@@ -48,6 +48,13 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
             ).scheduleFor(this);
         });
         defaultAnimation.pause();
+    }
+    public Alien() {
+        this(null);
+    }
+    public Alien(Behaviour<? super Alien> behaviour, Health health) {
+        this(behaviour);
+        this.health = health;
     }
     @Override
     public Health getHealth() {

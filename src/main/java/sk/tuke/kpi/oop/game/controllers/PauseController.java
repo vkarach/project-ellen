@@ -9,10 +9,11 @@ import sk.tuke.kpi.gamelib.actions.While;
 import sk.tuke.kpi.oop.game.characters.Ripley;
 import sk.tuke.kpi.oop.game.utils.PauseManager;
 
-import static sk.tuke.kpi.oop.game.utils.PauseManager.drawPauseMenu;
+import java.util.Objects;
+
 
 public class PauseController implements KeyboardListener {
-    private Scene scene;
+    final private Scene scene;
     public PauseController(Scene scene) {
         this.scene = scene;
     }
@@ -23,9 +24,9 @@ public class PauseController implements KeyboardListener {
         if (key == Input.Key.P) {
             PauseManager.toggle();
             new While<>(
-                () -> PauseManager.isPaused(),
-                new Invoke<>(() -> drawPauseMenu())
-            ).scheduleFor(scene.getFirstActorByType(Ripley.class));
+                PauseManager::isPaused,
+                new Invoke<>(PauseManager::drawPauseMenu)
+            ).scheduleFor(Objects.requireNonNull(scene.getFirstActorByType(Ripley.class)));
         }
         else if (paused && key == Input.Key.UP) {
                 PauseManager.selectPrevious();
