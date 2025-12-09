@@ -9,13 +9,13 @@ public enum Direction {
     WEST(-1, 0, 90),
 
     NORTHEAST(1, 1, 315),
-    EASTSOUTH(1, -1, 225),
+    SOUTHEAST(1, -1, 225),
     SOUTHWEST(-1, -1, 135),
-    WESTNORTH(-1, 1, 45);
+    NORTHWEST(-1, 1, 45);
 
     private final int dx;
     private final int dy;
-    private final int angle;
+    private final float angle;
 
     Direction(int dx, int dy, int angle) {
         this.dx = dx;
@@ -50,7 +50,7 @@ public enum Direction {
     public int getDy() {
         return dy;
     }
-    public int getAngle() {
+    public float getAngle() {
         return angle;
     }
 }

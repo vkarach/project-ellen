@@ -13,7 +13,6 @@ import java.util.Set;
 
 public class MovableController implements KeyboardListener {
     private Move<Movable> moveAction;
-    private final Set<Input.Key> pressedKeys = new HashSet<>();
     private final Set<Direction> pressedDirections = new HashSet<>();
     private final Movable actor;
     final private Map<Input.Key, Direction> keyDirectionMap = Map.ofEntries(

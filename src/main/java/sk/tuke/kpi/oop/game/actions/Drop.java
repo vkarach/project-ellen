@@ -6,7 +6,7 @@ import sk.tuke.kpi.oop.game.Keeper;
 import sk.tuke.kpi.oop.game.items.Backpack;
 import sk.tuke.kpi.oop.game.items.Collectible;
 
-public class Drop<A extends Keeper<Collectible>> extends AbstractAction<A> {
+public class Drop<A extends Keeper> extends AbstractAction<A> {
     @Override
     public void execute(float deltaTime) {
         A  keeper = getActor();

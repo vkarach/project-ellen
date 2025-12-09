@@ -1,7 +1,10 @@
 package sk.tuke.kpi.oop.game.behaviours;
 
 import sk.tuke.kpi.gamelib.Actor;
-import sk.tuke.kpi.gamelib.actions.*;
+import sk.tuke.kpi.gamelib.actions.ActionSequence;
+import sk.tuke.kpi.gamelib.actions.Invoke;
+import sk.tuke.kpi.gamelib.actions.Wait;
+import sk.tuke.kpi.gamelib.actions.When;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
@@ -41,8 +44,8 @@ public class RandomlyMoving<A extends Movable> implements Behaviour<A> {
             Direction[] dirs = Arrays.stream(Direction.values())
                 .filter(d -> d != Direction.NONE)
                 .toArray(Direction[]::new);
-
             randDir = dirs[new Random().nextInt(dirs.length)];
+
             if (isWallInFront(actor, randDir)) {
                 continue;
             }
@@ -53,11 +56,9 @@ public class RandomlyMoving<A extends Movable> implements Behaviour<A> {
         int oldX = actor.getPosX();
         int oldY = actor.getPosY();
         actor.setPosition(actor.getPosX() + direction.getDx(), actor.getPosY() + direction.getDy());
-        if (actor.getScene() != null) {
-            if (actor.getScene().getMap().intersectsWithWall(actor)) {
-                actor.setPosition(oldX, oldY);
-                return true;
-            }
+        if (actor.getScene() != null && actor.getScene().getMap().intersectsWithWall(actor)) {
+            actor.setPosition(oldX, oldY);
+            return true;
         }
         return false;
     }

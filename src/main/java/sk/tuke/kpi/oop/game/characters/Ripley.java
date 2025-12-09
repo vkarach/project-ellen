@@ -12,12 +12,11 @@ import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Keeper;
 import sk.tuke.kpi.oop.game.Movable;
 import sk.tuke.kpi.oop.game.items.Backpack;
-import sk.tuke.kpi.oop.game.items.Collectible;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 import sk.tuke.kpi.oop.game.weapons.Firearm;
 import sk.tuke.kpi.oop.game.weapons.Gun;
 
-public class Ripley extends AbstractActor implements Actor, Movable, Alive, Armed, Keeper<Collectible> {
+public class Ripley extends AbstractActor implements Actor, Movable, Alive, Armed, Keeper {
     public static final Topic<Ripley> RIPLEY_DIED = Topic.create("ripley died", Ripley.class);
     private final SoundUtil footstepsSound = new SoundUtil("sounds/footsteps.wav");
     private int speed = 2;

@@ -23,10 +23,11 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
     private final Animation defaultAnimation;
     private final Animation alienDie;
     private int speed = 1;
-    private Health health;
-    private final int maxHealth = 60;
-    public Alien(Behaviour<? super Alien> behaviour) {
+    private final Health health;
+    private final int maxHealth;
+    public Alien(int maxHealth, Behaviour<? super Alien> behaviour) {
         this.behaviour = behaviour;
+        this.maxHealth = maxHealth;
         defaultAnimation = new Animation("sprites/alien.png", 32, 32, 0.1f, Animation.PlayMode.LOOP);
         alienDie = new Animation("sprites/alien_die.png", 32, 32, 0.1f, Animation.PlayMode.ONCE);
         setAnimation(defaultAnimation);
@@ -49,12 +50,11 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
         });
         defaultAnimation.pause();
     }
-    public Alien() {
-        this(null);
+    public Alien(Behaviour<? super Alien> behaviour) {
+        this(60, behaviour);
     }
-    public Alien(Behaviour<? super Alien> behaviour, Health health) {
-        this(behaviour);
-        this.health = health;
+    public Alien() {
+        this(60, null);
     }
     @Override
     public Health getHealth() {

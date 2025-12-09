@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.BufferedInputStream;
 
 public class SoundUtil {
-    private final Clip clip;
+    private Clip clip;
     private static float volumeCoef = 1f;
     private float localVolume = 1f;
     private static final java.util.List<SoundUtil> ALLSOUNDS = new java.util.ArrayList<>();
@@ -23,7 +23,7 @@ public class SoundUtil {
             ALLSOUNDS.add(this);
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            clip = null;
         }
     }
     private void setVolume(float volume) {
@@ -73,6 +73,9 @@ public class SoundUtil {
         System.out.println("updated all volumes at " + System.nanoTime());
     }
     public void play(float volume) {
+        if (clip == null) {
+            return;
+        }
         localVolume = volume;
         setVolume(localVolume * volumeCoef);
         clip.stop();
@@ -80,20 +83,32 @@ public class SoundUtil {
         clip.start();
     }
     public void play() {
+        if (clip == null) {
+            return;
+        }
         play(1f);
     }
     public void loop() {
+        if (clip == null) {
+            return;
+        }
         setVolume(localVolume  * volumeCoef);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
         clip.start();
     }
     public void loop(float volume) {
+        if (clip == null) {
+            return;
+        }
         localVolume = volume;
         setVolume(localVolume * volumeCoef);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
         clip.start();
     }
     public void stop() {
+        if (clip == null) {
+            return;
+        }
         clip.stop();
     }
 }

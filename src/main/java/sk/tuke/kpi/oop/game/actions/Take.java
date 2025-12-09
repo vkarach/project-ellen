@@ -10,7 +10,7 @@ import sk.tuke.kpi.oop.game.Keeper;
 import sk.tuke.kpi.oop.game.items.Collectible;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
-public class Take<A extends Keeper<Collectible>> extends AbstractAction<A>  {
+public class Take<A extends Keeper> extends AbstractAction<A>  {
     private final SoundUtil itemPickup = new SoundUtil("sounds/item_pickup.wav");
     @Override
     public void execute(float deltaTime) {

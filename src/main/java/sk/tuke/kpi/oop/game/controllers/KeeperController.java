@@ -5,7 +5,7 @@ import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.Input;
 import sk.tuke.kpi.gamelib.KeyboardListener;
 import sk.tuke.kpi.oop.game.Keeper;
-import sk.tuke.kpi.oop.game.Usable;
+import sk.tuke.kpi.oop.game.items.Usable;
 import sk.tuke.kpi.oop.game.actions.Drop;
 import sk.tuke.kpi.oop.game.actions.Take;
 import sk.tuke.kpi.oop.game.actions.Use;
@@ -14,9 +14,9 @@ import sk.tuke.kpi.oop.game.items.Collectible;
 import sk.tuke.kpi.oop.game.utils.PauseManager;
 
 public class KeeperController implements KeyboardListener {
-    private final Keeper<Collectible> keeper;
+    private final Keeper keeper;
 
-    public KeeperController(Keeper<Collectible> keeper) {
+    public KeeperController(Keeper keeper) {
         this.keeper = keeper;
     }
     @Override
@@ -58,6 +58,8 @@ public class KeeperController implements KeyboardListener {
                         }
                     }
                 }
+                break;
+            default:
                 break;
         }
     }

@@ -11,7 +11,7 @@ public class Backpack implements ActorContainer<Collectible> {
     private final String name;
     private final int capacity;
     private int size;
-    private final ArrayList<Collectible> items;
+    private final List<Collectible> items;
     public Backpack(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;

@@ -1,4 +1,6 @@
 package sk.tuke.kpi.oop.game.characters;
 
-public interface Enemy {
+import sk.tuke.kpi.gamelib.Actor;
+
+public interface Enemy extends Actor {
 }
