@@ -24,7 +24,7 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
     private final Animation alienDie;
     private int speed = 1;
     private Health health;
-    public int maxHealth = 60;
+    private final int maxHealth = 60;
     public Alien(Behaviour<? super Alien> behaviour) {
         this.behaviour = behaviour;
         defaultAnimation = new Animation("sprites/alien.png", 32, 32, 0.1f, Animation.PlayMode.LOOP);

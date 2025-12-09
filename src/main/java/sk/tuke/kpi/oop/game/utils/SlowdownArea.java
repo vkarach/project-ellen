@@ -15,9 +15,9 @@ import java.util.Map;
 
 public class SlowdownArea extends AbstractActor {
     private final Map<Movable, Integer> originalSpeeds = new HashMap<>();
-    final int areaWidth;
-    final int areaHeight;
-    Rectangle rectangle;
+    private final int areaWidth;
+    private final int areaHeight;
+    private Rectangle rectangle;
     public SlowdownArea(int areaWidth, int areaHeight) {
         Animation defaultAnimation = new Animation("sprites/invisible.png");
         setAnimation(defaultAnimation);
