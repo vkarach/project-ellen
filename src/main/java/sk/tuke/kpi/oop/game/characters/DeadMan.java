@@ -8,4 +8,8 @@ public class DeadMan extends AbstractActor {
         Animation defaultAnimation = new Animation("sprites/body.png");
         setAnimation(defaultAnimation);
     }
+    public DeadMan(boolean storyDeadMan) {
+        Animation defaultAnimation = new Animation("sprites/dead_man.png");
+        setAnimation(defaultAnimation);
+    }
 }

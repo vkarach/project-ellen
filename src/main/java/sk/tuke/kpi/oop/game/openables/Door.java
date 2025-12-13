@@ -16,6 +16,7 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
     public static final Topic<Door> DOOR_OPENED = Topic.create("door opened", Door.class);
     public static final Topic<Door> DOOR_CLOSED = Topic.create("door closed", Door.class);
     private boolean isOpen = false;
+    private boolean playSound = true;
 //    private boolean inMove = false;
     private final Animation openDoorAnimation;
     private final Animation closeDoorAnimation;
@@ -58,7 +59,9 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
 //        ).scheduleFor(this);
 
         openDoorAnimation.play();
-        openSound.play(0.5f);
+        if (playSound) {
+            openSound.play(0.5f);
+        }
         if (getScene() != null) {
             getScene().getMessageBus().publish(DOOR_OPENED, this);
         }
@@ -72,16 +75,32 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         setAnimation(closeDoorAnimation);
         closeDoorAnimation.resetToFirstFrame();
         closeDoorAnimation.play();
-        closeSound.play(0.5f);
+        if (playSound) {
+            closeSound.play(0.5f);
+        }
 
-//        inMove = true;
-//        new ActionSequence<>(
-//            new Wait<>(closeDoorAnimation.getFrameCount() * closeDoorAnimation.getFrameDuration()),
-//            new Invoke<>(()->inMove = false)
-//        ).scheduleFor(this);
-//
         if (getScene() != null) {
             getScene().getMessageBus().publish(DOOR_CLOSED, this);
+        }
+    }
+    public void close(boolean sound) {
+        if (!sound) {
+            playSound = false;
+            close();
+            playSound = true;
+        }
+        else {
+            close();
+        }
+    }
+    public void open(boolean sound) {
+        if (!sound) {
+            playSound = false;
+            open();
+            playSound = true;
+        }
+        else {
+            open();
         }
     }
     @Override

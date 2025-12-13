@@ -8,9 +8,17 @@ import sk.tuke.kpi.oop.game.items.Usable;
 
 public class Locker extends AbstractActor implements Usable<Ripley> {
     private boolean used;
+    public enum Type {TYPE1, TYPE2}
     public Locker() {
         Animation defaultAnimation = new Animation("sprites/locker.png");
         setAnimation(defaultAnimation);
+    }
+    public Locker(Type type) {
+        this();
+        if (type == Type.TYPE2) {
+            Animation defaultAnimation = new Animation("sprites/locker_type2.png");
+            setAnimation(defaultAnimation);
+        }
     }
     @Override
     public void useWith(Ripley actor) {

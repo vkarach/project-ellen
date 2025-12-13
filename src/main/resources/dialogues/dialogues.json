@@ -30,8 +30,12 @@
     {
       "id": "no_time_to_explain",
       "lines": [
-        { "speaker": "Mark", "text": "What is happening? Why is the siren sounding? What have you done?", "time": 2 },
-        { "speaker": "Ellen", "text": "There is no time to explain, everything is about to blow up! Let's run to the rocket!", "time": 2 }
+        { "speaker": "Mark", "text": "What is happening?", "time": 1 },
+        { "speaker": "Mark", "text": "Why is the siren sounding?", "time": 1 },
+        { "speaker": "Mark", "text": "What have you done?", "time": 1 },
+        { "speaker": "Ellen", "text": "There is no time to explain.", "time": 1 },
+        { "speaker": "Ellen", "text": "Everything is about to blow up!", "time": 1 },
+        { "speaker": "Ellen", "text": "Let's run to the rocket!", "time": 1 }
       ]
     }
   ]

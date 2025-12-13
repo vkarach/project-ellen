@@ -4,4 +4,7 @@ public interface Switchable {
     void turnOn();
     void turnOff();
     boolean isOn();
+    default String getName() {
+        return "";
+    }
 }

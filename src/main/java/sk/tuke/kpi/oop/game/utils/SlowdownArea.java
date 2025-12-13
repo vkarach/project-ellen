@@ -36,7 +36,9 @@ public class SlowdownArea extends AbstractActor {
                         if (rectangle.intersects(movable.getPosX(), movable.getPosY(), movable.getWidth(), movable.getHeight())) {
                             if (!originalSpeeds.containsKey(movable)) {
                                 originalSpeeds.put(movable, movable.getSpeed());
-                                movable.setSpeed(movable.getSpeed() / 2);
+                                if (movable.getSpeed() > 1) {
+                                    movable.setSpeed(movable.getSpeed() / 2);
+                                }
                             }
                         }
                         else {

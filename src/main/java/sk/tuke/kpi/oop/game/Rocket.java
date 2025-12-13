@@ -11,7 +11,7 @@ import sk.tuke.kpi.oop.game.utils.Helper;
 import sk.tuke.kpi.oop.game.utils.PauseManager;
 import sk.tuke.kpi.oop.game.utils.SoundUtil;
 
-public class Rocket extends AbstractActor {
+public class Rocket extends AbstractActor implements Movable {
     private final SoundUtil flySound = new SoundUtil("sounds/rocket_fly.wav");
     private final Animation defaultAnimation;
     private final Animation flyAnimation;
@@ -58,5 +58,10 @@ public class Rocket extends AbstractActor {
     }
     public void stopFly() {
         setAnimation(defaultAnimation);
+    }
+
+    @Override
+    public int getSpeed() {
+        return 2;
     }
 }

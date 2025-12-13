@@ -95,7 +95,7 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
                 for (Actor actor : scene.getActors()) {
                     if (!(actor instanceof Enemy) && actor instanceof Alive) {
                         Alive aliveActor = (Alive) actor;
-                        if (canHit && this.intersects(actor) || MathUtils.distanceBetween(aliveActor, this) < 10) {
+                        if (canHit && aliveActor.getHealth().getValue() > 0 && (this.intersects(actor) || MathUtils.distanceBetween(aliveActor, this) < 10)) {
                             aliveActor.getHealth().drain(25);
                             alienHit.play();
                             canHit = false;

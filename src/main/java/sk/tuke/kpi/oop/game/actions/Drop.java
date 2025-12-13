@@ -27,7 +27,10 @@ public class Drop<A extends Keeper> extends AbstractAction<A> {
         }
         keepersBackpack.remove(firstItem);
         Scene scene = keeper.getScene();
-        scene.addActor(firstItem, keeper.getPosX(), keeper.getPosY());
+        if (scene != null) {
+            scene.addActor(firstItem, keeper.getPosX(), keeper.getPosY());
+            firstItem.dropping();
+        }
         isDone = true;
     }
 }

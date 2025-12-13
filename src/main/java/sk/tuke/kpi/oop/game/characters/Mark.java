@@ -35,7 +35,7 @@ public class Mark extends AbstractActor implements Actor, Movable {
         defaultAnimation.setRotation(direction.getAngle());
         defaultAnimation.play();
     }
-    public void stopMoving() {
+    public void stoppedMoving() {
         defaultAnimation.pause();
     }
     @Override

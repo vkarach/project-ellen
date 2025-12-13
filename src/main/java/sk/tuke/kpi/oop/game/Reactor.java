@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
+import sk.tuke.kpi.gamelib.graphics.Overlay;
 import sk.tuke.kpi.oop.game.actions.PerpetualReactorHeating;
 
 import java.util.HashSet;
@@ -184,12 +185,33 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
         device.setPowered(false);
         devices.remove(device);
     }
+    public void showInfo(int x, int y, int width, int height) {
+        if (getScene() == null) {
+            return;
+        }
+        Overlay overlay = getScene().getOverlay();
 
+        int pad = 16;
+
+        overlay.drawText(
+        "status: " + (isOn ? "on" : "off"),
+            x, y
+        );
+
+        overlay.drawText(
+            "temperature: " + temperature,
+            x, y - pad
+        );
+
+        overlay.drawText(
+            "damage: " + damage,
+            x, y - pad * 2
+        );
+    }
     @Override
     public void addedToScene(@NotNull Scene scene) {
         super.addedToScene(scene);
         scene.scheduleAction(new PerpetualReactorHeating(1), this);
     }
-
 }
 

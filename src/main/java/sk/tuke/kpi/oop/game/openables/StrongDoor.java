@@ -1,12 +1,14 @@
 package sk.tuke.kpi.oop.game.openables;
 
+import sk.tuke.kpi.gamelib.Actor;
 import sk.tuke.kpi.gamelib.actions.ActionSequence;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.actions.Wait;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.gamelib.map.MapTile;
+import sk.tuke.kpi.oop.game.Switchable;
 
-public class StrongDoor extends Door {
+public class StrongDoor extends Door implements Switchable {
     private final Animation openDoorAnimation;
     private final Animation closeDoorAnimation;
     private boolean inMove = false;
@@ -76,4 +78,18 @@ public class StrongDoor extends Door {
         closeDoorAnimation.resetToFirstFrame();
         closeDoorAnimation.play();
     }
+    @Override
+    public void turnOn() {
+        open();
+    }
+    @Override
+    public void turnOff() {
+        close();
+    }
+    public boolean isOn() {
+        return isOpen();
+    }
+    @Override
+    public void useWith(Actor actor) {}
+
 }
