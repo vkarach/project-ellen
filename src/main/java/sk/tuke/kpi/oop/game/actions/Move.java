@@ -77,13 +77,14 @@ public class Move<A extends Movable> implements Action<A> {
         int dX = direction.getDx();
         int dY = direction.getDy();
         float divider = 1;
-        if (dX != 0 && dY != 0) {
+        if (dX != 0 && dY != 0 && actor == null) {
             divider = 1.5f;
         }
         int speed = actor.getSpeed();
 
         int oldX = actor.getPosX();
         int oldY = actor.getPosY();
+
         posX += dX * speed / divider;
         posY += dY * speed / divider;
 
