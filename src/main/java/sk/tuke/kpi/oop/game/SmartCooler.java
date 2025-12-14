@@ -5,7 +5,7 @@ import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 
 public class SmartCooler extends Cooler {
-    public boolean cool = false;
+    private boolean cool = false;
     public SmartCooler(Reactor reactor) {
         super(reactor);
     }
