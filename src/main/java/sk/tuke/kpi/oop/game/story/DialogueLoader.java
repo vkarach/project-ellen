@@ -1,61 +1,5 @@
 package sk.tuke.kpi.oop.game.story;
 
-import sk.tuke.kpi.oop.game.story.Dialogue;
-
-//import java.io.*;
-// import java.util.ArrayList;
-
-//package sk.tuke.kpi.oop.game.story;
-//
-//import com.google.gson.Gson;
-//import java.io.InputStream;
-//import java.io.InputStreamReader;
-//import java.nio.charset.StandardCharsets;
-//import java.util.*;
-//
-//public class DialogueLoader {
-//
-//    private static final Map<String, Dialogue> dialogues = new HashMap<>();
-//
-//    private static class DialogueFile {
-//        List<Dialogue> dialogues;
-//    }
-//
-//    public static void loadAll() {
-//        dialogues.clear();
-//
-//        try {
-//            InputStream is = DialogueLoader.class.getResourceAsStream("/dialogues/dialogues.json");
-//            if (is == null) {
-//                System.out.println("dialogues.json not found!");
-//                return;
-//            }
-//
-//            var reader = new InputStreamReader(is, StandardCharsets.UTF_8);
-//            var gson = new Gson();
-//
-//            DialogueFile file = gson.fromJson(reader, DialogueFile.class);
-//
-//            if (file == null || file.dialogues == null) {
-//                System.out.println("dialogues.json malformed");
-//                return;
-//            }
-//
-//            for (Dialogue d : file.dialogues) {
-//                dialogues.put(d.id, d);
-//                System.out.println("Loaded dialogue: " + d.id);
-//            }
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public static Dialogue get(String id) {
-//        return dialogues.get(id);
-//    }
-//}
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -63,11 +7,11 @@ import java.util.*;
 public final class DialogueLoader {
     private static final Map<String, Dialogue> DATA = new HashMap<>();
 
-    private DialogueLoader() {}
-
     public static void load(String resource) throws IOException {
         InputStream in = DialogueLoader.class.getClassLoader().getResourceAsStream(resource);
-        if (in == null) throw new FileNotFoundException("Resource not found: " + resource);
+        if (in == null) {
+            throw new FileNotFoundException("Resource not found: " + resource);
+        }
 
         BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         List<String> lines = br.lines().collect(java.util.stream.Collectors.toList());
@@ -106,17 +50,23 @@ public final class DialogueLoader {
                 line.text = text;
                 line.time = time;
 
-                if (current != null) current.getLines().add(line);
+                if (current != null) {
+                    current.getLines().add(line);
+                }
             }
         }
     }
 
     private static String extract(String json, String key) {
         int i = json.indexOf("\"" + key + "\"");
-        if (i == -1) return null;
+        if (i == -1) {
+            return null;
+        }
 
         int colon = json.indexOf(":", i) + 1;
-        while (colon < json.length() && json.charAt(colon) == ' ') colon++;
+        while (colon < json.length() && json.charAt(colon) == ' ') {
+            colon++;
+        }
 
         if (json.charAt(colon) == '"') {
             int end = json.indexOf('"', colon + 1);
@@ -124,7 +74,9 @@ public final class DialogueLoader {
         }
 
         int end = colon;
-        while (end < json.length() && "0123456789.".indexOf(json.charAt(end)) >= 0) end++;
+        while (end < json.length() && "0123456789.".indexOf(json.charAt(end)) >= 0) {
+            end++;
+        }
         return json.substring(colon, end);
     }
 }

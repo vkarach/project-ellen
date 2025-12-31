@@ -12,7 +12,9 @@ public class SoundUtil {
     public SoundUtil(String path) {
         try {
             InputStream raw = SoundUtil.class.getClassLoader().getResourceAsStream(path);
-            if (raw == null) throw new RuntimeException("File not found: " + path);
+            if (raw == null) {
+                throw new RuntimeException("File not found: " + path);
+            }
 
             BufferedInputStream buf = new BufferedInputStream(raw);
             AudioInputStream in = AudioSystem.getAudioInputStream(buf);
@@ -70,7 +72,7 @@ public class SoundUtil {
         for (SoundUtil sound : ALLSOUNDS) {
             sound.updateVolume();
         }
-        System.out.println("updated all volumes at " + System.nanoTime());
+//        System.out.println("updated all volumes at " + System.nanoTime());
     }
     public void play(float volume) {
         if (clip == null) {

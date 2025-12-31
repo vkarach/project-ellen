@@ -75,20 +75,7 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
         int ay = actor.getPosY();
 
         int speed = actor.getSpeed();
-//
-//        int diffX = destX - ax;
-//        int stepX = 0;
-//        if (diffX != 0) {
-//            int abs = Math.abs(diffX);
-//            stepX = (diffX > 0 ? 1 : -1) * Math.min(abs, speed);
-//        }
-//
-//        int diffY = destY - ay;
-//        int stepY = 0;
-//        if (stepX == 0 && diffY != 0) {
-//            int abs = Math.abs(diffY);
-//            stepY = (diffY > 0 ? 1 : -1) * Math.min(abs, speed);
-//        }
+
         int dx = destX - ax;
         int dy = destY - ay;
 
@@ -96,7 +83,6 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
         int stepY = 0;
 
         switch (type) {
-
             case FirstX:
                 stepX = step1D(dx, speed);
 
@@ -106,7 +92,6 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
                     stepY = 0;
                 }
                 break;
-
             case FirstY:
                 stepY = step1D(dy, speed);
 
@@ -122,7 +107,8 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
                     int s = Math.min(Math.min(Math.abs(dx), Math.abs(dy)), speed);
                     stepX = Integer.signum(dx) * s;
                     stepY = Integer.signum(dy) * s;
-                } else {
+                }
+                else {
                     stepX = step1D(dx, speed);
                     stepY = step1D(dy, speed);
                 }

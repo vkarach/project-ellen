@@ -32,7 +32,7 @@ public class Ripley extends AbstractActor implements Actor, Movable, Alive, Arme
         setAnimation(moveAnimation);
         moveAnimation.pause();
         health = new Health(100);
-        this.backpack = new Backpack("Ripley's backpack", 2);
+        this.backpack = new Backpack("Ripley's backpack", 5);
         this.weapon = new Gun(0, 500);
         health.onFatigued(() -> {
             Scene scene = getScene();

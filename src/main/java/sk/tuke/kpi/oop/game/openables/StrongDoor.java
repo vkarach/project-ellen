@@ -26,7 +26,7 @@ public class StrongDoor extends Door implements Switchable {
         }
         closeDoorAnimation.setScale(2);
         openDoorAnimation.setScale(2);
-        setAnimation(closeDoorAnimation);
+        setAnimation(openDoorAnimation);
         openDoorAnimation.pause();
     }
     @Override
@@ -91,5 +91,4 @@ public class StrongDoor extends Door implements Switchable {
     }
     @Override
     public void useWith(Actor actor) {}
-
 }

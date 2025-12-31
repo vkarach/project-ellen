@@ -43,6 +43,14 @@ public enum Direction {
         }
         return NONE;
     }
+    public static Direction byName(String name) {
+        for (Direction dir : values()) {
+            if (dir.name().equalsIgnoreCase(name)) {
+                return dir;
+            }
+        }
+        return NONE;
+    }
 
     public int getDx() {
         return dx;

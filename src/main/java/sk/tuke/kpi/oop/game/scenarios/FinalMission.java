@@ -7,10 +7,11 @@ import sk.tuke.kpi.gamelib.actions.*;
 import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Color;
 import sk.tuke.kpi.gamelib.graphics.Font;
+import sk.tuke.kpi.gamelib.graphics.TextLayout;
 import sk.tuke.kpi.oop.game.*;
 import sk.tuke.kpi.oop.game.controllers.PauseController;
-import sk.tuke.kpi.oop.game.items.Energy;
-import sk.tuke.kpi.oop.game.openables.StrongDoor;
+import sk.tuke.kpi.oop.game.items.*;
+import sk.tuke.kpi.oop.game.openables.*;
 import sk.tuke.kpi.oop.game.utils.*;
 import sk.tuke.kpi.oop.game.actions.MoveToPlace;
 import sk.tuke.kpi.oop.game.actions.Speak;
@@ -20,10 +21,6 @@ import sk.tuke.kpi.oop.game.characters.*;
 import sk.tuke.kpi.oop.game.controllers.KeeperController;
 import sk.tuke.kpi.oop.game.controllers.MovableController;
 import sk.tuke.kpi.oop.game.controllers.ShooterController;
-import sk.tuke.kpi.oop.game.items.Ammo;
-import sk.tuke.kpi.oop.game.openables.AutoDoor;
-import sk.tuke.kpi.oop.game.openables.Door;
-import sk.tuke.kpi.oop.game.openables.LockedDoor;
 import sk.tuke.kpi.oop.game.story.DialogueLoader;
 
 import java.io.IOException;
@@ -39,6 +36,7 @@ public class FinalMission implements SceneListener {
     private boolean showState = true;
     private boolean firstMeeting = false;
     private boolean kill137 = false;
+    private boolean finalCatScene = false;
     private Scene scene;
 
     private MovableController movableController;
@@ -48,6 +46,8 @@ public class FinalMission implements SceneListener {
     private Disposable moveDisposable;
     private Disposable keeperDisposable;
     private Disposable shooterDisposable;
+
+    private Disposable alarmDisposable;
 
     private Ripley ripley;
     private Mark mark;
@@ -89,7 +89,8 @@ public class FinalMission implements SceneListener {
                     return new AutoDoor(name, orientation);
                 }
                 else if (name.contains("strong")) {
-                    StrongDoor strongDoor = new StrongDoor(name, orientation);
+//                    StrongDoor strongDoor = new StrongDoor(name, orientation);
+                    BrokenStrongDoor strongDoor = new BrokenStrongDoor(name, orientation);
                     switchables.add(strongDoor);
                     return strongDoor;
                 }
@@ -148,8 +149,14 @@ public class FinalMission implements SceneListener {
                 }
 
             }
-            else if (name.equals("locker")) {
-                return new Locker(Locker.Type.TYPE2);
+            else if (name.contains("locker")) {
+                String[] parts = name.split(" ");
+
+                String itemName = parts[0];
+                Locker.Type lockType = Locker.Type.TYPE2;
+                Direction direction = Direction.byName(type);
+
+                return new Locker(lockType, itemName, direction);
             }
             else if (name.equals("computer")) {
                 return new Computer();
@@ -201,39 +208,22 @@ public class FinalMission implements SceneListener {
 
         enableControls();
 
-        Ammo ammo1 = new Ammo();
-        scene.addActor(ammo1, ripley.getPosX(), ripley.getPosY());
-
-//        AccessCard accessCard = new AccessCard();
-//        scene.addActor(accessCard, ripley.getPosX(), ripley.getPosY());
-
-//        Explode explosion = new Explode(Explode.Size.BIG);
-//        scene.addActor(explosion, ripley.getPosX(), ripley.getPosY());
-
         Reactor reactor = scene.getFirstActorByType(Reactor.class);
         Computer computer = scene.getFirstActorByType(Computer.class);
         if (computer != null && reactor != null) {
             reactor.addDevice(computer);
-            ripley.setPosition(computer.getPosX(), computer.getPosY() - 32);
-
+//            ripley.setPosition(computer.getPosX(), computer.getPosY() - 32);
+//            AccessCard accessCard = new AccessCard();
+//            scene.addActor(accessCard, ripley.getPosX(), ripley.getPosY());
         }
 
-//        AlienEgg alienEgg = new AlienEgg();
-//        scene.addActor(alienEgg,  ripley.getPosX(), ripley.getPosY());
+        // final cat scene test
 //        kill137 = true;
-//        LockedDoor lockedDoort = (LockedDoor) scene.getFirstActorByName("first locked door");
-//        if (lockedDoort != null) {
-//            lockedDoort.close(false);
-//            ripley.setPosition(lockedDoort.getPosX(), lockedDoort.getPosY() - 32);
-//        }
-//        firstDoor.open(false);
-//
+//        LockedDoor lockedDoor1 = (LockedDoor) scene.getFirstActorByName("first locked door");
+//        firstDoor.open();
+//        ripley.setPosition(lockedDoor1.getPosX(), lockedDoor1.getPosY() - 32);
 //        AccessCard accessCard = new AccessCard();
 //        scene.addActor(accessCard, ripley.getPosX(), ripley.getPosY());
-        Paper paper = scene.getFirstActorByType(Paper.class);
-        if (paper != null) {
-//            ripley.setPosition(paper.getPosX(), paper.getPosY() - 32);
-        }
 
 
         scene.getMessageBus().subscribe(Door.DOOR_OPENED, door -> {
@@ -270,7 +260,16 @@ public class FinalMission implements SceneListener {
                 ).scheduleFor(ripley);
             }
             else if ("first locked door".equals(door.getName()) && kill137) {
+                finalCatScene = true;
+                for (Actor actor : scene.getActors()) {
+                    if (actor instanceof Reactor) {
+                        System.out.println("set Damage");
+                        ((Reactor) actor).increaseTemperature(6000);
+                    }
+                }
                 cutsceneApply(0.7f);
+                Disposable[] finalAction = {null, null};
+                finalAction[0] =
                 new ActionSequence<>(
                     new MoveToPlace<>(mark.getPosX(), mark.getPosY() - 32),
                     new Speak<>(DialogueLoader.get("no_time_to_explain")),
@@ -284,14 +283,21 @@ public class FinalMission implements SceneListener {
                     new MoveToPlace<>(rocket.getPosX() + 16, rocket.getPosY() - 16),
                     new Wait<>(0.4f),
                     new Invoke<>(() -> {
-//                        scene.removeActor(ripley);
+                        ripley.setPosition(ripley.getPosX(), ripley.getPosY() + 1000); // where?
                         scene.removeActor(mark);
+                        scene.follow(rocket);
                         rocket.fly(scene);
+                        stopAlarm(alarmDisposable);
                     }),
-                    new Invoke<>(() ->
-                        new Loop<>(
+                    new Invoke<>(() -> {
+                        for (Actor actor : scene.getActors()) {
+                            if (actor instanceof Alien) {
+                                scene.removeActor(actor);
+                            }
+                        }
+                        finalAction[1] = new Loop<>(
                             new ActionSequence<>(
-                                new Invoke<>(()->{
+                                new Invoke<>(() -> {
                                     Explode explosion = new Explode();
                                     int rx = randomNumber(rocket.getPosX(), rocket.getPosX() + (int) (800 * scene.getCamera().zoom / 2));
                                     int ry = randomNumber(rocket.getPosY(), rocket.getPosY() - (int) (600 * scene.getCamera().zoom / 2));
@@ -299,9 +305,41 @@ public class FinalMission implements SceneListener {
                                 }),
                                 new Wait<>(1)
                             )
-                        ).scheduleFor(rocket)
-                    )
+                        ).scheduleFor(rocket);
+                    })
                 ).scheduleFor(ripley);
+
+                new When<>(
+                    rocket::isFlying,
+                    new ActionSequence<>(
+                        new Wait<>(13),
+                        new Invoke<>(()->{
+                            ambientSound.stop();
+                            finalAction[0].dispose();
+                            finalAction[1].dispose();
+                            rocket.stopFly();
+                            scene.getCamera().zoom = 1;
+                            int width = scene.getGame().getWindowSetup().getWidth();
+                            int heigh = scene.getGame().getWindowSetup().getHeight();
+
+                            stopAlarm(alarmDisposable);
+
+                            scene.getGame().getOverlay().drawRectangle(0,0, width, heigh, Color.BLACK).showFor(Float.MAX_VALUE);
+
+                            Font font = new Font(32, Color.BLACK, Font.Style.BOLD);
+                            String text = "Good job You did it!";
+                            TextLayout layout = new TextLayout(text, font);
+                            float textW = layout.getWidth();
+                            float textH = layout.getHeight();
+
+                            int x = (int) (width / 2f - textW / 2f);
+                            int y = (int) (heigh / 2f - textH / 2f);
+
+                            scene.getGame().getOverlay().drawText(text, x, y).showFor(Float.MAX_VALUE);
+
+                        })
+                    )
+                ).scheduleFor(rocket);
             }
         });
         scene.getMessageBus().subscribe(Mark.MY_JAGERMEISTER, mark -> {
@@ -312,33 +350,48 @@ public class FinalMission implements SceneListener {
             ).scheduleFor(ripley);
         });
 
-        Disposable[] alarm = {null};
         int[] timer = {40};
         scene.getMessageBus().subscribe(Computer.KILL137, c -> {
-            if (alarm[0] == null) {
+            if (alarmDisposable == null) {
                 kill137 = true;
                 LockedDoor lockedDoor = (LockedDoor) scene.getFirstActorByName("first locked door");
                 if (lockedDoor != null) {
                     lockedDoor.close(false);
                 }
                 firstDoor.open(false);
-                alarm[0] = startAlarm();
+
+                alarmDisposable = startAlarm();
+
                 new While<>(
                     () -> timer[0] > 0,
                     new Invoke<>(() -> {
+                        if (finalCatScene) {
+                            return;
+                        }
                         scene.getGame().getOverlay().drawText(
-                            "timer: " + timer[0],
-                            100, 100,
+                            "time: " + timer[0],
+                            scene.getGame().getWindowSetup().getWidth() / 2,
+                            scene.getGame().getWindowSetup().getHeight() - 16,
                             new Font(18, Color.WHITE)
                         );
                     })
                 ).scheduleFor(c);
-                new While<>(
-                    () -> timer[0] > 0,
-                    new ActionSequence<>(
-                        new Wait<>(1),
-                        new Invoke<>(() -> timer[0]--)
-                    )
+
+                 new ActionSequence<>(
+                    new While<>(
+                        () -> timer[0] > 0,
+                        new ActionSequence<>(
+                            new Wait<>(1),
+                            new Invoke<>(() -> timer[0]--)
+                        )
+                    ),
+                    new Invoke<>(()->{
+                        if (!rocket.isFlying()) {
+                            Explode explode = new Explode(Explode.Size.BIG);
+                            scene.addActor(explode, ripley.getPosX() - ripley.getWidth(), ripley.getPosY() - ripley.getHeight());
+                            ripley.getHealth().exhaust();
+                        }
+                    })
                 ).scheduleFor(c);
             }
         });
@@ -353,17 +406,23 @@ public class FinalMission implements SceneListener {
                 ((Alien) actor).showHealth();
             }
         }
-        Reactor reactor = (Reactor) scene.getFirstActorByName("reactor4");
-        reactor.showInfo(reactor.getPosX(), reactor.getPosY(), 0,0);
+//        Reactor reactor = (Reactor) scene.getFirstActorByName("reactor4");
+//        reactor.showInfo(reactor.getPosX(), reactor.getPosY(), 0,0);
     }
     private void disableControls() {
-        moveDisposable.dispose();
+        if (moveDisposable != null) {
+            moveDisposable.dispose();
+        }
         moveDisposable = null;
 
-        keeperDisposable.dispose();
+        if (keeperDisposable != null) {
+            keeperDisposable.dispose();
+        }
         keeperDisposable = null;
 
-        shooterDisposable.dispose();
+        if (shooterDisposable != null) {
+            shooterDisposable.dispose();
+        }
         shooterDisposable = null;
     }
     private void enableControls() {
@@ -412,30 +471,32 @@ public class FinalMission implements SceneListener {
                 new Invoke<>(() -> {
                     draw[0] = !draw[0];
 
-                    if (draw[0]) {
+                    if (draw[0] && !rocket.isFlying()) {
                         new While<>(
                             ()->draw[0],
-                            new Invoke<>(() ->
+                            new Invoke<>(() -> {
+                                if (rocket.isFlying()) {
+                                    return;
+                                }
                                 scene.getGame().getOverlay().drawRectangle(
-                                    0,0,
+                                    0, 0,
                                     scene.getGame().getWindowSetup().getWidth(),
                                     scene.getGame().getWindowSetup().getHeight(),
                                     new Color(1, 0, 0, 0.3f)
-                                )
-                            )
+                                );
+                            })
                         ).scheduleFor(ripley);
                         alarmSound.play(0.5f);
                     }
-//                    else {
-//                        alarmSound.stop();
-//                    }
                 }),
                 new Wait<>(1f)
             )
         ).scheduleFor(ripley);
     }
     private void stopAlarm(Disposable alarm) {
-        alarm.dispose();
+        if (alarm != null) {
+            alarm.dispose();
+        }
         alarmSound.stop();
     }
 }

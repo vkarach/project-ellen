@@ -15,7 +15,8 @@
         { "speaker": "Ellen", "text": "And what i receive for that?", "time":  0.75 },
         { "speaker": "Mark",  "text": "I can give you an access card.", "time":  0.75 },
         { "speaker": "Mark",  "text": "With it you can open closed doors", "time":  0.75 },
-        { "speaker": "Ellen", "text": "Deal", "time":  0.2 }
+        { "speaker": "Ellen", "text": "Deal", "time":  0.2 },
+        { "speaker": "Mark",  "text": "Here, take the ammo.", "time":  0.2 }
       ]
     },
     {

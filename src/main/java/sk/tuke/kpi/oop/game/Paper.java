@@ -26,6 +26,10 @@ public class Paper extends AbstractActor implements Usable<Ripley>, Collectible 
         inBackpack = true;
         getAnimation().setScale(1f);
         getAnimation().setRotation(0);
+        if (drawDisposable != null) {
+            drawPaper = false;
+            drawDisposable.dispose();
+        }
     }
     public void dropping() {
         inBackpack = false;

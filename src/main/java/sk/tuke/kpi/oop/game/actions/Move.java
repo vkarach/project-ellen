@@ -3,6 +3,7 @@ import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Action;
 import sk.tuke.kpi.oop.game.Direction;
 import sk.tuke.kpi.oop.game.Movable;
+import sk.tuke.kpi.oop.game.characters.Ripley;
 import sk.tuke.kpi.oop.game.utils.PauseManager;
 
 
@@ -77,7 +78,7 @@ public class Move<A extends Movable> implements Action<A> {
         int dX = direction.getDx();
         int dY = direction.getDy();
         float divider = 1;
-        if (dX != 0 && dY != 0 && actor == null) {
+        if (dX != 0 && dY != 0) {
             divider = 1.5f;
         }
         int speed = actor.getSpeed();
@@ -88,8 +89,8 @@ public class Move<A extends Movable> implements Action<A> {
         posX += dX * speed / divider;
         posY += dY * speed / divider;
 
-        actor.setPosition((int) posX,(int) posY);
-        if (scene.getMap().intersectsWithWall(actor)) {
+        actor.setPosition((int) posX, (int) posY);
+        if (scene.getMap().intersectsWithWall(actor)/* && !(actor instanceof Ripley)*/) {
             actor.collidedWithWall();
             if (actor == null) {
                 stop();

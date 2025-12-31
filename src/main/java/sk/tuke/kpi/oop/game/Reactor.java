@@ -131,7 +131,7 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
         }
     }
     @Override
-    public boolean repair() {
+    public boolean repair(RepairKind kind) {
         if (damage > 0 && damage < 100) {
             int newDamage = damage - 50;
             if (newDamage < 0) {

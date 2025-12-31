@@ -10,7 +10,7 @@ public class Main {
         //test
         Game game = new GameApplication(windowSetup, new LwjglBackend());
 
-        Scene finalMission = new World("Final Mission", "maps/final-mission.tmx", new FinalMission.Factory());
+        Scene finalMission = new World("Final Mission", "maps/final-mission-demo.tmx", new FinalMission.Factory());
         game.addScene(finalMission);
         FinalMission scenario = new FinalMission();
         finalMission.addListener(scenario);

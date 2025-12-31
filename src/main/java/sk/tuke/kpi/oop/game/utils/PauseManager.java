@@ -64,7 +64,7 @@ public class PauseManager {
     }
 
     public static void changeSettingValue(int change) {
-        if (state == State.SETTINGS) {
+        if (state == State.SETTINGS && selected != settings.length) {
             settings[selected].value += change;
             if (settings[selected].value > settings[selected].max) {
                 settings[selected].value = settings[selected].max;

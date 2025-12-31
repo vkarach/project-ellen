@@ -14,7 +14,7 @@ public class Ventilator extends AbstractActor implements Repairable {
         coolingAnimation.stop();
     }
     @Override
-    public boolean repair() {
+    public boolean repair(RepairKind kind) {
         if (repaired || getScene() == null) {
             return false;
         }

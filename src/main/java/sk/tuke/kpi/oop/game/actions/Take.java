@@ -31,7 +31,7 @@ public class Take<A extends Keeper> extends AbstractAction<A>  {
                     try {
                         itemPickup.play();
                         keeper.getBackpack().add(item);
-//                        item.taking();
+                        item.taking();
                         item.getScene().removeActor(item);
                     }
                     catch  (Exception e) {

@@ -59,7 +59,7 @@ public class Ai {
 
                 if (dx < 0 || dy < 0 || dx >= gridW || dy >= gridH) {
                     continue;
-                    }
+                }
 
                 if (!walkable[dx][dy]) {
                     continue;

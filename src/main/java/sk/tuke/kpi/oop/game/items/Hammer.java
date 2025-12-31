@@ -14,7 +14,7 @@ public class Hammer extends BreakableTool<Repairable> implements Collectible {
     }
     @Override
     public void useWith(Repairable repairable) {
-        if (repairable != null && repairable.repair()) {
+        if (repairable != null && repairable.repair(Repairable.RepairKind.HAMMER)) {
             super.useWith(repairable);
         }
     }

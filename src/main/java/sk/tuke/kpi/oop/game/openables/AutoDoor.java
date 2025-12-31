@@ -25,10 +25,7 @@ public class AutoDoor extends Door {
                 boolean shouldOpen = false;
 
                 for (Actor actor : scene.getActors()) {
-                    if (actor instanceof Alive
-                        && !(actor instanceof Enemy)
-                        && MathUtils.distanceBetween(this, actor) < 40f)
-                    {
+                    if (actor instanceof Alive && !(actor instanceof Enemy) && MathUtils.distanceBetween(this, actor) < 40f) {
                         shouldOpen = true;
                         break;
                     }
@@ -40,6 +37,11 @@ public class AutoDoor extends Door {
                 }
                 else {
                     if (isOpen()) {
+                        for (Actor actor : scene.getActors()) {
+                            if (actor != this && this.intersects(actor)) {
+                                return;
+                            }
+                        }
                         super.close();
                     }
                 }
