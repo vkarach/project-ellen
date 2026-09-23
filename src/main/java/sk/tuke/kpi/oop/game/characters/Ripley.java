@@ -25,6 +25,11 @@ public class Ripley extends AbstractActor implements Actor, Movable, Alive, Arme
     private final Backpack backpack;
     private final Health health;
     private Firearm weapon;
+    private final int fontSize = 18;
+    private final Font whiteFont = new Font(fontSize, Color.WHITE, Font.Style.NORMAL);
+    private final Font greenFont = new Font(fontSize, Color.GREEN, Font.Style.NORMAL);
+    private final Font yellowFont = new Font(fontSize, Color.YELLOW, Font.Style.NORMAL);
+    private final Font redFont = new Font(fontSize, Color.RED, Font.Style.NORMAL);
     public Ripley() {
         super("Ellen");
         moveAnimation = new Animation("sprites/player.png", 32, 32, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
@@ -73,11 +78,6 @@ public class Ripley extends AbstractActor implements Actor, Movable, Alive, Arme
     public Firearm getFirearm() {
         return weapon;
     }
-    private final int fontSize = 18;
-    private final Font whiteFont = new Font(fontSize, Color.WHITE, Font.Style.NORMAL);
-    private final Font greenFont = new Font(fontSize, Color.GREEN, Font.Style.NORMAL);
-    private final Font yellowFont = new Font(fontSize, Color.YELLOW, Font.Style.NORMAL);
-    private final Font redFont = new Font(fontSize, Color.RED, Font.Style.NORMAL);
     public void showRipleyState() {
         Scene scene = getScene();
         if (scene == null) {
@@ -109,7 +109,7 @@ public class Ripley extends AbstractActor implements Actor, Movable, Alive, Arme
         if (weapon.getAmmo() > 0) {
             scene.getGame().getOverlay().drawText("        "+weapon.getAmmo(), xTextPos, yTextPos - 20, whiteFont);
         }
-                else {
+        else {
             scene.getGame().getOverlay().drawText("        x", xTextPos, yTextPos - 20, redFont);
         }
     }

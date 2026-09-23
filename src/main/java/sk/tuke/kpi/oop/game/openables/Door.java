@@ -17,7 +17,6 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
     public static final Topic<Door> DOOR_CLOSED = Topic.create("door closed", Door.class);
     private boolean isOpen = false;
     private boolean playSound = true;
-//    private boolean inMove = false;
     private final Animation openDoorAnimation;
     private final Animation closeDoorAnimation;
     public enum Orientation {
@@ -44,20 +43,13 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         return isOpen;
     }
     public void open() {
-        if (isOpen || getScene() == null) { // || inMove) {
+        if (isOpen || getScene() == null) {
             return;
         }
         setTile(MapTile.Type.CLEAR);
         isOpen = true;
         setAnimation(openDoorAnimation);
         openDoorAnimation.resetToFirstFrame();
-
-//        inMove = true;
-//        new ActionSequence<>(
-//            new Wait<>(openDoorAnimation.getFrameCount() * openDoorAnimation.getFrameDuration()),
-//            new Invoke<>(()->inMove = false)
-//        ).scheduleFor(this);
-
         openDoorAnimation.play();
         if (playSound) {
             openSound.play(0.5f);
@@ -67,7 +59,7 @@ public class Door extends AbstractActor implements Openable, Usable<Actor> {
         }
     }
     public void close() {
-        if (!isOpen) { // || inMove) {
+        if (!isOpen) {
             return;
         }
         setTile(MapTile.Type.WALL);

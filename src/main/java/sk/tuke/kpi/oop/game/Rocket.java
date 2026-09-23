@@ -33,33 +33,12 @@ public class Rocket extends AbstractActor implements Movable {
         isFlying = true;
         flySound.play(0.1f);
         setAnimation(flyAnimation);
-        int vibration = 2; // 0-5
         Helper helper = new Helper();
         scene.addActor(helper, getPosX(), getPosY());
         scene.follow(helper);
-//        new Loop<>(
-//            new ActionSequence<>(
-//                new Invoke<>(()-> {
-//                    helper.setPosition(getPosX(), getPosY() + vibration);
-//                }),
-//                new Invoke<>(()-> {
-//                    helper.setPosition(getPosX(), getPosY() - vibration);
-//                })
-//            )
-//        ).scheduleFor(helper);
         float[] posX = { getPosX() };
         flyingDisposable =  new Loop<>(
             new ActionSequence<>(
-//                new Invoke<>(()->{
-//                    new ActionSequence<>(
-//                        new Invoke<>(()-> {
-//                            helper.setPosition(getPosX(), getPosY() + vibration);
-//                        }),
-//                        new Invoke<>(()-> {
-//                            helper.setPosition(getPosX(), getPosY() - vibration);
-//                        })
-//                    ).scheduleFor(helper);
-//                }),
                 new Invoke<>(()-> {
                     if (PauseManager.isPaused()) {
                         return;

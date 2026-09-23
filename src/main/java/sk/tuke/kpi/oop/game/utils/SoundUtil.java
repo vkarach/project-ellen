@@ -72,7 +72,6 @@ public class SoundUtil {
         for (SoundUtil sound : ALLSOUNDS) {
             sound.updateVolume();
         }
-//        System.out.println("updated all volumes at " + System.nanoTime());
     }
     public void play(float volume) {
         if (clip == null) {

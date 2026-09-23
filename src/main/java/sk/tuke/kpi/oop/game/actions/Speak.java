@@ -70,15 +70,13 @@ public class Speak<A extends Actor> implements Action<A> {
         Dialogue.Line line = dialogue.getLines().get(index);
         if (timer == 0) {
             interval = line.time;
-//            oneKeyInterval = interval / line.text.length();
-//            System.out.println(interval);
         }
 
         Actor speaker = scene.getFirstActorByName(line.speaker);
         if (speaker == null) {
             return;
         }
-                if (PauseManager.isPaused()) {
+        if (PauseManager.isPaused()) {
             scene.getOverlay().drawText(line.text.substring(0, outputCount), speaker.getPosX() + speaker.getWidth(), speaker.getPosY() + 30, whiteFont);
             return;
         }

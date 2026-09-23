@@ -44,7 +44,6 @@ public class Backpack implements ActorContainer<Collectible> {
     }
     public void remove(@NotNull Collectible item) {
         if (!items.remove(item)) {
-//            throw new IllegalStateException(item + " not found in " + name);
             return;
         }
         size--;

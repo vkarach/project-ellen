@@ -82,7 +82,6 @@ public class Helicopter extends AbstractActor {
         }
         new Loop<>(
             new ActionSequence<>(
-//                new Wait<>(0.0016f),
                 new Invoke<>(() -> moveToPlayerAndDamage(player))
             )
         ).scheduleFor(this);

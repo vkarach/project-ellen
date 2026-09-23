@@ -26,10 +26,6 @@ public class LockedDoor extends Door {
     }
     @Override
     public void useWith(Actor actor) {
-//        if (isLocked) {
-//            return;
-//        }
-//        super.useWith(actor);
         Scene scene = actor.getScene();
         if (scene != null) {
             Overlay overlay = scene.getOverlay();

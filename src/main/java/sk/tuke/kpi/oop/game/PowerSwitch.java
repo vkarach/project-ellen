@@ -29,7 +29,6 @@ public class PowerSwitch extends AbstractActor implements Usable<Ripley> {
     }
     @Override
     public void useWith(Ripley ripley) {
-//        System.out.println("Device on: " + device.isOn());
         if (device.isOn()) {
             switchOff();
         }

@@ -76,22 +76,12 @@ public class TrainingGameplay extends Scenario {
 
         gigabomb.activate();
 
-//        new ActionSequence<>(
-//            new Wait<>(5),
-//            new Invoke<>(heli::searchAndDestroy)).scheduleFor(heli
-//        );
-
         reactorSwitch.switchOn();
         lightSwitch.switchOn();
         defectLightSwitch.switchOn();
 
         reactor.addDevice(light);
         reactor.addDevice(defectLight);
-
-//        new ActionSequence<>(
-//            new Wait<>(5),
-//            new Invoke<>(coolerSwitch::switchOn)).scheduleFor(cooler
-//        );
 
         new ActionSequence<>(
             new Wait<>(5),

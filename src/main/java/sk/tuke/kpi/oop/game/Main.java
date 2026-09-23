@@ -7,7 +7,6 @@ import sk.tuke.kpi.oop.game.scenarios.FinalMission;
 public class Main {
     public static void main(String[] args) {
         WindowSetup windowSetup = new WindowSetup("Project Ellen", 800, 600);
-        //test
         Game game = new GameApplication(windowSetup, new LwjglBackend());
 
         Scene finalMission = new World("Final Mission", "maps/final-mission-demo.tmx", new FinalMission.Factory());

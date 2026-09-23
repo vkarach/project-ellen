@@ -115,7 +115,6 @@ public class MoveToPlace<A extends Movable> implements Action<A> {
                 break;
         }
         actor.setPosition(ax + stepX, ay + stepY);
-//        System.out.println("Moving to " + ax + stepX + "," + ay + stepY);
 
         if (!ignoreWalls && scene.getMap().intersectsWithWall(actor)) {
             actor.setPosition(ax, ay);

@@ -83,9 +83,6 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
 
         scene.getOverlay().drawRectangle(getPosX() + getWidth()/2, getPosY() + getHeight(), maxHealth / 2, 5, Color.BLACK);
         scene.getOverlay().drawRectangle(getPosX() + getWidth()/2, getPosY() + getHeight(), health.getValue() / 2, 5, Color.LIME);
-
-//        Font whiteFont = new Font(11, Color.WHITE, Font.Style.NORMAL);
-//        scene.getOverlay().drawText(""+health.getValue(), getPosX() + getWidth()/2, getPosY() + getHeight() + 1, whiteFont);
     }
     private boolean canHit = true;
     public void addedToScene(@NotNull Scene scene) {
@@ -103,7 +100,7 @@ public class Alien extends AbstractActor implements Movable, Alive, Enemy {
                                 new Wait<>(1),
                                 new Invoke<>(()-> canHit = true)
                             ).scheduleFor(this);
-                    }
+                        }
                     }
                 }
             })
